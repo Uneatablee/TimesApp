@@ -1,9 +1,10 @@
 project(DayPlanner_business_logic_unit_tests)
 
 add_executable(DayPlanner_business_logic_unit_tests
-        test.cpp)
+        Calendar/CalendarUnitTests.cpp
+        Time/TimeUnitTests.cpp)
 
 target_link_libraries(DayPlanner_business_logic_unit_tests PRIVATE Catch2::Catch2WithMain)
-#target_link_libraries(DayPlanner_business_logic_unit_tests PUBLIC ---- ) app library added later
+target_link_libraries(DayPlanner_business_logic_unit_tests PUBLIC day_planner_functions)
 
 catch_discover_tests(DayPlanner_business_logic_unit_tests)
