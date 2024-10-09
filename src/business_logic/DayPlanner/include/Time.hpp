@@ -1,35 +1,29 @@
+#pragma once
 #include <time.h>
 #include <chrono>
 
 namespace dp_business_logic::DayPlanner
 {
 
-class Time
-{
+    class Time
+    {
+    public:
 
-struct Day
-{
-    unsigned int day;
-    unsigned int month;
-    unsigned int year;
-};
+        Time();
+        virtual ~Time() = default;
 
-struct Hour
-{
-    unsigned int day;
-    unsigned int month;
-    unsigned int year;
-};
+        Time(const Time&) = default;
+        Time(Time&&) = default;
 
-public:
-Time();
-~Time();
+        Time& operator=(const Time&) = default;
+        Time& operator=(Time&&) = default;
 
+        virtual int GetCurrentDate();
+        virtual int GetCurrentTime();
 
-private:
+    private:
 
-
-};
+    };
 
 
 } // namespace dp_business_logic::DayPlanner
