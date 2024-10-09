@@ -19,13 +19,13 @@ jobs:
         with:
           submodules: true
       - name: build
-        run:
-          mkdir ./build
+        run: |
+          mkdir build
           cd ./build
           cmake ../
           cmake --build .
 
       - name: test
-        run:
+        run: |
           cd ./build
           ctest
