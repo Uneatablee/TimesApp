@@ -4,6 +4,7 @@ add_executable(DayPlanner_business_logic_unit_tests
         Calendar/CalendarUnitTests.cpp
         Time/TimeUnitTests.cpp)
 
+target_include_directories(DayPlanner_business_logic_unit_tests PRIVATE ../../../../lib/FakeIt/single_header/catch)
 target_link_libraries(DayPlanner_business_logic_unit_tests PRIVATE Catch2::Catch2WithMain)
 target_link_libraries(DayPlanner_business_logic_unit_tests PUBLIC day_planner_functions)
 
