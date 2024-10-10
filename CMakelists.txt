@@ -14,6 +14,8 @@ enable_testing()
 add_subdirectory(tests)
 add_subdirectory(src/business_logic/DayPlanner)
 
+include_directories(FakeIt/include)
+
 
 #Switch to QT project after making basic calendar business logic with working date, time, events and tasks
 
