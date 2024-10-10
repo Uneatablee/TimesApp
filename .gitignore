@@ -58,5 +58,4 @@ yarn.lock
 #custom ignores
 #=================================
 build
-lib
 .vscode
