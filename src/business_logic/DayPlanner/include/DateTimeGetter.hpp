@@ -5,15 +5,9 @@
 namespace dp_business_logic::DayPlanner
 {
 
-    class Time final
+    class DateTimeGetter final
     {
-    public:
 
-       int GetCurrentDate();
-       int GetCurrentTime();
-
-    private:
-        Time();
     };
 
 
