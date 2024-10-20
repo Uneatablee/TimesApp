@@ -1,9 +1,9 @@
-# **DailySync**
+# **Time'sApp**
 
 
-DailySync is a fast multi-tasking day planner that can organize Your day. <br>
+Time'sApp is a fast multi-tasking day planner that can organize Your day. <br>
 Add tasks, events, reminders, create whole day plan and even track finanses.
-- [**DailySync**](#dailysync)
+- [**Time'sApp**](#timesapp)
   - [System Requirements](#system-requirements)
   - [Git workflow](#git-workflow)
 
