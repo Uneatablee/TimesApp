@@ -4,11 +4,8 @@
 
 namespace dp_business_logic::DayPlanner
 {
-
-    class DateTimeGetter final
+    namespace DateTimeGetter
     {
 
-    };
-
-
+    }
 } // namespace dp_business_logic::DayPlanner
