@@ -43,8 +43,8 @@ jobs:
       - name: build
         run: |
           mkdir build
-          cd ./build
-          cmake ../
+          cd build
+          cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/5.15.2/clang_64"
           cmake --build .
 
       - name: test
