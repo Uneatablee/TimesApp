@@ -22,7 +22,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.2.*'
+          version: '6.5.*'
           host: 'mac'
           target: 'desktop'
           arch: 'clang_64'
@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/6.2.*/clang_64" -DQt6_DIR="${QT_INSTALL_DIR}/6.5.0/clang_64"
+          cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/6.5.*/clang_64" -DQt6_DIR="${QT_INSTALL_DIR}/6.5.0/clang_64"
           cmake --build .
 
       - name: test
