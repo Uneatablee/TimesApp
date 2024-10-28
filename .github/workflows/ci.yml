@@ -18,11 +18,33 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.5.*'
+          host: 'mac'
+          target: 'desktop'
+          arch: 'clang_64'
+          dir: '${{ github.workspace }}/example/'
+          install-deps: 'true'
+          modules: 'qtcharts qtwebengine'
+          archives: 'qtbase qtsvg'
+          cache: 'false'
+          cache-key-prefix: 'install-qt-action'
+          setup-python: 'true'
+          tools: 'tools_ifw tools_qtcreator,qt.tools.qtcreator'
+          set-env: 'true'
+          tools-only: 'false'
+          aqtversion: '==3.1.*'
+          py7zrversion: '==0.20.*'
+          extra: '--external 7z'
+
       - name: build
         run: |
           mkdir build
-          cd ./build
-          cmake ../
+          cd build
+          cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/6.5.*/clang_64" -DQt6_DIR="${QT_INSTALL_DIR}/6.5.0/clang_64"
           cmake --build .
 
       - name: test
