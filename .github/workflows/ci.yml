@@ -19,11 +19,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Set up Qt
+      - name: Install Qt
         uses: jurplel/install-qt-action@v2
-        with:
-          version: '6.5.0'
-          modules: qtbase
 
       - name: build
         run: |
