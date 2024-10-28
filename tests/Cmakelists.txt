@@ -10,5 +10,4 @@ FetchContent_MakeAvailable(Catch2)
 
 include(CTest)
 include(Catch)
-
 add_subdirectory(unit.tests/business_logic/DayPlanner)

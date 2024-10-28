@@ -1,5 +1,7 @@
 project(day_planner_functions)
 
-add_library(day_planner_functions src/Time.cpp src/Calendar.cpp)
+add_library(day_planner_functions src/DateTimeGetter.cpp src/Calendar.cpp)
 
 target_include_directories(day_planner_functions INTERFACE ./include)
+
+

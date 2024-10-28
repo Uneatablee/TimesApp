@@ -13,3 +13,14 @@ enable_testing()
 
 add_subdirectory(tests)
 add_subdirectory(src/business_logic/DayPlanner)
+
+include_directories(FakeIt/include)
+
+
+#Switch to QT project after making basic calendar business logic with working date, time, events and tasks
+
+#Implement QT Cmake file so it links with headers from QT window, widgets and ui.
+#   ---Different implementation for main for business logic testing
+#   ---Different implementation for mid-level ui before switching to electron frontend
+
+#Adding Cmake compilation and linking options for Windows OS

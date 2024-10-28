@@ -1,1 +1,31 @@
-#Basic continus integration
+name: DayPLanner CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build_and_test_multiplatform:
+
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [macos-latest] #, ubuntu-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: build
+        run: |
+          mkdir build
+          cd ./build
+          cmake ../
+          cmake --build .
+
+      - name: test
+        run: |
+          cd ./build
+          ctest
