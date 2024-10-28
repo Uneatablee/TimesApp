@@ -1,0 +1,6 @@
+project(data_access_layer)
+
+add_library(data_access_layer EventRepository.cpp)
+
+target_include_directories(data_access_layer INTERFACE .)
+target_link_libraries(data_access_layer PUBLIC day_planner_functions)
