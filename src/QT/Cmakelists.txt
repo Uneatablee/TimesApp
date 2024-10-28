@@ -1,45 +1,22 @@
-cmake_minimum_required(VERSION 3.30)
-project(qt_implementation VERSION 0.1 LANGUAGES CXX)
 
-# find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-# find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+project(qt_implementation VERSION 0.1 LANGUAGES CXX)
 
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
-        mainwindow.h
         mainwindow.ui
+        mainwindow.h
 )
 
-# if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-#     qt_add_executable(qt_implementation
-#         MANUAL_FINALIZATION
-#         ${PROJECT_SOURCES}
-#     )
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-add_executable(qt_implementation ${PROJECT_SOURCES})
+qt_standard_project_setup()
 
-# target_link_libraries(qt_implementation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+qt_add_executable(qt_implementation ${PROJECT_SOURCES})
 
-# if(${QT_VERSION} VERSION_LESS 6.1.0)
-#   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.algorithms_testing)
-# endif()
-# set_target_properties(algorithms_testing PROPERTIES
-#     ${BUNDLE_ID_OPTION}
-#     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-#     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-#     MACOSX_BUNDLE TRUE
-#     WIN32_EXECUTABLE TRUE
-# )
+target_link_libraries(qt_implementation PRIVATE Qt6::Widgets)
 
-# include(GNUInstallDirs)
-# install(TARGETS algorithms_testing
-#     BUNDLE DESTINATION .
-#     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-# )
-
-# if(QT_VERSION_MAJOR EQUAL 6)
-#     qt_finalize_executable(algorithms_testing)
-# endif()
-
+set_target_properties(qt_implementation PROPERTIES
+    WIN32_EXECUTABLE ON
+    MACOSX_BUNDLE ON
+)
