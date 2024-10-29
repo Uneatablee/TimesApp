@@ -1,26 +1,25 @@
 #pragma once
-#include <time.h>
-#include <chrono>
-#include <stdint.h>
-#include <string>
+#include "IDateTimeGetter.hpp"
 
 namespace dp_business_logic::DayPlanner
 {
-    namespace DateTimeGetter
+    class DateTimeGetter : virtual public IDateTimeGetter
     {
-        time_t GetCurrentTime();
 
-        uint8_t GetCurrentHours();
-        uint8_t GetCurrentMinutes();
-        uint8_t GetCurrentSeconds();
+    public:
+        time_t GetCurrentTimeDate() override;
 
-        unsigned int GetCurrentYear();
-        uint8_t GetCurrentMonth();
-        uint8_t GetCurrentDay();
+        uint8_t GetCurrentHour() override;
+        uint8_t GetCurrentMinute() override;
+        uint8_t GetCurrentSecond() override;
 
-        std::string GetDayName();
-        unsigned int GetYear();
-        uint8_t GetMonth();
-        uint8_t GetDay();
-    }
-} // namespace dp_business_logic::DayPlanner
+        unsigned int GetCurrentYear() override;
+        uint8_t GetCurrentMonth() override;
+        uint8_t GetCurrentDay() override;
+
+        std::string GetDayName() override;
+        unsigned int GetYear() override;
+        uint8_t GetMonth() override;
+        uint8_t GetDay() override;
+    };
+}
