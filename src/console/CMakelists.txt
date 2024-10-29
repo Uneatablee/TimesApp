@@ -1,0 +1,5 @@
+project(console)
+
+add_executable(console main.cpp)
+
+target_link_libraries(console PUBLIC day_planner_functions data_access_layer)
