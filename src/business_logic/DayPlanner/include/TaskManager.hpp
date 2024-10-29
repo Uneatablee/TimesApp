@@ -2,8 +2,5 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    class Year
-    {
 
-    };
 }
