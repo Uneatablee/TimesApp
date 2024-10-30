@@ -18,6 +18,5 @@ add_subdirectory(tests)
 add_subdirectory(src/QT)
 
 include_directories(FakeIt/include)
-include_directories(lib/date)
 
 #Adding Cmake compilation and linking options for Windows OS
