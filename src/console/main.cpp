@@ -1,6 +1,8 @@
 #include <iostream>
 #include "EventManager.hpp"
 #include "EventRepository.hpp"
+#include "IDateTimeGetter.hpp"
+#include "DateTimeGetter.hpp"
 
 using namespace dp_business_logic::DayPlanner;
 using namespace data_access_layer;
@@ -32,5 +34,11 @@ int main()
     {
         std::cout << elem.GetName() << "\t";
     }
+
+    std::unique_ptr<IDateTimeGetter> date_time_getter = std::make_unique<DateTimeGetter>();
+    uint8_t hour = date_time_getter -> GetCurrentHour();
+    std::cout << std::endl << "Hour: " << int(hour);
+    std::cout << std::endl << "Year: " << date_time_getter -> GetCurrentYear();
+
 
 }

@@ -8,6 +8,7 @@ namespace dp_business_logic::DayPlanner
 
     public:
         time_t GetCurrentTimeDate() override;
+        long GetSecondsFromEpoch() override;
 
         uint8_t GetCurrentHour() override;
         uint8_t GetCurrentMinute() override;
