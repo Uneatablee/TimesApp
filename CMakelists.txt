@@ -16,6 +16,7 @@ add_subdirectory(src/data_access_layer)
 add_subdirectory(src/console)
 add_subdirectory(tests)
 add_subdirectory(src/QT)
+add_subdirectory(lib/date)
 
 include_directories(FakeIt/include)
 
