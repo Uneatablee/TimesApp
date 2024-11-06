@@ -11,7 +11,7 @@ namespace dp_business_logic::DayPlanner
         bool SetName(std::string);
         unsigned int GetId() const;
     private:
-        std::string m_name = "elo";
+        std::string m_name = "objekt";
         unsigned int m_id;
     };
 }

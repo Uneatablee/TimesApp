@@ -5,7 +5,26 @@ project(DayPlanner)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+
 add_compile_options(-Wall -Wextra)
+
+option(BUILD_TZ_LIB "Enable tz library" ON) #Timezone extension for date library
+
+file(
+  DOWNLOAD
+  https://github.com/cpm-cmake/CPM.cmake/releases/download/v0.38.3/CPM.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake
+  EXPECTED_HASH SHA256=cc155ce02e7945e7b8967ddfaff0b050e958a723ef7aad3766d368940cb15494
+)
+include(${CMAKE_CURRENT_BINARY_DIR}/cmake/CPM.cmake)
+
+CPMAddPackage(
+    NAME date
+    GIT_REPOSITORY https://github.com/HowardHinnant/date.git
+    GIT_TAG master
+    OPTIONS "USE_OS_TZDB 1"
+)
+
 
 #add subdirectories
 
@@ -16,14 +35,5 @@ add_subdirectory(src/data_access_layer)
 add_subdirectory(src/console)
 add_subdirectory(tests)
 add_subdirectory(src/QT)
-
-include_directories(FakeIt/include)
-
-
-#Switch to QT project after making basic calendar business logic with working date, time, events and tasks
-
-#Implement QT Cmake file so it links with headers from QT window, widgets and ui.
-#   ---Different implementation for main for business logic testing
-#   ---Different implementation for mid-level ui before switching to electron frontend
 
 #Adding Cmake compilation and linking options for Windows OS
