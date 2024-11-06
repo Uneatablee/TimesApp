@@ -1,10 +1,9 @@
+CPMAddPackage("gh:catchorg/Catch2@3.0.1")
+CPMAddPackage("gh:eranpeer/FakeIt#2.4.1")
+
 if (Catch2_ADDED)
   list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)
   include(Catch)
 endif()
 
-FetchContent_MakeAvailable(Catch2)
-
-include(CTest)
-include(Catch)
 add_subdirectory(unit.tests/business_logic/DayPlanner)
