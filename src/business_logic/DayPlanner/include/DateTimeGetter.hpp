@@ -1,5 +1,8 @@
 #pragma once
 #include "IDateTimeGetter.hpp"
+#include <string>
+#include <chrono>
+#include <tuple>
 
 namespace dp_business_logic::DayPlanner
 {
@@ -9,14 +12,12 @@ namespace dp_business_logic::DayPlanner
     public:
         time_t GetCurrentTimeDate() override;
         long GetSecondsFromEpoch() override;
+        std::chrono::year_month_day GetCurrentDate_YMDFormat() override;
 
-        uint8_t GetCurrentHour() override;
-        uint8_t GetCurrentMinute() override;
+        std::tuple<uint8_t, uint8_t> GetCurrentHourMinute() override;
         uint8_t GetCurrentSecond() override;
 
-        unsigned int GetCurrentYear() override;
-        uint8_t GetCurrentMonth() override;
-        uint8_t GetCurrentDay() override;
+        std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() override;
 
         std::string GetDayName() override;
         unsigned int GetYear() override;

@@ -1,7 +1,12 @@
 project(day_planner_functions)
 
 add_library(day_planner_functions src/DateTimeGetter.cpp src/Calendar.cpp src/EventManager.cpp src/Event.cpp)
-
 target_include_directories(day_planner_functions INTERFACE ./include)
-target_link_libraries(day_planner_functions PRIVATE date )
+
+#Dependencies
+if(date_ADDED)
+    target_link_libraries(day_planner_functions PRIVATE date::date date::date-tz)
+endif()
+
+
 

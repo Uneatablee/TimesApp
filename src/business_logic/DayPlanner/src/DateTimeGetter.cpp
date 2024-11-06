@@ -1,6 +1,8 @@
 #include "../include/DateTimeGetter.hpp"
 #include <chrono>
 #include "date/tz.h"
+#include <tuple>
+#include <iostream>
 
 namespace dp_business_logic::DayPlanner
 {
@@ -16,38 +18,40 @@ namespace dp_business_logic::DayPlanner
             return std::chrono::duration_cast<std::chrono::seconds>(current_time.time_since_epoch()).count();
         }
 
-        uint8_t DateTimeGetter::GetCurrentHour()
+        std::chrono::year_month_day DateTimeGetter::GetCurrentDate_YMDFormat()
         {
-            auto hours_since_epoch = GetSecondsFromEpoch() / 3600;
-            return static_cast<uint8_t>(hours_since_epoch % 24);
+            auto current_time_point_in_seconds = std::chrono::sys_seconds(std::chrono::seconds(GetSecondsFromEpoch()));
+            return std::chrono::floor<std::chrono::days>(current_time_point_in_seconds);
         }
 
-        uint8_t DateTimeGetter::GetCurrentMinute()
+        std::tuple<unsigned int, uint8_t, uint8_t> DateTimeGetter::GetCurrentYearMonthDay()
         {
-            auto minutes_since_epoch = GetSecondsFromEpoch() / 60;
-            return static_cast<uint8_t>(minutes_since_epoch % 60);
+            auto year_month_day = GetCurrentDate_YMDFormat();
+
+            auto year = static_cast<unsigned int>(static_cast<int>(year_month_day.year()));
+            auto month = static_cast<uint8_t>(static_cast<unsigned int>(year_month_day.month()));
+            auto day = static_cast<uint8_t>(static_cast<unsigned int>(year_month_day.day()));
+
+            return {year, month, day};
         }
 
-        uint8_t DateTimeGetter::GetCurrentSecond()
+        std::tuple<uint8_t, uint8_t> DateTimeGetter::GetCurrentHourMinute()
         {
-            return static_cast<uint8_t>(GetSecondsFromEpoch() % 60);
+            auto now = date::make_zoned(date::current_zone(), std::chrono::system_clock::now());
+
+            auto current_local_time = date::floor<std::chrono::minutes>(now.get_local_time());
+            auto days_passed = date::floor<date::days>(now.get_local_time());
+            auto time = date::make_time(current_local_time - days_passed);
+
+            uint8_t hours = static_cast<uint8_t>(time.hours().count());
+            uint8_t minutes = static_cast<uint8_t>(time.minutes().count());
+
+            return {hours, minutes};
         }
 
-        unsigned int DateTimeGetter::GetCurrentYear()
+        inline uint8_t DateTimeGetter::GetCurrentSecond()
         {
-            auto seconds_from_epoch = GetSecondsFromEpoch();
-            return static_cast<unsigned int>((static_cast<double>(seconds_from_epoch) / 86400) / 365.24 + 1970);
-        }
-
-        uint8_t DateTimeGetter::GetCurrentMonth()
-        {
-
-            return uint8_t();
-        }
-
-        uint8_t DateTimeGetter::GetCurrentDay()
-        {
-            return uint8_t();
+            return  GetSecondsFromEpoch() % 60;
         }
 
         std::string DateTimeGetter::GetDayName()

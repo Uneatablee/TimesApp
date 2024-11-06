@@ -3,6 +3,8 @@
 #include "EventRepository.hpp"
 #include "IDateTimeGetter.hpp"
 #include "DateTimeGetter.hpp"
+#include <ctime>
+#include <iomanip>
 
 using namespace dp_business_logic::DayPlanner;
 using namespace data_access_layer;
@@ -36,9 +38,13 @@ int main()
     }
 
     std::unique_ptr<IDateTimeGetter> date_time_getter = std::make_unique<DateTimeGetter>();
-    uint8_t hour = date_time_getter -> GetCurrentHour();
-    std::cout << std::endl << "Hour: " << int(hour);
-    std::cout << std::endl << "Year: " << date_time_getter -> GetCurrentYear();
 
+    auto now = date_time_getter -> GetCurrentTimeDate();
+    std::cout << std::ctime(&now);
 
+    auto hour_minute = date_time_getter -> GetCurrentHourMinute();
+
+    std::cout << "\nHOUR: " << static_cast<int>(std::get<0>(hour_minute));
+    std::cout << "\nMINUTE: " << static_cast<int>(std::get<1>(hour_minute));
+    std::cout << "\nSECOND: " << static_cast<int>(date_time_getter -> GetCurrentSecond());
 }

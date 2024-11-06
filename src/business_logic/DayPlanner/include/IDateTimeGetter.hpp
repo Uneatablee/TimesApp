@@ -3,6 +3,7 @@
 #include <chrono>
 #include <stdint.h>
 #include <string>
+#include <tuple>
 
 namespace dp_business_logic::DayPlanner
 {
@@ -22,12 +23,11 @@ namespace dp_business_logic::DayPlanner
 
         virtual time_t GetCurrentTimeDate() = 0;
         virtual long GetSecondsFromEpoch() = 0;
-        virtual uint8_t GetCurrentHour() = 0;
-        virtual uint8_t GetCurrentMinute() = 0;
+        virtual std::chrono::year_month_day GetCurrentDate_YMDFormat() = 0;
+        virtual std::tuple<uint8_t, uint8_t> GetCurrentHourMinute() = 0;
         virtual uint8_t GetCurrentSecond() = 0;
-        virtual unsigned int GetCurrentYear() = 0;
-        virtual uint8_t GetCurrentMonth() = 0;
-        virtual uint8_t GetCurrentDay() = 0;
+
+        virtual std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() = 0;
         virtual std::string GetDayName() = 0;
         virtual unsigned int GetYear() = 0;
         virtual uint8_t GetMonth() = 0;
