@@ -14,6 +14,7 @@ namespace dp_business_logic::DayPlanner
         bool Update(std::shared_ptr<Event> event) const;
         std::vector<std::shared_ptr<Event>> GetAll() const;
         std::shared_ptr<Event> Get(unsigned int id);
+        bool Delete(unsigned int id) const;
 
     private:
         std::shared_ptr<IGenericRepository<Event>> const m_events_repository;

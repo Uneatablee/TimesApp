@@ -4,7 +4,7 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    class Event : virtual public BaseEntity
+    class Event final : virtual public BaseEntity
     {
     public:
 

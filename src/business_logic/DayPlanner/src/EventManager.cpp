@@ -36,7 +36,45 @@ namespace dp_business_logic::DayPlanner
     {
         auto id = event -> GetId();
 
-        //End function
+        bool found = false;
+        for(const auto &elem : m_events_repository -> GetAll())
+        {
+            auto searched_id = elem -> GetId();
+            {
+                if(searched_id == id)
+                {
+                    found = true;
+                }
+            }
+        }
+
+        if(found)
+        {
+            m_events_repository -> Update(event);
+        }
+
+        return true;
+    }
+
+    bool EventManager::Delete(unsigned int id) const
+    {
+        bool found = false;
+        for(const auto &elem : m_events_repository -> GetAll())
+        {
+            auto searched_id = elem -> GetId();
+            {
+                if(searched_id == id)
+                {
+                    found = true;
+                }
+            }
+        }
+
+        if(found)
+        {
+            m_events_repository -> Delete(id);
+        }
+
         return true;
     }
 }
