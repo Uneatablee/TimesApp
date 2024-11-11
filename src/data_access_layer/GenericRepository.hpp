@@ -6,8 +6,6 @@
 #include <type_traits>
 #include <memory>
 
-//REFACTOR TO A SMART POINTERS
-
 using namespace dp_business_logic::DayPlanner;
 
 namespace data_access_layer
@@ -21,11 +19,11 @@ namespace data_access_layer
 
     public:
 
-        bool Add(T*) override;
+        bool Add(std::shared_ptr<T>) override;
         bool Delete(unsigned int) override;
-        bool Update(T*) override;
-        std::vector<T*> GetAll() override;
-        T* GetById(unsigned int) override;
+        bool Update(std::shared_ptr<T>) override;
+        std::vector<std::shared_ptr<T>> GetAll() override;
+        std::shared_ptr<T> GetById(unsigned int) override;
     private:
 
         std::vector<T*> m_events_data{};
@@ -34,7 +32,7 @@ namespace data_access_layer
 
     //DEFINITIONS----------------->
     template<IsBase T>
-    bool GenericRepository<T>::Add(T* event)
+    bool GenericRepository<T>::Add(std::shared_ptr<T> event)
     {
         m_events_data.push_back(event);
         return true;
@@ -52,7 +50,7 @@ namespace data_access_layer
     }
 
     template<IsBase T>
-    bool GenericRepository<T>::Update(T* event)
+    bool GenericRepository<T>::Update(std::shared_ptr<T> event)
     {
         auto id = event -> GetId();
         auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](const BaseEntity* event)
@@ -64,13 +62,13 @@ namespace data_access_layer
     }
 
     template<IsBase T>
-    std::vector<T*> GenericRepository<T>::GetAll()
+    std::vector<std::shared_ptr<T>> GenericRepository<T>::GetAll()
     {
         return m_events_data;
     }
 
     template<IsBase T>
-    T* GenericRepository<T>::GetById(unsigned int id)
+    std::shared_ptr<T> GenericRepository<T>::GetById(unsigned int id)
     {
         auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](const BaseEntity* event)
         {return event -> GetId() == id;});

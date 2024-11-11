@@ -9,14 +9,14 @@ namespace dp_business_logic::DayPlanner
     class EventManager
     {
     public:
-        EventManager(IGenericRepository<Event>* events_repository) : m_events_repository(events_repository){};
-        bool Add(Event* event) const;
-        bool Update(Event* event) const;
-        std::vector<Event*> GetAll() const;
-        Event* Get(unsigned int id);
+        EventManager(std::shared_ptr<IGenericRepository<Event>> events_repository) : m_events_repository(events_repository){};
+        bool Add(std::shared_ptr<Event> event) const;
+        bool Update(std::shared_ptr<Event> event) const;
+        std::vector<std::shared_ptr<Event>> GetAll() const;
+        std::shared_ptr<Event> Get(unsigned int id);
 
     private:
-        IGenericRepository<Event>* const m_events_repository;
+        std::shared_ptr<IGenericRepository<Event>> const m_events_repository;
     };
 
 }
