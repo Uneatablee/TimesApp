@@ -12,6 +12,8 @@ namespace dp_business_logic::DayPlanner
     class IGenericRepository
     {
     public:
+
+        virtual ~IGenericRepository() = default;
         virtual bool Add(std::shared_ptr<T>) = 0;
         virtual std::vector<std::shared_ptr<T>> GetAll() = 0;
         virtual std::shared_ptr<T> GetById(unsigned int) = 0;

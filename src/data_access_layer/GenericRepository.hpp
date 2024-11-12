@@ -14,7 +14,7 @@ namespace data_access_layer
     concept IsBase = std::is_base_of<BaseEntity, T>::value;
 
     template<IsBase T>
-    class GenericRepository : virtual public dp_business_logic::DayPlanner::IGenericRepository<T>
+    class GenericRepository : public virtual dp_business_logic::DayPlanner::IGenericRepository<T>
     {
 
     public:
@@ -26,7 +26,7 @@ namespace data_access_layer
         std::shared_ptr<T> GetById(unsigned int) override;
     private:
 
-        std::vector<T*> m_events_data{};
+        std::vector<std::shared_ptr<T>> m_events_data{};
     };
 
 
@@ -34,14 +34,14 @@ namespace data_access_layer
     template<IsBase T>
     bool GenericRepository<T>::Add(std::shared_ptr<T> event)
     {
-        m_events_data.push_back(event);
+        m_events_data.emplace_back(event);
         return true;
     }
 
     template<IsBase T>
     bool GenericRepository<T>::Delete(unsigned int id)
     {
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](const BaseEntity* event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
         {return event -> GetId() == id;});
 
         auto index = iter - m_events_data.begin();
@@ -53,7 +53,7 @@ namespace data_access_layer
     bool GenericRepository<T>::Update(std::shared_ptr<T> event)
     {
         auto id = event -> GetId();
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](const BaseEntity* event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
         {return event -> GetId() == id;});
 
         *iter = event;
@@ -70,7 +70,7 @@ namespace data_access_layer
     template<IsBase T>
     std::shared_ptr<T> GenericRepository<T>::GetById(unsigned int id)
     {
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](const BaseEntity* event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
         {return event -> GetId() == id;});
 
 
