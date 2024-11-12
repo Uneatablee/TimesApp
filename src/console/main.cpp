@@ -1,37 +1,39 @@
 #include <iostream>
+#include <ctime>
+#include <iomanip>
+#include <memory>
+
 #include "EventManager.hpp"
+#include "IGenericRepository.hpp"
 #include "GenericRepository.hpp"
 #include "IDateTimeGetter.hpp"
 #include "DateTimeGetter.hpp"
-#include <ctime>
-#include <iomanip>
+#include "Event.hpp"
 
 using namespace dp_business_logic::DayPlanner;
 using namespace data_access_layer;
 
 
-// void SeedEventRepository(GenericRepository* repo)
-// {
-//     repo -> Add(Event{1, "Banana"});
-//     repo -> Add(Event{2, "Apple"});
-//     repo -> Add(Event{3, "Orange"});
-//     repo -> Add(Event{4, "Granat"});
-//     repo -> Add(Event{5, "Strawberry"});
-// }
+void SeedEventRepository(std::unique_ptr<EventManager> &manager)
+{
+    manager -> Add(std::make_shared<Event>(1, "Banana"));
+    manager -> Add(std::make_shared<Event>(2, "Apple"));
+    manager -> Add(std::make_shared<Event>(3, "Orange"));
+    manager -> Add(std::make_shared<Event>(4, "Granat"));
+    manager -> Add(std::make_shared<Event>(5, "Strawberry"));
+    manager -> Add(std::make_shared<Event>(6, "Peach"));
+}
 
 
 int main()
 {
-    // std::unique_ptr<IDateTimeGetter> date_time_getter = std::make_unique<DateTimeGetter>();
+    std::shared_ptr<IGenericRepository<Event>> genericEventRepo = std::make_shared<GenericRepository<Event>>();
+    std::unique_ptr<EventManager> eventManager = std::make_unique<EventManager>(genericEventRepo);
 
-    // auto now = date_time_getter -> GetCurrentTimeDate();
-    // std::cout << std::ctime(&now);
-
-    // auto hour_minute = date_time_getter -> GetCurrentHourMinute();
-
-    // std::cout << "\nHOUR: " << static_cast<int>(std::get<0>(hour_minute));
-    // std::cout << "\nMINUTE: " << static_cast<int>(std::get<1>(hour_minute));
-    // std::cout << "\nSECOND: " << static_cast<int>(date_time_getter -> GetCurrentSecond());
-
+    SeedEventRepository(eventManager);
+    for(const auto &elem : eventManager -> GetAll())
+    {
+        std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
+    }
 
 }
