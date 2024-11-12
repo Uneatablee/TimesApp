@@ -3,7 +3,7 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    Event::Event(unsigned int id) : m_id(id)
+    Event::Event(unsigned int id, std::string name) : BaseEntity(id), m_name(name)
     {}
 
     std::string Event::GetName() const
@@ -15,10 +15,5 @@ namespace dp_business_logic::DayPlanner
     {
         m_name = name;
         return true;
-    }
-
-    unsigned int Event::GetId() const
-    {
-        return m_id;
     }
 };

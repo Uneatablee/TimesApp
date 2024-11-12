@@ -1,6 +1,6 @@
 #include <iostream>
 #include "EventManager.hpp"
-#include "EventRepository.hpp"
+#include "GenericRepository.hpp"
 #include "IDateTimeGetter.hpp"
 #include "DateTimeGetter.hpp"
 #include <ctime>
@@ -10,41 +10,28 @@ using namespace dp_business_logic::DayPlanner;
 using namespace data_access_layer;
 
 
+// void SeedEventRepository(GenericRepository* repo)
+// {
+//     repo -> Add(Event{1, "Banana"});
+//     repo -> Add(Event{2, "Apple"});
+//     repo -> Add(Event{3, "Orange"});
+//     repo -> Add(Event{4, "Granat"});
+//     repo -> Add(Event{5, "Strawberry"});
+// }
+
+
 int main()
 {
-    EventRepository* event_repository = new EventRepository;
-    EventManager event_manager(event_repository);
+    // std::unique_ptr<IDateTimeGetter> date_time_getter = std::make_unique<DateTimeGetter>();
 
-    event_manager.GetAll();
-    event_manager.Add(Event(7));
-    for(const auto &elem : event_manager.GetAll())
-    {
-        std::cout << elem.GetName() << "\t";
-    }
+    // auto now = date_time_getter -> GetCurrentTimeDate();
+    // std::cout << std::ctime(&now);
 
-    std::cout << std::endl;
+    // auto hour_minute = date_time_getter -> GetCurrentHourMinute();
 
-    for(const auto &elem : event_manager.GetAll())
-    {
-        std::cout << elem.GetName() << "\t";
-    }
+    // std::cout << "\nHOUR: " << static_cast<int>(std::get<0>(hour_minute));
+    // std::cout << "\nMINUTE: " << static_cast<int>(std::get<1>(hour_minute));
+    // std::cout << "\nSECOND: " << static_cast<int>(date_time_getter -> GetCurrentSecond());
 
-    event_manager.Update(Event(1));
 
-    std::cout <<std::endl<<std::endl;
-    for(const auto &elem : event_manager.GetAll())
-    {
-        std::cout << elem.GetName() << "\t";
-    }
-
-    std::unique_ptr<IDateTimeGetter> date_time_getter = std::make_unique<DateTimeGetter>();
-
-    auto now = date_time_getter -> GetCurrentTimeDate();
-    std::cout << std::ctime(&now);
-
-    auto hour_minute = date_time_getter -> GetCurrentHourMinute();
-
-    std::cout << "\nHOUR: " << static_cast<int>(std::get<0>(hour_minute));
-    std::cout << "\nMINUTE: " << static_cast<int>(std::get<1>(hour_minute));
-    std::cout << "\nSECOND: " << static_cast<int>(date_time_getter -> GetCurrentSecond());
 }
