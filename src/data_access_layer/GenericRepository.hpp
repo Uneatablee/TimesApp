@@ -19,20 +19,20 @@ namespace data_access_layer
 
     public:
 
-        bool Add(std::shared_ptr<T>) override;
+        bool Add(std::shared_ptr<const T>) override;
         bool Delete(unsigned int) override;
-        bool Update(std::shared_ptr<T>) override;
-        std::vector<std::shared_ptr<T>> GetAll() override;
-        std::shared_ptr<T> GetById(unsigned int) override;
+        bool Update(std::shared_ptr<const T>) override;
+        std::vector<std::shared_ptr<const T>> GetAll() const override;
+        std::shared_ptr<const T> GetById(unsigned int) const override;
     private:
 
-        std::vector<std::shared_ptr<T>> m_events_data{};
+        std::vector<std::shared_ptr<const T>> m_events_data{};
     };
 
 
     //DEFINITIONS----------------->
     template<IsBase T>
-    bool GenericRepository<T>::Add(std::shared_ptr<T> event)
+    bool GenericRepository<T>::Add(std::shared_ptr<const T> event)
     {
         m_events_data.emplace_back(event);
         return true;
@@ -41,7 +41,7 @@ namespace data_access_layer
     template<IsBase T>
     bool GenericRepository<T>::Delete(unsigned int id)
     {
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<const T> event)
         {return event -> GetId() == id;});
 
         auto index = iter - m_events_data.begin();
@@ -50,10 +50,10 @@ namespace data_access_layer
     }
 
     template<IsBase T>
-    bool GenericRepository<T>::Update(std::shared_ptr<T> event)
+    bool GenericRepository<T>::Update(std::shared_ptr<const T> event)
     {
         auto id = event -> GetId();
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<const T> event)
         {return event -> GetId() == id;});
 
         *iter = event;
@@ -62,15 +62,15 @@ namespace data_access_layer
     }
 
     template<IsBase T>
-    std::vector<std::shared_ptr<T>> GenericRepository<T>::GetAll()
+    std::vector<std::shared_ptr<const T>> GenericRepository<T>::GetAll() const
     {
         return m_events_data;
     }
 
     template<IsBase T>
-    std::shared_ptr<T> GenericRepository<T>::GetById(unsigned int id)
+    std::shared_ptr<const T> GenericRepository<T>::GetById(unsigned int id) const
     {
-        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<T> event)
+        auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<const T> event)
         {return event -> GetId() == id;});
 
 

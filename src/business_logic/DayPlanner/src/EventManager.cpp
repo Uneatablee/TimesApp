@@ -4,19 +4,19 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    std::shared_ptr<Event> EventManager::Get(unsigned int id)
+    std::shared_ptr<const Event> EventManager::Get(unsigned int id)
     {
         auto event = m_events_repository -> GetById(id);
         return event;
     }
 
-    std::vector<std::shared_ptr<Event>> EventManager::GetAll() const
+    std::vector<std::shared_ptr<const Event>> EventManager::GetAll() const
     {
-        std::vector<std::shared_ptr<Event>> events = m_events_repository -> GetAll();
+        std::vector<std::shared_ptr<const Event>> events = m_events_repository -> GetAll();
         return events;
     }
 
-    bool EventManager::Add(std::shared_ptr<Event> event) const
+    bool EventManager::Add(std::shared_ptr<const Event> event) const
     {
         auto id = event -> GetId();
         for(const auto &elem : m_events_repository->GetAll())
@@ -32,7 +32,7 @@ namespace dp_business_logic::DayPlanner
         return true;
     }
 
-    bool EventManager::Update(std::shared_ptr<Event> event) const
+    bool EventManager::Update(std::shared_ptr<const Event> event) const
     {
         auto id = event -> GetId();
 
