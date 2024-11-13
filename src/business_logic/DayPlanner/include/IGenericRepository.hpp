@@ -13,11 +13,11 @@ namespace dp_business_logic::DayPlanner
     {
     public:
 
-        virtual ~IGenericRepository() = default;
-        virtual bool Add(std::shared_ptr<T>) = 0;
-        virtual std::vector<std::shared_ptr<T>> GetAll() = 0;
-        virtual std::shared_ptr<T> GetById(unsigned int) = 0;
-        virtual bool Update(std::shared_ptr<T>) = 0;
+        virtual ~IGenericRepository() = default; //constants restriction
+        virtual bool Add(std::shared_ptr<const T>) = 0;
+        virtual std::vector<std::shared_ptr<const T>> GetAll() const = 0;
+        virtual std::shared_ptr<const T> GetById(unsigned int) const = 0;
+        virtual bool Update(std::shared_ptr<const T>) = 0;
         virtual bool Delete(unsigned int) = 0;
     };
 }
