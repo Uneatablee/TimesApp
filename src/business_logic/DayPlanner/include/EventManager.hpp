@@ -10,10 +10,10 @@ namespace dp_business_logic::DayPlanner
     {
     public:
         EventManager(std::shared_ptr<IGenericRepository<Event>> events_repository) : m_events_repository(events_repository){};
-        bool Add(std::shared_ptr<Event> event) const;
-        bool Update(std::shared_ptr<Event> event) const;
-        std::vector<std::shared_ptr<Event>> GetAll() const;
-        std::shared_ptr<Event> Get(unsigned int id);
+        bool Add(std::shared_ptr<const Event> event) const;
+        bool Update(std::shared_ptr<const Event> event) const;
+        std::vector<std::shared_ptr<const Event>> GetAll() const;
+        std::shared_ptr<const Event> Get(unsigned int id);
         bool Delete(unsigned int id) const;
 
     private:
