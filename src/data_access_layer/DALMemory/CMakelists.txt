@@ -1,6 +1,7 @@
 project(data_access_layer_memory)
 
 add_library(data_access_layer_memory INTERFACE)
-
 target_include_directories(data_access_layer_memory INTERFACE .)
+
+
 target_link_libraries(data_access_layer_memory INTERFACE day_planner_functions)

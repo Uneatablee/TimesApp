@@ -2,6 +2,9 @@ project(console)
 
 add_executable(console main.cpp)
 
+target_link_libraries(console PUBLIC day_planner_functions)
+target_link_libraries(console PRIVATE data_access_layer_memory)
+target_link_libraries(console PRIVATE data_access_layer_sqlite)
 target_link_libraries(console PUBLIC day_planner_functions data_access_layer_memory)
 
 if(date_ADDED)
