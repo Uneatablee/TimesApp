@@ -8,7 +8,7 @@
 
 using namespace dp_business_logic::DayPlanner;
 
-namespace data_access_layer
+namespace data_access_layer::dal::memory
 {
     template<typename T>
     concept IsBase = std::is_base_of<BaseEntity, T>::value;
