@@ -6,6 +6,10 @@ set(PROJECT_SOURCES
         core/mainwindow.cpp
         core/mainwindow.ui
         core/mainwindow.h
+
+        view/QtViewStyles.hpp
+        view/QtUserView.cpp
+        view/QtUserView.hpp
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
