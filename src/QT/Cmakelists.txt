@@ -8,8 +8,10 @@ set(PROJECT_SOURCES
         core/mainwindow.h
 
         view/QtViewStyles.hpp
-        view/QtUserView.cpp
-        view/QtUserView.hpp
+        view/QtUserViewMain.cpp
+        view/QtUserViewMain.hpp
+        view/SlidingLeftMenu.hpp
+        view/SlidingLeftMenu.cpp
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
