@@ -5,33 +5,38 @@ namespace QtViewStyles
 {
     const QString Styles = R"(
 
+        .general-background{
+            background-color: #1b1b1b;
+        }
+
         .button-style{
-            background-color: #adc5ef;
-            color: white;
+            background-color: #242323;
+            color: #ecebeb;
             border-radius: 5px;
             height: 40px;
-            margin-top: 5px;
         }
 
         .button-style:hover{
-            background-color: white;
+            background-color: #434343;
             color: black;
         }
 
         .left-menu-slider{
-            background: #eff4fc;
-            border-radius: 5px;
+            background: #242323;
+            border: 1px solid #575555;
+            border-radius: 7px;
         }
 
         .button-toggle-menu-left{
-            background-color: #adc5ef;
+            background-color: #242323;
             border-radius: 5px;
             height: 40px;
-            margin-top: 5px;
+            margin-top: 30px;
+            margin-bottom: 20px;
         }
 
         .button-toggle-menu-left:hover{
-            background-color: white;
+            background-color: #434343;
         }
     )";
 }

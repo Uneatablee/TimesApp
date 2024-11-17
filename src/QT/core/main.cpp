@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "../view/QtViewStyles.hpp"
+#include "../view/include/QtViewStyles.hpp"
 
 #include <QApplication>
 

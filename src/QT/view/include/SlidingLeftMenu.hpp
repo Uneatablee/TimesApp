@@ -4,7 +4,7 @@
 #include "QPropertyAnimation"
 #include "QPushButton"
 #include "QRect"
-#include "../core/mainwindow.h"
+#include "../../core/mainwindow.h"
 #include <memory>
 
 
@@ -21,6 +21,7 @@ private:
     MainWindow* m_main_window;
     QPropertyAnimation* m_animation;
     QPushButton* button_slider_toggle;
+    QWidget* left_menu_slider;
     bool isToggled = false;
 
 protected:

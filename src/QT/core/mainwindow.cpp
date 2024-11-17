@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "../view/QtUserViewMain.hpp"
+#include "../view/include/QtUserViewMain.hpp"
 #include <memory>
-#include "../view/QtViewStyles.hpp"
+#include "../view/include/QtViewStyles.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     setWindowTitle("Time'sApp");
     resize(1280, 720);
     //setWindowFlags(Qt::FramelessWindowHint);
+
+    this -> setProperty("class", "general-background");
 
     this -> setStyleSheet(QtViewStyles::Styles);
     std::shared_ptr<QtUserViewMain> UserView = std::make_shared<QtUserViewMain>(this);
