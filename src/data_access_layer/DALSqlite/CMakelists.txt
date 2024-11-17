@@ -1,6 +1,19 @@
 project(data_access_layer_sqlite)
 
 add_library(data_access_layer_sqlite INTERFACE)
-
 target_include_directories(data_access_layer_sqlite INTERFACE .)
+
 target_link_libraries(data_access_layer_sqlite INTERFACE day_planner_functions)
+
+
+CPMAddPackage(
+    NAME SQLiteCpp
+    GIT_REPOSITORY https://github.com/SRombauts/SQLiteCpp.git
+    GIT_TAG master
+)
+
+if(SQLiteCpp_ADDED)
+    find_package(SQLiteCpp REQUIRED)
+    target_link_libraries(data_access_layer_sqlite INTERFACE SQLiteCpp)
+endif()
+
