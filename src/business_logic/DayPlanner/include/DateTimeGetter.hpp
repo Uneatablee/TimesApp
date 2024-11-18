@@ -19,7 +19,7 @@ namespace dp_business_logic::DayPlanner
 
         std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() override;
 
-        std::string GetDayName() override;
+        std::string GetCurrentDayName() override;
         unsigned int GetYear() override;
         uint8_t GetMonth() override;
         uint8_t GetDay() override;
