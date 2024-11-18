@@ -2,16 +2,20 @@
 #include <ctime>
 #include <iomanip>
 #include <memory>
+#include <chrono>
+#include "date/tz.h"
 
 #include "EventManager.hpp"
 #include "IGenericRepository.hpp"
 #include "GenericRepository.hpp"
+#include "GenericRepositorySQLite.hpp"
 #include "IDateTimeGetter.hpp"
 #include "DateTimeGetter.hpp"
 #include "Event.hpp"
 
 using namespace dp_business_logic::DayPlanner;
-using namespace data_access_layer;
+using namespace data_access_layer::dal::memory;
+
 
 
 void SeedEventRepository(std::unique_ptr<EventManager> &manager)
