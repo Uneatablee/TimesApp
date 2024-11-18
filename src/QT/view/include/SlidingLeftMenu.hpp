@@ -4,9 +4,9 @@
 #include "QPropertyAnimation"
 #include "QPushButton"
 #include "QRect"
-#include "../../core/mainwindow.h"
 #include <memory>
 
+class MainWindow;
 
 class SlidingLeftMenu : public QWidget
 {

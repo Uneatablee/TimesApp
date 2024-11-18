@@ -1,11 +1,7 @@
 #include "../include/QtUserViewMain.hpp"
 #include "../../core/mainwindow.h"
 #include "../include/QtViewStyles.hpp"
-#include "QWidget"
-#include "QPushButton"
-#include "QMessageBox"
-#include "QPropertyAnimation"
-#include "QSequentialAnimationGroup"
+#include "../include/TopUtilityBar.hpp"
 
 
 QtUserViewMain::QtUserViewMain(MainWindow* window) : m_main_app_window(window)
