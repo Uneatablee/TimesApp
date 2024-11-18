@@ -5,6 +5,7 @@
 #include "QPushButton"
 #include "QRect"
 #include <memory>
+#include <vector>
 
 class MainWindow;
 
@@ -16,12 +17,20 @@ public:
     bool slidingToggleAnimationOn();
     bool slidingToggleAnimationOff();
     bool toggleMenu();
+    bool setButtonTextVisible(QPushButton*);
 
 private:
+
+    QVBoxLayout* m_menu_layout;
     MainWindow* m_main_window;
     QPropertyAnimation* m_animation;
-    QPushButton* button_slider_toggle;
+    QPushButton* m_button_slider_toggle;
+    QPushButton* m_button_home;
+    QPushButton* m_button_account;
+    QPushButton* m_button_logout;
+    QPushButton* m_button_settings;
     QWidget* left_menu_slider;
+    std::vector<QPushButton*> m_buttons_container;
     bool isToggled = false;
 
 protected:
