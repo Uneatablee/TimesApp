@@ -13,16 +13,18 @@ class SlidingLeftMenu : public QWidget
 {
     Q_OBJECT
 public:
-    SlidingLeftMenu(MainWindow* window ,QWidget* parent = nullptr);
+    SlidingLeftMenu(QWidget* parent, QWidget* main_window);
     bool slidingToggleAnimationOn();
     bool slidingToggleAnimationOff();
     bool toggleMenu();
     bool setButtonTextVisible(QPushButton*);
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
 
+    QWidget* m_main_window;
+
     QVBoxLayout* m_menu_layout;
-    MainWindow* m_main_window;
     QPropertyAnimation* m_animation;
     QPushButton* m_button_slider_toggle;
     QPushButton* m_button_home;

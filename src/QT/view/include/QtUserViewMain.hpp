@@ -15,9 +15,9 @@ class QtUserViewMain : public QWidget
 
 public:
 
-    QtUserViewMain(MainWindow* window);
+    QtUserViewMain(QWidget*);
 
 
 private:
-    MainWindow* m_main_app_window;
+    QWidget* m_main_window;
 };

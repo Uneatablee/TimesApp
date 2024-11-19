@@ -11,10 +11,14 @@ set(PROJECT_SOURCES
     view/include/QtUserViewMain.hpp
     view/include/SlidingLeftMenu.hpp
     view/include/TopUtilityBar.hpp
+    view/include/MainViewArea.hpp
+    view/include/TileCreator.hpp
 
     view/src/QtUserViewMain.cpp
     view/src/SlidingLeftMenu.cpp
     view/src/TopUtilityBar.cpp
+    view/src/MainViewArea.cpp
+    view/src/TileCreator.cpp
 
     ../../assets/res.qrc
 )

@@ -2,7 +2,7 @@
 
 
 
-TopUtilityBar::TopUtilityBar(MainWindow* window ,QWidget* parent) : m_main_window(window), QWidget(parent)
+TopUtilityBar::TopUtilityBar(QWidget* parent) : QWidget(parent)
 {
 
 }

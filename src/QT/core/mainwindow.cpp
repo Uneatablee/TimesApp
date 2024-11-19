@@ -3,6 +3,8 @@
 #include "../view/include/QtUserViewMain.hpp"
 #include <memory>
 #include "../view/include/QtViewStyles.hpp"
+#include "QWidget"
+#include "QBoxLayout"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -11,10 +13,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     resize(1280, 720);
     //setWindowFlags(Qt::FramelessWindowHint);
 
-    this -> setProperty("class", "general-background");
+    QWidget* central_widget = new QWidget(this);
+    setCentralWidget(central_widget);
 
     this -> setStyleSheet(QtViewStyles::Styles);
-    std::shared_ptr<QtUserViewMain> UserView = std::make_shared<QtUserViewMain>(this);
+    this -> setProperty("class", "general-background");
+
+    QBoxLayout* main_window_layout = new QBoxLayout(QBoxLayout::LeftToRight, central_widget);
+    main_window_layout -> setContentsMargins(0,0,0,0);
+    main_window_layout -> setAlignment(Qt::AlignLeft);
+    main_window_layout -> setSpacing(0);
+
+    QtUserViewMain* UserView = new QtUserViewMain(this);
+
+    main_window_layout -> addWidget(UserView);
+    main_window_layout -> addStretch();
+
 }
 
 MainWindow::~MainWindow()
