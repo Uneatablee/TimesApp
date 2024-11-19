@@ -18,7 +18,6 @@ public:
     bool slidingToggleAnimationOff();
     bool toggleMenu();
     bool setButtonTextVisible(QPushButton*);
-    void resizeEvent(QResizeEvent* event) override;
 
 private:
 
