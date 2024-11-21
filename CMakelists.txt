@@ -25,9 +25,7 @@ CPMAddPackage(
     OPTIONS "USE_OS_TZDB 1"
 )
 
-
 #add subdirectories
-
 enable_testing()
 
 add_subdirectory(src/business_logic/DayPlanner)

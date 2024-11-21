@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/home_icon.png</file>
+        <file>icons/process_icon.png</file>
+        <file>icons/power_off_icon.png</file>
+        <file>icons/profile_icon.png</file>
+        <file>icons/settings_icon.png</file>
+    </qresource>
+</RCC>
