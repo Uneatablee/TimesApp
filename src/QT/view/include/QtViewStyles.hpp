@@ -5,7 +5,13 @@ namespace QtViewStyles
 {
     const QString Styles = R"(
 
-        .general-background{
+        *
+        {
+            font-family: Verdana, sans-serif;
+            font-size: 12px;
+        }
+
+        .general-background
             background-color: #c5bdfe;
         }
 
