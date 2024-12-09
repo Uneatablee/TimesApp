@@ -11,7 +11,7 @@ namespace QtViewStyles
             font-size: 12px;
         }
 
-        .general-background
+        .general-background{
             background-color: #c5bdfe;
         }
 
