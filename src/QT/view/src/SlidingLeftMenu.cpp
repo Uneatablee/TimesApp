@@ -12,13 +12,11 @@ SlidingLeftMenu::SlidingLeftMenu(QWidget* parent, QWidget* main_window) : QWidge
 {
     //UI------->
 
-    QHBoxLayout* layout = new QHBoxLayout(this);
-    layout -> addStretch();
-    layout -> setContentsMargins(0,0,0,0);
-    layout -> setSpacing(0);
+    QHBoxLayout* general_layout = new QHBoxLayout(this);
+    general_layout -> setContentsMargins(0,0,0,0);
+    general_layout -> setSpacing(0);
 
     left_menu_slider = new QWidget(this);
-    //left_menu_slider -> setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     left_menu_slider -> setProperty("class", "left-menu-slider");
     left_menu_slider -> setMinimumWidth(65);
 
@@ -60,7 +58,7 @@ SlidingLeftMenu::SlidingLeftMenu(QWidget* parent, QWidget* main_window) : QWidge
     m_menu_layout -> addWidget(m_button_logout);
     m_menu_layout -> addStretch();
 
-    layout -> addWidget(left_menu_slider);
+    general_layout -> addWidget(left_menu_slider);
 
     m_buttons_container.emplace_back(m_button_home);
     m_buttons_container.emplace_back(m_button_account);

@@ -5,6 +5,7 @@
 #include "../view/include/QtViewStyles.hpp"
 #include "QWidget"
 #include "QBoxLayout"
+#include "QSizePolicy"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -21,13 +22,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QBoxLayout* main_window_layout = new QBoxLayout(QBoxLayout::LeftToRight, central_widget);
     main_window_layout -> setContentsMargins(0,0,0,0);
-    main_window_layout -> setAlignment(Qt::AlignLeft);
     main_window_layout -> setSpacing(0);
 
-    QtUserViewMain* UserView = new QtUserViewMain(this);
+    QtUserViewMain* user_view = new QtUserViewMain(this);
+    user_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    main_window_layout -> addWidget(UserView);
-    main_window_layout -> addStretch();
+    main_window_layout -> addWidget(user_view);
 
 }
 
