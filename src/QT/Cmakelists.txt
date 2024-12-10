@@ -14,6 +14,8 @@ set(PROJECT_SOURCES
     view/include/MainViewArea.hpp
     view/include/CalendarView.hpp
     view/include/TasksEventsView.hpp
+    view/include/TasksGroupView.hpp
+    view/include/MonthView.hpp
 
     view/src/QtUserViewMain.cpp
     view/src/SlidingLeftMenu.cpp
@@ -21,6 +23,8 @@ set(PROJECT_SOURCES
     view/src/MainViewArea.cpp
     view/src/CalendarView.cpp
     view/src/TasksEventsView.cpp
+    view/src/TasksGroupView.cpp
+    view/src/MonthView.cpp
 
     ../../assets/res.qrc
 )

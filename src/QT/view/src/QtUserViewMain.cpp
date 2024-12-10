@@ -11,6 +11,7 @@ QtUserViewMain::QtUserViewMain(QWidget* parent) : QWidget(parent), m_main_window
 {
     QHBoxLayout* viewLayout = new QHBoxLayout(this);
     viewLayout -> setContentsMargins(0,0,0,0);
+    viewLayout -> setSpacing(0);
     // viewLayout -> setAlignment(Qt::AlignLeft);
 
     //Different pages view
