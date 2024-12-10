@@ -43,5 +43,19 @@ namespace QtViewStyles
         .button-toggle-menu-left:hover{
             background-color: #d0d4f3;
         }
+
+        .calendar-table
+        {
+            padding: 10px;
+            background-color: #ffffff;
+            border: none;
+        }
+
+        .tasks-view
+        {
+            background: #f6f6f6;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+        }
     )";
 }
