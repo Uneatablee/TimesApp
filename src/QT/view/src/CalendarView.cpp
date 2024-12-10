@@ -11,7 +11,7 @@ CalendarView::CalendarView(QWidget* parent) : QWidget(parent)
 {
 
     QHBoxLayout* general_layout = new QHBoxLayout(this);
-
+    general_layout -> setContentsMargins(0,0,0,0);
 
     //Calendar view
     auto table = new QTableView(this);

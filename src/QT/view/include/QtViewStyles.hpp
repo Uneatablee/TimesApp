@@ -1,6 +1,10 @@
 #pragma once
 #include <QString>
 
+
+//background-color: #c5bdfe; <--Option
+
+
 namespace QtViewStyles
 {
     const QString Styles = R"(
@@ -52,6 +56,20 @@ namespace QtViewStyles
         }
 
         .tasks-view
+        {
+            background: #f6f6f6;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+        }
+
+        .tasks-group-view
+        {
+            background: #f6f6f6;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+        }
+
+        .month-view
         {
             background: #f6f6f6;
             border: 2px solid #ffffff;

@@ -5,6 +5,7 @@
 TasksEventsView::TasksEventsView(QWidget* parent) : QWidget(parent), m_parent(parent)
 {
     auto tasks_main_layout = new QVBoxLayout(this);
+    tasks_main_layout -> setContentsMargins(0,0,0,5);
 
     auto tasks_view = new QWidget(this);
     tasks_view -> setProperty("class", "tasks-view");
