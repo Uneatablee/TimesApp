@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     setWindowTitle("Time'sApp");
-    resize(1280, 720);
+    resize(1280, 710);
     //setWindowFlags(Qt::FramelessWindowHint);
 
     QWidget* central_widget = new QWidget(this);

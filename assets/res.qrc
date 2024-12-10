@@ -5,5 +5,7 @@
         <file>icons/power_off_icon.png</file>
         <file>icons/profile_icon.png</file>
         <file>icons/settings_icon.png</file>
+        <file>icons/plus_circle_icon.png</file>
+        <file>icons/minus_circle_icon.png</file>
     </qresource>
 </RCC>
