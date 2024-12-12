@@ -54,8 +54,7 @@ CalendarView::CalendarView(QWidget* parent) : QWidget(parent)
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
 
-
     general_layout -> addWidget(table);
-
     this -> setLayout(general_layout);
 };
+
