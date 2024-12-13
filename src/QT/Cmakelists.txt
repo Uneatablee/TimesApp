@@ -26,7 +26,15 @@ set(PROJECT_SOURCES
     view/src/TasksGroupView.cpp
     view/src/MonthView.cpp
 
+    controller/include/CalendarViewController.hpp
+    controller/src/CalendarViewController.cpp
     ../../assets/res.qrc
+)
+
+CPMAddPackage(
+    NAME boost
+    GIT_REPOSITORY https://github.com/boost-ext/di.git
+    GIT_TAG v1.3.0
 )
 
 
@@ -38,6 +46,7 @@ qt_add_executable(qt_implementation ${PROJECT_SOURCES} ${RESOURCES})
 
 target_link_libraries(qt_implementation PRIVATE Qt6::Widgets)
 target_link_libraries(qt_implementation INTERFACE day_planner_functions)
+target_link_libraries(qt_implementation PUBLIC Boost.DI)
 
 
 set_target_properties(qt_implementation PROPERTIES
