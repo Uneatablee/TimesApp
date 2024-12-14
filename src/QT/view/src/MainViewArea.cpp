@@ -7,11 +7,16 @@
 #include "QHBoxLayout"
 
 
-MainViewArea::MainViewArea(QWidget* parent, QWidget* main) : QWidget(parent), main_window(main)
+MainViewArea::MainViewArea(
+    CalendarView* calendar_view,
+    MonthView* month_view,
+    TasksEventsView* tasks_view,
+    TasksGroupView* tasks_group_panel,
+    TopUtilityBar* top_utility_bar)
 {
     QVBoxLayout* home_page_layout = new QVBoxLayout(this);
 
-    TopUtilityBar* top_utility_bar = new TopUtilityBar(this);
+    top_utility_bar -> setParent(this);
     top_utility_bar -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QWidget* main_area = new QWidget(this);
@@ -21,22 +26,22 @@ MainViewArea::MainViewArea(QWidget* parent, QWidget* main) : QWidget(parent), ma
     main_area_layout -> setContentsMargins(0,0,0,0);
 
     //tasks group view
-    TasksGroupView* tasks_group_panel = new TasksGroupView(this);
+    tasks_group_panel -> setParent(this);
     tasks_group_panel -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     //calendar and tasks view
-    CalendarView* calendar_view = new CalendarView(this);
+    calendar_view -> setParent(this);
     calendar_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     auto right_panel = new QWidget(this);
     auto right_panel_layout = new QVBoxLayout(right_panel);
     right_panel_layout -> setContentsMargins(0,0,0,0);
 
-    TasksEventsView* tasks_view = new TasksEventsView(this);
+    tasks_view -> setParent(this);
     tasks_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     //month view
-    MonthView* month_view = new MonthView(this);
+    month_view -> setParent(this);
     month_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     month_view -> setProperty("class", "tasks-view");
 

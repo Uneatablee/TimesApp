@@ -13,7 +13,7 @@ class SlidingLeftMenu : public QWidget
 {
     Q_OBJECT
 public:
-    SlidingLeftMenu(QWidget* parent, QWidget* main_window);
+    SlidingLeftMenu();
     bool slidingToggleAnimationOn();
     bool slidingToggleAnimationOff();
     bool toggleMenu();

@@ -1,7 +1,7 @@
 #include "../include/MonthView.hpp"
 #include "QVBoxLayout"
 
-MonthView::MonthView(QWidget* parent) : QWidget(parent), m_parent(parent)
+MonthView::MonthView()
 {
     auto month_layout = new QVBoxLayout(this);
     month_layout -> setContentsMargins(0,0,0,0);

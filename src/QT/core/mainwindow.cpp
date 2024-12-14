@@ -1,15 +1,17 @@
-#include "mainwindow.h"
-#include "./ui_mainwindow.h"
-#include "../view/include/QtUserViewMain.hpp"
 #include <memory>
-#include "../view/include/QtViewStyles.hpp"
 #include "QWidget"
 #include "QBoxLayout"
 #include "QSizePolicy"
+#include "mainwindow.h"
+#include "./ui_mainwindow.h"
+
+#include "../view/include/QtUserViewMain.hpp"
+#include "../view/include/QtViewStyles.hpp"
 
 // MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
-MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QtUserViewMain* user_view) : QMainWindow(nullptr), ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
     setWindowTitle("Time'sApp");
     resize(1280, 710);
@@ -25,8 +27,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow)
     main_window_layout -> setContentsMargins(0,0,0,0);
     main_window_layout -> setSpacing(0);
 
-    QtUserViewMain* user_view = new QtUserViewMain(this);
     user_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    user_view -> setParent(this);
 
     main_window_layout -> addWidget(user_view);
 
@@ -34,5 +36,5 @@ MainWindow::MainWindow() : QMainWindow(nullptr), ui(new Ui::MainWindow)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    //delete ui;
 }

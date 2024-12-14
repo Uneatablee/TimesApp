@@ -5,6 +5,6 @@ class CalendarView : public QWidget
 {
     Q_OBJECT
 public:
-    CalendarView(QWidget* parent);
+    CalendarView();
 private:
 };

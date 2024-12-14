@@ -8,7 +8,7 @@
 #include <string>
 #include "QVariant"
 
-SlidingLeftMenu::SlidingLeftMenu(QWidget* parent, QWidget* main_window) : QWidget(parent), m_main_window(main_window)
+SlidingLeftMenu::SlidingLeftMenu()
 {
     //UI------->
 

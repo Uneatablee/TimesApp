@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
 
     controller/include/CalendarViewController.hpp
     controller/src/CalendarViewController.cpp
+
     ../../assets/res.qrc
 )
 
@@ -45,7 +46,7 @@ qt_standard_project_setup()
 qt_add_executable(qt_implementation ${PROJECT_SOURCES} ${RESOURCES})
 
 target_link_libraries(qt_implementation PRIVATE Qt6::Widgets)
-target_link_libraries(qt_implementation INTERFACE day_planner_functions)
+target_link_libraries(qt_implementation PUBLIC day_planner_functions)
 target_link_libraries(qt_implementation PUBLIC Boost.DI)
 
 

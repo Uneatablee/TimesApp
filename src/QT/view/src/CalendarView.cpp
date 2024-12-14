@@ -7,7 +7,7 @@
 #include "QTableView"
 #include "QHeaderView"
 
-CalendarView::CalendarView(QWidget* parent) : QWidget(parent)
+CalendarView::CalendarView()
 {
 
     QHBoxLayout* general_layout = new QHBoxLayout(this);
