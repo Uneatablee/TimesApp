@@ -19,7 +19,6 @@ public:
 
     QtUserViewMain(MainViewArea*, SlidingLeftMenu*);
 
-
 private:
     QWidget* m_main_window;
 };

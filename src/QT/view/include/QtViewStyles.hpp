@@ -11,7 +11,7 @@ namespace QtViewStyles
 
         *
         {
-            font-family: Verdana, sans-serif;
+            font-family: "Montserrat";
             font-size: 12px;
         }
 
