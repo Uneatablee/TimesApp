@@ -44,5 +44,6 @@ uint8_t CalendarViewController::GetWeekDayNumber()
 
 std::map<unsigned int, const char*> CalendarViewController::GenerateWeekMap()
 {
+    //Generating starting map for entire week
     return std::map<unsigned int, const char*>();
 }
