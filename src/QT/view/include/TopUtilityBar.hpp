@@ -4,6 +4,6 @@
 class TopUtilityBar : public QWidget
 {
 public:
-    TopUtilityBar(QWidget* parent = nullptr);
+    TopUtilityBar();
 private:
 };

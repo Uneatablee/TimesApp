@@ -4,7 +4,7 @@
 
 
 
-TopUtilityBar::TopUtilityBar(QWidget* parent) : QWidget(parent)
+TopUtilityBar::TopUtilityBar()
 {
     auto main_top_bar_layout = new QVBoxLayout(this);
     main_top_bar_layout -> setContentsMargins(0, 0, 0, 0);

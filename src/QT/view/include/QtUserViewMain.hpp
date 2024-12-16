@@ -7,6 +7,8 @@
 
 #include "SlidingLeftMenu.hpp"
 
+class SlidingLeftmenu;
+class MainViewArea;
 class MainWindow;
 
 class QtUserViewMain : public QWidget
@@ -15,8 +17,7 @@ class QtUserViewMain : public QWidget
 
 public:
 
-    QtUserViewMain(QWidget*);
-
+    QtUserViewMain(MainViewArea*, SlidingLeftMenu*);
 
 private:
     QWidget* m_main_window;

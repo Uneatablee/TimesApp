@@ -2,7 +2,7 @@
 #include "QVBoxLayout"
 
 
-TasksGroupView::TasksGroupView(QWidget* parent) : QWidget(parent), m_parent(parent)
+TasksGroupView::TasksGroupView()
 {
     auto group_layout = new QVBoxLayout(this);
     group_layout -> setContentsMargins(0,0,0,0);

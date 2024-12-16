@@ -5,7 +5,7 @@ class TasksGroupView : public QWidget
 {
     Q_OBJECT
 public:
-    TasksGroupView(QWidget* parent);
+    TasksGroupView();
 private:
     QWidget* m_parent;
 };

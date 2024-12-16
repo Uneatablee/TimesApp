@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <Qpainter>
 
+#include "../view/include/QtUserViewMain.hpp"
+
 QT_BEGIN_NAMESPACE
     namespace Ui
     {
@@ -17,7 +19,7 @@ class MainWindow : public QMainWindow
 
 public:
     // MainWindow(QWidget *parent = nullptr);
-    MainWindow();
+    MainWindow(QtUserViewMain* = nullptr);
     ~MainWindow();
 protected:
 

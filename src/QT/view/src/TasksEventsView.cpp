@@ -3,7 +3,7 @@
 #include "QPushButton"
 #include "QLabel"
 
-TasksEventsView::TasksEventsView(QWidget* parent) : QWidget(parent), m_parent(parent)
+TasksEventsView::TasksEventsView()
 {
     auto tasks_main_layout = new QVBoxLayout(this);
     tasks_main_layout -> setContentsMargins(0,0,0,0);

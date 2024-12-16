@@ -28,7 +28,7 @@ namespace dp_business_logic::DayPlanner
         virtual uint8_t GetCurrentSecond() = 0;
 
         virtual std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() = 0;
-        virtual std::string GetCurrentDayName() = 0;
+        virtual uint8_t GetCurrentDayNumber() = 0;
         virtual unsigned int GetYear() = 0;
         virtual uint8_t GetMonth() = 0;
         virtual uint8_t GetDay() = 0;
