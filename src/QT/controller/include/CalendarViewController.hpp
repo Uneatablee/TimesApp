@@ -1,14 +1,27 @@
 #pragma once
+#include "IDateTimeGetter.hpp"
+#include "QTimer"
+#include "QObject"
+#include <tuple>
+#include <map>
 
-class IDateTimeGetter;
-class CalendarView;
+using namespace dp_business_logic::DayPlanner;
 
-class CalendarViewController
+class CalendarViewController : public QObject
 {
+    Q_OBJECT
 public:
-    CalendarViewController(IDateTimeGetter* date_time_getter_api, CalendarView* calendar_view);
+    CalendarViewController(IDateTimeGetter* date_time_getter_api);
+    ~CalendarViewController();
+    std::tuple<unsigned int, uint8_t, uint8_t> GetDate();
+    void CheckDate();
+    uint8_t GetWeekDayNumber();
+    std::map<unsigned int, const char*> GenerateWeekMap();
 
+signals:
+    void DateChanged(int date_value);
 private:
     IDateTimeGetter* m_date_time_getter_api;
-    CalendarView* m_calendar_view;
+    QTimer* m_date_changes_signal_timer;
+    uint8_t m_current_day;
 };

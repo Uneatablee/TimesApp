@@ -7,7 +7,10 @@
 #include "QTableView"
 #include "QHeaderView"
 
-CalendarView::CalendarView()
+#include <map>
+#include <string>
+
+CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m_calendar_view_controller(calendar_view_controller)
 {
 
     QHBoxLayout* general_layout = new QHBoxLayout(this);
@@ -29,6 +32,22 @@ CalendarView::CalendarView()
         }
     }
 
+    std::map<int, const char*> week_days
+    {
+        {0, "Mon\n"},
+        {1, "Tue\n"},
+        {2, "Wed\n"},
+        {3, "Thu\n"},
+        {4, "Fri\n"},
+        {5, "Sat\n"},
+        {6, "Sun\n"}
+    };
+
+    for(int day = 0; day < 7; day++)
+    {
+        model -> setHeaderData(day, Qt::Horizontal, week_days[day]);
+    }
+
     table -> setModel(model);
     for(int hour = 0; hour < 24; hour++)
     {
@@ -37,24 +56,43 @@ CalendarView::CalendarView()
 
     table -> horizontalHeader()-> setSectionResizeMode(QHeaderView::Stretch);
     table -> verticalHeader()-> setSectionResizeMode(QHeaderView::Fixed);
-    table -> horizontalHeader() -> hide();
     table -> verticalHeader() -> setDefaultAlignment(Qt::AlignTop);
 
-    table -> verticalHeader() -> setStyleSheet(
-        R"(
+    const char* vertical_header_style = R"(
             QHeaderView::section
             {
                 background-color: #ffffff;
                 border: none;
                 color: #9c9c9c;
             }
-        )"
-    );
+    )";
+
+    const char* horizontal_header_style = R"(
+            QHeaderView::section
+            {
+                background-color: #ffffff;
+                border: none;
+                color: #9c9c9c;
+                font-size: 16px;
+            }
+    )";
+
+    table -> verticalHeader() -> setStyleSheet(vertical_header_style);
+    table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
 
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
 
     general_layout -> addWidget(table);
     this -> setLayout(general_layout);
+
+    //controller connection
+    connect(m_calendar_view_controller, &CalendarViewController::DateChanged, this, &CalendarView::OnDateChanged);
+
 };
+
+void CalendarView::OnDateChanged(int changed_date)
+{
+    qDebug() << "\n" << "Changed!!!!!";
+}
 
