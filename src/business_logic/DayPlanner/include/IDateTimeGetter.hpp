@@ -32,6 +32,9 @@ namespace dp_business_logic::DayPlanner
         virtual unsigned int GetYear() = 0;
         virtual uint8_t GetMonth() = 0;
         virtual uint8_t GetDay() = 0;
+
+        virtual unsigned int GetPastDayDate(std::chrono::year_month_day, unsigned int) = 0;
+        virtual unsigned int GetFutureDayDate(std::chrono::year_month_day, unsigned int) = 0;
     };
 
 }

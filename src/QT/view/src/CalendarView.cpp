@@ -6,13 +6,13 @@
 #include "QStandardItemModel"
 #include "QTableView"
 #include "QHeaderView"
+#include "QAbstractButton"
 
 #include <map>
 #include <string>
 
 CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m_calendar_view_controller(calendar_view_controller)
 {
-
     QHBoxLayout* general_layout = new QHBoxLayout(this);
     general_layout -> setContentsMargins(0,0,0,0);
 
@@ -32,20 +32,11 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
         }
     }
 
-    std::map<int, const char*> week_days
-    {
-        {0, "Mon\n"},
-        {1, "Tue\n"},
-        {2, "Wed\n"},
-        {3, "Thu\n"},
-        {4, "Fri\n"},
-        {5, "Sat\n"},
-        {6, "Sun\n"}
-    };
+    auto week_days = m_calendar_view_controller -> GenerateWeekMap();
 
     for(int day = 0; day < 7; day++)
     {
-        model -> setHeaderData(day, Qt::Horizontal, week_days[day]);
+        model -> setHeaderData(day, Qt::Horizontal, week_days[day].c_str());
     }
 
     table -> setModel(model);
@@ -54,6 +45,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
         table -> setRowHeight(hour, 60);
     }
 
+    table -> setCornerButtonEnabled(false);
     table -> horizontalHeader()-> setSectionResizeMode(QHeaderView::Stretch);
     table -> verticalHeader()-> setSectionResizeMode(QHeaderView::Fixed);
     table -> verticalHeader() -> setDefaultAlignment(Qt::AlignTop);
@@ -64,6 +56,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
                 background-color: #ffffff;
                 border: none;
                 color: #9c9c9c;
+                outline: none;
             }
     )";
 
@@ -74,12 +67,12 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
                 border: none;
                 color: #9c9c9c;
                 font-size: 16px;
+                outline: none;
             }
     )";
 
     table -> verticalHeader() -> setStyleSheet(vertical_header_style);
     table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
-
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
 

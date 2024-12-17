@@ -16,8 +16,8 @@ public:
     std::tuple<unsigned int, uint8_t, uint8_t> GetDate();
     void CheckDate();
     uint8_t GetWeekDayNumber();
-    std::map<unsigned int, const char*> GenerateWeekMap();
-
+    uint8_t GetDay(int);
+    std::map<unsigned int, std::string> GenerateWeekMap();
 signals:
     void DateChanged(int date_value);
 private:

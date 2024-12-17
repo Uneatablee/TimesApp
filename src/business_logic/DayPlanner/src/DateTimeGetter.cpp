@@ -79,5 +79,19 @@ namespace dp_business_logic::DayPlanner
         {
             return uint8_t();
         }
+
+        unsigned int DateTimeGetter::GetPastDayDate(std::chrono::year_month_day ymd, unsigned int days_prev_count)
+        {
+            date::sys_days target_day = ymd;
+            std::chrono::year_month_day day_date = target_day - date::days{days_prev_count};
+            return static_cast<unsigned int>(static_cast<date::year_month_day>(day_date).day());
+        }
+
+        unsigned int DateTimeGetter::GetFutureDayDate(std::chrono::year_month_day ymd, unsigned int days_forward_count)
+        {
+            date::sys_days target_day = ymd;
+            std::chrono::year_month_day day_date = target_day + date::days{days_forward_count};
+            return static_cast<unsigned int>(static_cast<date::year_month_day>(day_date).day());
+        }
 }
 
