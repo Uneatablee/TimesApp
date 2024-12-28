@@ -11,7 +11,7 @@ class MainViewArea : public QWidget
     Q_OBJECT
 public:
 
-    MainViewArea(CalendarView*, MonthView*, TasksEventsView*, TasksGroupView*, TopUtilityBar*);
+    MainViewArea(CalendarView*, MonthView*, TasksGroupView*, TopUtilityBar*);
 
 private:
 };

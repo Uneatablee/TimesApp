@@ -10,7 +10,6 @@
 MainViewArea::MainViewArea(
     CalendarView* calendar_view,
     MonthView* month_view,
-    TasksEventsView* tasks_view,
     TasksGroupView* tasks_group_panel,
     TopUtilityBar* top_utility_bar)
 {
@@ -37,9 +36,6 @@ MainViewArea::MainViewArea(
     auto right_panel_layout = new QVBoxLayout(right_panel);
     right_panel_layout -> setContentsMargins(0,0,0,0);
 
-    tasks_view -> setParent(this);
-    tasks_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     //month view
     month_view -> setParent(this);
     month_view -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -50,13 +46,11 @@ MainViewArea::MainViewArea(
     right_panel_layout -> setStretch(0,7);
     right_panel_layout -> setStretch(1,3);
 
-    main_area_layout -> addWidget(tasks_view);
     main_area_layout -> addWidget(calendar_view);
     main_area_layout -> addWidget(right_panel);
 
-    main_area_layout -> setStretch(0, 1);
-    main_area_layout -> setStretch(1, 7);
-    main_area_layout -> setStretch(2, 2);
+    main_area_layout -> setStretch(0, 8);
+    main_area_layout -> setStretch(1, 2);
 
     home_page_layout -> addWidget(top_utility_bar);
     home_page_layout -> addWidget(main_area);

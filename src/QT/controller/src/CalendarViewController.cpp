@@ -3,10 +3,12 @@
 #include "../../view/include/CalendarView.hpp"
 #include <tuple>
 
+#include <string>
+
 CalendarViewController::CalendarViewController(IDateTimeGetter* date_time_getter_api)
     : m_date_time_getter_api(date_time_getter_api)
 {
-    m_current_day = std::get<2>(GetDate());
+    m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -20,11 +22,6 @@ CalendarViewController::~CalendarViewController()
         delete m_date_changes_signal_timer;
         m_date_changes_signal_timer = nullptr;
     }
-}
-
-std::tuple<unsigned int, uint8_t, uint8_t> CalendarViewController::GetDate()
-{
-    return m_date_time_getter_api -> GetCurrentYearMonthDay();
 }
 
 void CalendarViewController::CheckDate()
@@ -71,4 +68,44 @@ std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap()
     }
 
     return week;
+}
+
+std::string CalendarViewController::GetNextTableInsertion()
+{
+    return std::string();
+}
+
+std::string CalendarViewController::GetCurrentMonthName()
+{
+    auto month_number = std::get<1>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+
+    switch(month_number)
+    {
+        case 1:
+            return "January";
+        case 2:
+            return "February";
+        case 3:
+            return "March";
+        case 4:
+            return "April";
+        case 5:
+            return "May";
+        case 6:
+            return "June";
+        case 7:
+            return "July";
+        case 8:
+            return "August";
+        case 9:
+            return "October";
+        case 10:
+            return "September";
+        case 11:
+            return "November";
+        case 12:
+            return "December";
+
+        return std::string();
+    }
 }

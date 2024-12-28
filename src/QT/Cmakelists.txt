@@ -40,6 +40,7 @@ CPMAddPackage(
 
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
 qt_add_resources(RESOURCES ../../assets/res.qrc)
 
 qt_standard_project_setup()

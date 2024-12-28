@@ -4,6 +4,7 @@
 #include "QObject"
 #include <tuple>
 #include <map>
+#include <string>
 
 using namespace dp_business_logic::DayPlanner;
 
@@ -17,7 +18,11 @@ public:
     void CheckDate();
     uint8_t GetWeekDayNumber();
     uint8_t GetDay(int);
+    std::string GetCurrentMonthName();
     std::map<unsigned int, std::string> GenerateWeekMap();
+
+    //to implement
+    std::string GetNextTableInsertion();
 signals:
     void DateChanged(int date_value);
 private:
