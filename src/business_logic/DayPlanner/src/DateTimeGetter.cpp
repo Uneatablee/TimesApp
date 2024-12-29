@@ -62,7 +62,7 @@ namespace dp_business_logic::DayPlanner
         uint8_t DateTimeGetter::GetCurrentDayNumber()
         {
             auto current_ymd = GetCurrentDate_YMDFormat();
-            return (std::chrono::weekday(current_ymd)).c_encoding();
+            return (std::chrono::weekday(current_ymd)).iso_encoding();
         }
 
         unsigned int DateTimeGetter::GetYear()
