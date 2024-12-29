@@ -1,4 +1,6 @@
 #include "../include/CalendarView.hpp"
+#include "../include/CalendarCustomHeader.hpp"
+
 #include "QHBoxLayout"
 #include "QVBoxLayout"
 #include "QLabel"
@@ -148,6 +150,10 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_layout -> setStretch(1,15);
     general_layout -> addWidget(calendar_widget);
     this -> setLayout(general_layout);
+
+    // CalendarCustomHeader* custom_header = new CalendarCustomHeader();
+    // table -> setHorizontalHeader(custom_header);
+    table -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
 
     WeekViewUpdate();
 

@@ -105,7 +105,6 @@ std::string CalendarViewController::GetCurrentMonthName()
             return "November";
         case 12:
             return "December";
-
-        return std::string();
     }
+        return std::string();
 }
