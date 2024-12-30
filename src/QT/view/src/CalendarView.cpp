@@ -73,14 +73,11 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
             {
                 background-color: #ffffff;
                 border: none;
-                color: #9c9c9c;
-                font-size: 16px;
                 outline: none;
             }
     )";
 
     table -> verticalHeader() -> setStyleSheet(vertical_header_style);
-    table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
 
@@ -151,8 +148,9 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     general_layout -> addWidget(calendar_widget);
     this -> setLayout(general_layout);
 
-    // CalendarCustomHeader* custom_header = new CalendarCustomHeader();
-    // table -> setHorizontalHeader(custom_header);
+    m_custom_header = new CalendarCustomHeader(7);
+    table -> setHorizontalHeader(m_custom_header);
+    table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
     table -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
 
     WeekViewUpdate();
@@ -191,11 +189,13 @@ void CalendarView::PreviousDayInsert()
 void CalendarView::WeekViewUpdate()
 {
     m_weekday_map = m_calendar_view_controller -> GenerateWeekMap();
+    m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
+    //- 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
+
     for(int day = 0; day < 7; day++)
     {
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
-
     auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
     m_month_label -> setText(current_month_name);
 }

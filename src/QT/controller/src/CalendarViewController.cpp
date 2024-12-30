@@ -57,6 +57,7 @@ uint8_t CalendarViewController::GetDay(int day_change_count)
 
 std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap()
 {
+
     auto day_number = m_date_time_getter_api -> GetCurrentDayNumber();
     std::string week_day_names[] = {"Mon\n", "Tue\n", "Wed\n", "Thu\n", "Fri\n", "Sat\n", "Sun\n"};
     std::map<unsigned int, std::string> week;

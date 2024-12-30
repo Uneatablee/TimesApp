@@ -1,11 +1,13 @@
 #pragma once
 #include "QWidget"
 #include "QStandardItemModel"
+#include "QLabel"
 
 #include "../../controller/include/CalendarViewController.hpp"
+#include "CalendarCustomHeader.hpp"
+
 #include <map>
 #include <string>
-#include "QLabel"
 
 class CalendarView : public QWidget
 {
@@ -25,5 +27,5 @@ private:
     std::map<unsigned int, std::string> m_weekday_map;
     QStandardItemModel* m_model;
     QLabel* m_month_label;
-
+    CalendarCustomHeader* m_custom_header;
 };
