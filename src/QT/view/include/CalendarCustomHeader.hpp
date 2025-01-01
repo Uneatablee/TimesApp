@@ -27,14 +27,17 @@ public:
         QFont font{};
         font.setPointSize(16);
         font.setBold(0);
-        painter -> setFont(font);
 
 
         if(logicalIndex == m_current_weekday_logical_index)
         {
             style_mods.palette.setColor(QPalette::ButtonText, QColor("#8474fb"));
+            font.setWeight(QFont::Medium);
+            //font.setWeight(QFont::DemiBold);
+
         }
 
+        painter -> setFont(font);
         this -> style()->drawControl(QStyle::CE_Header, &style_mods, painter, this);
     }
 
