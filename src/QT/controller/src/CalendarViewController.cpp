@@ -47,37 +47,28 @@ uint8_t CalendarViewController::GetDay(int day_change_count)
         return std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
     }
 
-    if(day_change_count < 0)
-    {
-        return m_date_time_getter_api -> GetPastDayDate(current_ymd, day_change_count * -1);
-    }
-
-    return m_date_time_getter_api -> GetFutureDayDate(current_ymd, day_change_count);
+    return m_date_time_getter_api -> GetOffsetDayDate(current_ymd, day_change_count);
 }
 
-std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap()
+std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap(int weeks_offset_count = 0)
 {
+
     auto day_number = m_date_time_getter_api -> GetCurrentDayNumber();
     std::string week_day_names[] = {"Mon\n", "Tue\n", "Wed\n", "Thu\n", "Fri\n", "Sat\n", "Sun\n"};
     std::map<unsigned int, std::string> week;
     unsigned int day_key = 0;
     for(int curr_day = -day_number + 1; curr_day <= 7 - day_number; curr_day++)
     {
-        week[day_key] = (week_day_names[day_key] + std::to_string(GetDay(curr_day)));
+        week[day_key] = (week_day_names[day_key] + std::to_string(GetDay(curr_day + weeks_offset_count * 7)));
         day_key++;
     }
 
     return week;
 }
 
-std::string CalendarViewController::GetNextTableInsertion()
+std::string CalendarViewController::GetCurrentMonthName(int day_offset)
 {
-    return std::string();
-}
-
-std::string CalendarViewController::GetCurrentMonthName()
-{
-    auto month_number = std::get<1>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    auto month_number = m_date_time_getter_api -> GetMonthFromOffset(day_offset);
 
     switch(month_number)
     {
@@ -105,7 +96,6 @@ std::string CalendarViewController::GetCurrentMonthName()
             return "November";
         case 12:
             return "December";
-
-        return std::string();
     }
+        return std::string();
 }

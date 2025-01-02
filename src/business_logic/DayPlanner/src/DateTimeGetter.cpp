@@ -80,18 +80,23 @@ namespace dp_business_logic::DayPlanner
             return uint8_t();
         }
 
-        unsigned int DateTimeGetter::GetPastDayDate(std::chrono::year_month_day ymd, unsigned int days_prev_count)
+        unsigned int DateTimeGetter::GetOffsetDayDate(std::chrono::year_month_day ymd, unsigned int days_prev_count)
         {
             date::sys_days target_day = ymd;
-            std::chrono::year_month_day day_date = target_day - date::days{days_prev_count};
+            std::chrono::year_month_day day_date = target_day + date::days{days_prev_count};
             return static_cast<unsigned int>(static_cast<date::year_month_day>(day_date).day());
         }
 
-        unsigned int DateTimeGetter::GetFutureDayDate(std::chrono::year_month_day ymd, unsigned int days_forward_count)
+        uint8_t DateTimeGetter::GetMonthFromOffset(int days_offset)
         {
-            date::sys_days target_day = ymd;
-            std::chrono::year_month_day day_date = target_day + date::days{days_forward_count};
-            return static_cast<unsigned int>(static_cast<date::year_month_day>(day_date).day());
+            if(days_offset == 0)
+            {
+                return std::get<1>(GetCurrentYearMonthDay());
+            }
+
+            auto curr_date = GetCurrentDate_YMDFormat();
+            auto target_date = date::sys_days(curr_date) + date::days(days_offset);
+            return static_cast<uint8_t>(static_cast<unsigned int>(static_cast<date::year_month_day>(target_date).month()));
         }
 }
 

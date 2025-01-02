@@ -16,6 +16,7 @@ set(PROJECT_SOURCES
     view/include/TasksEventsView.hpp
     view/include/TasksGroupView.hpp
     view/include/MonthView.hpp
+    view/include/CalendarCustomHeader.hpp
 
     view/src/QtUserViewMain.cpp
     view/src/SlidingLeftMenu.cpp

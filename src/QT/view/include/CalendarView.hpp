@@ -1,23 +1,28 @@
 #pragma once
 #include "QWidget"
 #include "QStandardItemModel"
+#include "QLabel"
 
 #include "../../controller/include/CalendarViewController.hpp"
+#include "CalendarCustomHeader.hpp"
+
 #include <map>
 #include <string>
-#include "QLabel"
 
 class CalendarView : public QWidget
 {
     Q_OBJECT
 public:
     CalendarView(CalendarViewController*);
-    void NextDayInsert();
-    void PreviousDayInsert();
-    void WeekViewUpdate();
+    void NextWeekInsert();
+    void PreviousWeekInsert();
+    void CurrentWeekInsert();
+    void WeekViewUpdate(int weeks_offset_count = 0);
+    // void NextDayInsert();
+    // void PreviousDayInsert();
 
 public slots:
-    void OnDateChanged(int changed_date);
+    void OnDateChanged();
 
 private:
 
@@ -25,5 +30,7 @@ private:
     std::map<unsigned int, std::string> m_weekday_map;
     QStandardItemModel* m_model;
     QLabel* m_month_label;
-
+    CalendarCustomHeader* m_custom_header;
+    bool m_isViewMoved = false;
+    int m_weeks_offset = 0;
 };
