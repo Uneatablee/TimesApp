@@ -14,9 +14,12 @@ class CalendarView : public QWidget
     Q_OBJECT
 public:
     CalendarView(CalendarViewController*);
+    void NextWeekInsert();
+    void PreviousWeekInsert();
+    void CurrentWeekInsert();
     void NextDayInsert();
     void PreviousDayInsert();
-    void WeekViewUpdate();
+    void WeekViewUpdate(int weeks_offset_count = 0);
 
 public slots:
     void OnDateChanged(int changed_date);
@@ -28,5 +31,6 @@ private:
     QStandardItemModel* m_model;
     QLabel* m_month_label;
     CalendarCustomHeader* m_custom_header;
-    //QTableView* m_table;
+    bool m_isViewMoved = false;
+    int m_weeks_offset = 0;
 };

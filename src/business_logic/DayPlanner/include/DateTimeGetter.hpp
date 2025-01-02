@@ -24,7 +24,7 @@ namespace dp_business_logic::DayPlanner
         uint8_t GetMonth() override;
         uint8_t GetDay() override;
 
-        unsigned int GetPastDayDate(std::chrono::year_month_day, unsigned int) override;
-        unsigned int GetFutureDayDate(std::chrono::year_month_day, unsigned int) override;
+        unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) override;
+        uint8_t GetMonthFromOffset(int days_offset = 0) override;
     };
 }

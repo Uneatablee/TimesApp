@@ -101,15 +101,15 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     auto calendar_options_bar_layout = new QHBoxLayout(calendar_options_bar);
     calendar_options_bar_layout -> setSpacing(0);
 
-    auto day_back_button = new QPushButton(calendar_options_bar);
-    day_back_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    day_back_button -> setProperty("class", "calendar-top-bar-buttons");
-    day_back_button -> setMaximumWidth(30);
-    day_back_button -> setMaximumHeight(30);
-    day_back_button -> setMinimumHeight(30);
+    auto week_back_button = new QPushButton(calendar_options_bar);
+    week_back_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    week_back_button -> setProperty("class", "calendar-top-bar-buttons");
+    week_back_button -> setMaximumWidth(30);
+    week_back_button -> setMaximumHeight(30);
+    week_back_button -> setMinimumHeight(30);
 
-    day_back_button -> setIcon(QIcon(":/icons/arrow_right.png"));
-    day_back_button -> setIconSize(QSize(12,12));
+    week_back_button -> setIcon(QIcon(":/icons/arrow_right.png"));
+    week_back_button -> setIconSize(QSize(12,12));
 
 
     auto today_button = new QPushButton("Today", calendar_options_bar);
@@ -120,14 +120,14 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     today_button -> setMinimumHeight(30);
     today_button -> setEnabled(true);
 
-    auto next_day_button = new QPushButton(calendar_options_bar);
-    next_day_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    next_day_button -> setProperty("class", "calendar-top-bar-buttons");
-    next_day_button -> setMaximumWidth(30);
-    next_day_button -> setIcon(QIcon(":/icons/arrow_left.png"));
-    next_day_button -> setIconSize(QSize(12,12));
-    next_day_button -> setMaximumHeight(30);
-    next_day_button -> setMinimumHeight(30);
+    auto next_week_button = new QPushButton(calendar_options_bar);
+    next_week_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    next_week_button -> setProperty("class", "calendar-top-bar-buttons");
+    next_week_button -> setMaximumWidth(30);
+    next_week_button -> setIcon(QIcon(":/icons/arrow_left.png"));
+    next_week_button -> setIconSize(QSize(12,12));
+    next_week_button -> setMaximumHeight(30);
+    next_week_button -> setMinimumHeight(30);
 
     m_month_label = new QLabel(calendar_options_bar);
     m_month_label -> setProperty("class", "month-label");
@@ -137,9 +137,9 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     calendar_options_bar_layout -> addWidget(m_month_label);
     calendar_options_bar_layout -> addStretch();
-    calendar_options_bar_layout -> addWidget(day_back_button);
+    calendar_options_bar_layout -> addWidget(week_back_button);
     calendar_options_bar_layout -> addWidget(today_button);
-    calendar_options_bar_layout -> addWidget(next_day_button);
+    calendar_options_bar_layout -> addWidget(next_week_button);
 
     calendar_layout -> addWidget(calendar_options_bar);
     calendar_layout -> addWidget(table);
@@ -157,13 +157,41 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     //controller and buttons connection
     connect(m_calendar_view_controller, &CalendarViewController::DateChanged, this, &CalendarView::OnDateChanged);
-    connect(today_button, &QPushButton::clicked, this, &CalendarView::WeekViewUpdate);
+    connect(today_button, &QPushButton::clicked, this, &CalendarView::CurrentWeekInsert);
+    connect(next_week_button, &QPushButton::clicked, this, &CalendarView::NextWeekInsert);
+    connect(week_back_button, &QPushButton::clicked, this, &CalendarView::PreviousWeekInsert);
 
 };
 
 void CalendarView::OnDateChanged(int changed_date)
 {
-    qDebug() << "Date has changed";
+    if(m_isViewMoved)
+    {
+        return;
+    }
+
+    CurrentWeekInsert();
+    //forcing current day highlighting to immidiately change
+    this -> resize(this -> width(), this -> height() + 1);
+    this -> resize(this -> width(), this -> height() - 1);
+}
+
+void CalendarView::NextWeekInsert()
+{
+    m_weeks_offset++;
+    WeekViewUpdate(m_weeks_offset);
+}
+
+void CalendarView::PreviousWeekInsert()
+{
+    m_weeks_offset--;
+    WeekViewUpdate(m_weeks_offset);
+}
+
+void CalendarView::CurrentWeekInsert()
+{
+    m_weeks_offset = 0;
+    WeekViewUpdate();
 }
 
 void CalendarView::NextDayInsert()
@@ -186,17 +214,26 @@ void CalendarView::PreviousDayInsert()
 
 }
 
-void CalendarView::WeekViewUpdate()
+void CalendarView::WeekViewUpdate(int weeks_offset_count)
 {
-    m_weekday_map = m_calendar_view_controller -> GenerateWeekMap();
-    m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
-    //- 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
+    m_weekday_map = m_calendar_view_controller -> GenerateWeekMap(weeks_offset_count);
+    //GetWeekDayNumber() - 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
+    if(weeks_offset_count == 0)
+    {
+        m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
+        auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
+        m_month_label -> setText(current_month_name);
+    }
+    else
+    {
+        m_custom_header -> setDayHighlight(-1);
+        auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(weeks_offset_count * 7)).c_str());
+        m_month_label -> setText(current_month_name);
+    }
 
     for(int day = 0; day < 7; day++)
     {
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
-    auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
-    m_month_label -> setText(current_month_name);
 }
 
