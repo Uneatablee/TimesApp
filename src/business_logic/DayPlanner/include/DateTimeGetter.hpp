@@ -19,9 +19,12 @@ namespace dp_business_logic::DayPlanner
 
         std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() override;
 
-        std::string GetCurrentDayName() override;
+        uint8_t GetCurrentDayNumber() override;
         unsigned int GetYear() override;
         uint8_t GetMonth() override;
         uint8_t GetDay() override;
+
+        unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) override;
+        uint8_t GetMonthFromOffset(int days_offset = 0) override;
     };
 }

@@ -21,27 +21,31 @@ namespace dp_business_logic::DayPlanner
 
         std::chrono::year_month_day DateTimeGetter::GetCurrentDate_YMDFormat()
         {
-            auto current_time_point_in_seconds = std::chrono::sys_seconds(std::chrono::seconds(GetSecondsFromEpoch()));
-            return std::chrono::floor<std::chrono::days>(current_time_point_in_seconds);
+            auto now = date::make_zoned(date::current_zone(), std::chrono::system_clock::now());
+            auto local_time = now.get_local_time();
+            return static_cast<std::chrono::year_month_day>(static_cast<date::year_month_day>(std::chrono::floor<std::chrono::days>(local_time)));
         }
 
         std::tuple<unsigned int, uint8_t, uint8_t> DateTimeGetter::GetCurrentYearMonthDay()
         {
-            auto year_month_day = GetCurrentDate_YMDFormat();
+            auto now = date::make_zoned(date::current_zone(), std::chrono::system_clock::now());
+            auto local_time = now.get_local_time();
+            auto ymd = static_cast<date::year_month_day>(std::chrono::floor<std::chrono::days>(local_time));
 
-            auto year = static_cast<unsigned int>(static_cast<int>(year_month_day.year()));
-            auto month = static_cast<uint8_t>(static_cast<unsigned int>(year_month_day.month()));
-            auto day = static_cast<uint8_t>(static_cast<unsigned int>(year_month_day.day()));
+            auto year = static_cast<unsigned int>(static_cast<int>(ymd.year()));
+            auto month = static_cast<uint8_t>(static_cast<unsigned int>(ymd.month()));
+            auto day = static_cast<uint8_t>(static_cast<unsigned int>(ymd.day()));
 
-            return {year, month, day};
+            return std::make_tuple(year, month, day);
         }
 
         std::tuple<uint8_t, uint8_t> DateTimeGetter::GetCurrentHourMinute()
         {
             auto now = date::make_zoned(date::current_zone(), std::chrono::system_clock::now());
 
-            auto current_local_time = date::floor<std::chrono::minutes>(now.get_local_time());
-            auto days_passed = date::floor<date::days>(now.get_local_time());
+            auto local_time = now.get_local_time();
+            auto current_local_time = date::floor<std::chrono::minutes>(local_time);
+            auto days_passed = date::floor<date::days>(local_time);
             auto time = date::make_time(current_local_time - days_passed);
 
             uint8_t hours = static_cast<uint8_t>(time.hours().count());
@@ -55,31 +59,10 @@ namespace dp_business_logic::DayPlanner
             return  GetSecondsFromEpoch() % 60;
         }
 
-        std::string DateTimeGetter::GetCurrentDayName()
+        uint8_t DateTimeGetter::GetCurrentDayNumber()
         {
-            unsigned int day_number;
-
-            switch (day_number)
-            {
-            case 0:
-                return "Sunday";
-            case 1:
-                return "Monday";
-            case 2:
-                return "Tuesday";
-            case 3:
-                return "Wednesday";
-            case 4:
-                return "Thursday";
-            case 5:
-                return "Friday";
-            case 6:
-                return "Saturday";
-            default:
-                return "";
-            }
-
-            return "";
+            auto current_ymd = GetCurrentDate_YMDFormat();
+            return (std::chrono::weekday(current_ymd)).iso_encoding();
         }
 
         unsigned int DateTimeGetter::GetYear()
@@ -95,6 +78,25 @@ namespace dp_business_logic::DayPlanner
         uint8_t DateTimeGetter::GetDay()
         {
             return uint8_t();
+        }
+
+        unsigned int DateTimeGetter::GetOffsetDayDate(std::chrono::year_month_day ymd, unsigned int days_prev_count)
+        {
+            date::sys_days target_day = ymd;
+            std::chrono::year_month_day day_date = target_day + date::days{days_prev_count};
+            return static_cast<unsigned int>(static_cast<date::year_month_day>(day_date).day());
+        }
+
+        uint8_t DateTimeGetter::GetMonthFromOffset(int days_offset)
+        {
+            if(days_offset == 0)
+            {
+                return std::get<1>(GetCurrentYearMonthDay());
+            }
+
+            auto curr_date = GetCurrentDate_YMDFormat();
+            auto target_date = date::sys_days(curr_date) + date::days(days_offset);
+            return static_cast<uint8_t>(static_cast<unsigned int>(static_cast<date::year_month_day>(target_date).month()));
         }
 }
 

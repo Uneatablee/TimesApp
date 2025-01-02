@@ -6,7 +6,7 @@ class MonthView : public QWidget
     Q_OBJECT
 
 public:
-    MonthView(QWidget* parent);
+    MonthView();
 private:
     QWidget* m_parent;
 

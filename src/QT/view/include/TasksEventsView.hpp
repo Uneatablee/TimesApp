@@ -6,7 +6,7 @@ class TasksEventsView : public QWidget
     Q_OBJECT
 public:
 
-    TasksEventsView(QWidget* parent);
+    TasksEventsView();
 private:
     QWidget* m_parent;
 };

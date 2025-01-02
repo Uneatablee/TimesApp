@@ -3,7 +3,7 @@
 #include "QPushButton"
 #include "QLabel"
 
-TasksEventsView::TasksEventsView(QWidget* parent) : QWidget(parent), m_parent(parent)
+TasksEventsView::TasksEventsView()
 {
     auto tasks_main_layout = new QVBoxLayout(this);
     tasks_main_layout -> setContentsMargins(0,0,0,0);
@@ -23,12 +23,14 @@ TasksEventsView::TasksEventsView(QWidget* parent) : QWidget(parent), m_parent(pa
     add_event_button -> setProperty("class", "event-option-buttons");
     add_event_button -> setIcon(QIcon(":/icons/plus_circle_icon.png"));
     add_event_button -> setIconSize(QSize(12,12));
+    add_event_button -> setMinimumSize(10,10);
     tasks_layout -> addWidget(add_event_button);
 
     auto edit_event_button = new QPushButton("Edit event");
     edit_event_button -> setProperty("class", "event-option-buttons");
     edit_event_button -> setIcon(QIcon(":/icons/minus_circle_icon.png"));
     edit_event_button -> setIconSize(QSize(12,12));
+    edit_event_button -> setMinimumSize(10,10);
     tasks_layout -> addWidget(edit_event_button);
 
     tasks_layout -> addStretch();

@@ -3,6 +3,7 @@
 
 
 //background-color: #c5bdfe; <--Option
+//left menu slider background #f6f6f6;
 
 
 namespace QtViewStyles
@@ -11,16 +12,16 @@ namespace QtViewStyles
 
         *
         {
-            font-family: Verdana, sans-serif;
+            font-family: "Montserrat";
             font-size: 12px;
         }
 
         .general-background{
-            background-color: #ffffff;
+            background-color: #f6f6f6;
         }
 
         .button-style{
-            background-color: #f6f6f6;
+            background-color: #ffffff;
             color: #000000;
             border-radius: 10px;
             height: 40px;
@@ -32,12 +33,12 @@ namespace QtViewStyles
         }
 
         .left-menu-slider{
-            background: #f6f6f6;
-            border: 2px solid #f4f4f4;
+            background: #ffffff;
+            border-right: 2px solid #f3f3f3;
         }
 
         .button-toggle-menu-left{
-            background-color: #f5f5f5;
+            background-color: #ffffff;
             border-radius: 10px;
             height: 40px;
             margin-top: 30px;
@@ -52,54 +53,56 @@ namespace QtViewStyles
         {
             background-color: #ffffff;
             border: none;
+            padding: 10px;
+            border-radius: 10px;
         }
 
         .tasks-view
         {
-            background: #f6f6f6;
-            border: 2px solid #f4f4f4;
+            background: #ffffff;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .tasks-group-view
         {
-            background: #f6f6f6;
-            border: 2px solid #f4f4f4;
+            background: #ffffff;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .month-view
         {
-            background: #f6f6f6;
-            border: 2px solid #f4f4f4;
+            background: #ffffff;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .top-bar-widget1
         {
             background: #d0d4f3;
-            border: 2px solid #f4f4f4;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .top-bar-widget2
         {
             background: #c5bdfe;
-            border: 2px solid #f4f4f4;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .top-bar-widget3
         {
             background: #8474fb;
-            border: 2px solid #f4f4f4;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
         .top-bar-widget4
         {
             background: #42378f;
-            border: 2px solid #f4f4f4;
+            border: 2px solid #f3f3f3;
             border-radius: 10px;
         }
 
@@ -109,7 +112,7 @@ namespace QtViewStyles
             padding-top: 2px;
             padding-bottom: 2px;
             padding-left: 2px;
-            background-color: #f6f6f6;
+            background-color: #ffffff;
             text-align: left;
         }
 
@@ -122,6 +125,32 @@ namespace QtViewStyles
         {
             color: grey;
             font-size: 10px;
+        }
+
+        .calendar-widget
+        {
+            background: #ffffff;
+            border: 2px solid #f3f3f3;
+            border-radius: 10px;
+        }
+
+        .calendar-top-bar-buttons
+        {
+            background-color: #ffffff;
+            border-radius: 10px;
+            color: #808080;
+        }
+
+        .calendar-top-bar-buttons:hover{
+            background-color: #d0d4f3;
+            color: black;
+        }
+
+        .month-label
+        {
+            font: bold;
+            color: #808080;
+            font-size: 32px;
         }
     )";
 }
