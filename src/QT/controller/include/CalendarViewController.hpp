@@ -26,8 +26,6 @@ public:
     std::string GetCurrentMonthName(int day_offset = 0);
     std::map<unsigned int, std::string> GenerateWeekMap(int weeks_offset_count);
 
-    //to implement
-    std::string GetNextTableInsertion();
 signals:
     void DateChanged(int date_value);
 };

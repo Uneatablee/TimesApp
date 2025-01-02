@@ -17,12 +17,12 @@ public:
     void NextWeekInsert();
     void PreviousWeekInsert();
     void CurrentWeekInsert();
-    void NextDayInsert();
-    void PreviousDayInsert();
     void WeekViewUpdate(int weeks_offset_count = 0);
+    // void NextDayInsert();
+    // void PreviousDayInsert();
 
 public slots:
-    void OnDateChanged(int changed_date);
+    void OnDateChanged();
 
 private:
 

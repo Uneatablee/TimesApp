@@ -163,7 +163,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
 };
 
-void CalendarView::OnDateChanged(int changed_date)
+void CalendarView::OnDateChanged()
 {
     if(m_isViewMoved)
     {
@@ -194,26 +194,6 @@ void CalendarView::CurrentWeekInsert()
     WeekViewUpdate();
 }
 
-void CalendarView::NextDayInsert()
-{
-    QList<QStandardItem*> new_column;
-    for(int row = 0; row < m_model -> rowCount(); row++)
-    {
-        new_column.append(new QStandardItem());
-    }
-
-    //auto next_day_data = m_calendar_view_controller -> GetDay();
-    m_model -> removeColumns(0,1);
-    m_model -> appendColumn(new_column);
-
-    //m_model -> setHeaderData(m_model -> columnCount() - 1, Qt::Horizontal, header_name);
-}
-
-void CalendarView::PreviousDayInsert()
-{
-
-}
-
 void CalendarView::WeekViewUpdate(int weeks_offset_count)
 {
     m_weekday_map = m_calendar_view_controller -> GenerateWeekMap(weeks_offset_count);
@@ -236,4 +216,25 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
 }
+
+//Touchpad sliding:
+// void CalendarView::NextDayInsert()
+// {
+//     QList<QStandardItem*> new_column;
+//     for(int row = 0; row < m_model -> rowCount(); row++)
+//     {
+//         new_column.append(new QStandardItem());
+//     }
+
+//     //auto next_day_data = m_calendar_view_controller -> GetDay();
+//     m_model -> removeColumns(0,1);
+//     m_model -> appendColumn(new_column);
+
+//     //m_model -> setHeaderData(m_model -> columnCount() - 1, Qt::Horizontal, header_name);
+// }
+
+// void CalendarView::PreviousDayInsert()
+// {
+
+// }
 

@@ -66,11 +66,6 @@ std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap(int 
     return week;
 }
 
-std::string CalendarViewController::GetNextTableInsertion()
-{
-    return std::string();
-}
-
 std::string CalendarViewController::GetCurrentMonthName(int day_offset)
 {
     auto month_number = m_date_time_getter_api -> GetMonthFromOffset(day_offset);
