@@ -28,7 +28,10 @@ set(PROJECT_SOURCES
     view/src/MonthView.cpp
 
     controller/include/CalendarViewController.hpp
+    controller/include/TopUtilityBarController.hpp
+
     controller/src/CalendarViewController.cpp
+    controller/src/TopUtilityBarController.cpp
 
     ../../assets/res.qrc
 )

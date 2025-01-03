@@ -99,3 +99,13 @@ std::string CalendarViewController::GetCurrentMonthName(int day_offset)
     }
         return std::string();
 }
+
+unsigned int CalendarViewController::GetYear(int day_offset)
+{
+    if(day_offset == 0)
+    {
+        return std::get<0>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    }
+
+    return m_date_time_getter_api -> GetYearFromOffset(day_offset);
+}

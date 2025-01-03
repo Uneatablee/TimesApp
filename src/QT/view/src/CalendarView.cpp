@@ -137,11 +137,16 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     m_month_label = new QLabel(calendar_options_bar);
     m_month_label -> setProperty("class", "month-label");
-
     auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
     m_month_label -> setText(current_month_name);
 
+    m_year_label = new QLabel(calendar_options_bar);
+    m_year_label -> setProperty("class", "year-label");
+    auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
+    m_year_label -> setText(current_year);
+
     calendar_options_bar_layout -> addWidget(m_month_label);
+    calendar_options_bar_layout -> addWidget(m_year_label);
     calendar_options_bar_layout -> addStretch();
     calendar_options_bar_layout -> addWidget(week_back_button);
     calendar_options_bar_layout -> addWidget(today_button);
@@ -208,12 +213,16 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
         m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
         m_month_label -> setText(current_month_name);
+        auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
+        m_year_label -> setText(current_year);
     }
     else
     {
         m_custom_header -> setDayHighlight(-1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(weeks_offset_count * 7)).c_str());
         m_month_label -> setText(current_month_name);
+        auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(weeks_offset_count * 7))).c_str());
+        m_year_label -> setText(current_year);
     }
 
     for(int day = 0; day < 7; day++)

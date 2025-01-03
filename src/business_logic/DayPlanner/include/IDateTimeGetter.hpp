@@ -35,6 +35,7 @@ namespace dp_business_logic::DayPlanner
 
         virtual unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) = 0;
         virtual uint8_t GetMonthFromOffset(int) = 0;
+        virtual unsigned int GetYearFromOffset(int) = 0;
     };
 
 }
