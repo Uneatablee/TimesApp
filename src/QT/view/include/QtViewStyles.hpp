@@ -152,5 +152,10 @@ namespace QtViewStyles
             color: #808080;
             font-size: 32px;
         }
+
+        .calendar-options-bar
+        {
+            background-color: #ffffff;
+        }
     )";
 }

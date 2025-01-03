@@ -47,7 +47,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     table -> setModel(m_model);
     for(int hour = 0; hour < 24; hour++)
     {
-        table -> setRowHeight(hour, 60);
+        table -> setRowHeight(hour, 70);
     }
 
     table -> setCornerButtonEnabled(false);
@@ -84,6 +84,11 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     table -> setStyleSheet(
     R"(
 
+        QTableView
+        {
+            background-color: #ffffff;
+        }
+
         QTableCornerButton::section
         {
             background: transparent;
@@ -96,6 +101,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     //calendar options bar
 
     auto calendar_options_bar = new QWidget(this);
+    calendar_options_bar -> setProperty("class", "calendar-options-bar");
     calendar_options_bar -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     auto calendar_options_bar_layout = new QHBoxLayout(calendar_options_bar);
@@ -152,7 +158,6 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     table -> setHorizontalHeader(m_custom_header);
     table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
     table -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
-
     WeekViewUpdate();
 
     //controller and buttons connection
