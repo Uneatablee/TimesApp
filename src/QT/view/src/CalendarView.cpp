@@ -210,19 +210,19 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
     //GetWeekDayNumber() - 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
     if(weeks_offset_count == 0)
     {
-        m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
-        m_month_label -> setText(current_month_name);
         auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
+        m_month_label -> setText(current_month_name);
         m_year_label -> setText(current_year);
+        m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
     }
     else
     {
-        m_custom_header -> setDayHighlight(-1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(weeks_offset_count * 7)).c_str());
-        m_month_label -> setText(current_month_name);
         auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(weeks_offset_count * 7))).c_str());
+        m_month_label -> setText(current_month_name);
         m_year_label -> setText(current_year);
+        m_custom_header -> setDayHighlight(-1);
     }
 
     for(int day = 0; day < 7; day++)

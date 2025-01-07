@@ -109,6 +109,7 @@ bool SlidingLeftMenu::slidingToggleAnimationOn()
     m_animation -> setTargetObject(left_menu_slider); // Target the widget
     m_animation -> setPropertyName("minimumWidth");   // Animate the minimum width property
     m_animation -> setStartValue(left_menu_slider->minimumWidth());
+    m_animation -> setEasingCurve(QEasingCurve::OutSine);
     m_animation -> setEndValue(250);
     m_animation -> setDuration(80);
     m_animation -> start();
