@@ -70,35 +70,9 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
             }
     )";
 
-    const char* horizontal_header_style = R"(
-            QHeaderView::section
-            {
-                background-color: #ffffff;
-                border: none;
-                outline: none;
-            }
-    )";
-
     table -> verticalHeader() -> setStyleSheet(vertical_header_style);
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
-
-    table -> setStyleSheet(
-    R"(
-
-        QTableView
-        {
-            background-color: #ffffff;
-        }
-
-        QTableCornerButton::section
-        {
-            background: transparent;
-            border: none;
-        }
-
-    )"
-    );
 
     //calendar options bar
 
@@ -118,7 +92,6 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     week_back_button -> setIcon(QIcon(":/icons/arrow_right.png"));
     week_back_button -> setIconSize(QSize(12,12));
-
 
     auto today_button = new QPushButton("Today", calendar_options_bar);
     today_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -163,8 +136,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     m_custom_header = new CalendarCustomHeader(7);
     table -> setHorizontalHeader(m_custom_header);
-    table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
-    table -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
+
     WeekViewUpdate();
 
     //controller and buttons connection
@@ -192,12 +164,26 @@ void CalendarView::NextWeekInsert()
 {
     m_weeks_offset++;
     WeekViewUpdate(m_weeks_offset);
+    if(m_weeks_offset == 0)
+    {
+        m_isViewMoved = false;
+        return;
+    }
+
+    m_isViewMoved = true;
 }
 
 void CalendarView::PreviousWeekInsert()
 {
     m_weeks_offset--;
     WeekViewUpdate(m_weeks_offset);
+    if(m_weeks_offset == 0)
+    {
+        m_isViewMoved = false;
+        return;
+    }
+
+    m_isViewMoved = true;
 }
 
 void CalendarView::CurrentWeekInsert()

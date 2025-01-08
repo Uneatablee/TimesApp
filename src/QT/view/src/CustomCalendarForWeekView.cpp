@@ -1,6 +1,26 @@
 #include "../include/CustomCalendarForWeekView.hpp"
 #include "QPainter"
 
+
+CustomCalendarForWeekView::CustomCalendarForWeekView()
+{
+    this -> setStyleSheet
+    (
+        R"(
+            QTableView
+            {
+                background-color: #ffffff;
+            }
+
+            QTableCornerButton::section
+            {
+                background: transparent;
+                border: none;
+            }
+        )"
+    );
+}
+
 void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 {
     QTableView::paintEvent(event);

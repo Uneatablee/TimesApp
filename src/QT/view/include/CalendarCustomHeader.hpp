@@ -10,6 +10,19 @@ public:
     explicit CalendarCustomHeader(int current_weekday_number) : QHeaderView(Qt::Horizontal, nullptr)
     {
         m_current_weekday_logical_index = current_weekday_number;
+        this -> setStyleSheet
+        (
+            R"(
+                QHeaderView::section
+                {
+                    background-color: #ffffff;
+                    border: none;
+                    outline: none;
+                }
+            )"
+        );
+
+        this -> setSectionResizeMode(QHeaderView::Stretch);
     }
 
     void paintSection(QPainter* painter, const QRect& rect, int logicalIndex) const override

@@ -6,7 +6,7 @@ class CustomCalendarForWeekView : public QTableView
 private:
 
 public:
-    CustomCalendarForWeekView(){};
+    CustomCalendarForWeekView();
     void paintEvent(QPaintEvent* event) override;
     void addEvent();
 
