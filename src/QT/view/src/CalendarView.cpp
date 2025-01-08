@@ -1,5 +1,6 @@
 #include "../include/CalendarView.hpp"
 #include "../include/CalendarCustomHeader.hpp"
+#include "../include/CustomCalendarForWeekView.hpp"
 
 #include "QHBoxLayout"
 #include "QVBoxLayout"
@@ -29,7 +30,8 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_layout -> setSpacing(0);
 
     //Calendar view
-    auto table = new QTableView(this);
+    auto table = new CustomCalendarForWeekView();
+    table -> setParent(this);
 
     m_model = new QStandardItemModel(24, 7, this);
     for(int hour = 0; hour < 24; hour++)
