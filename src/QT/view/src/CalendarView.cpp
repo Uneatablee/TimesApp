@@ -1,5 +1,6 @@
 #include "../include/CalendarView.hpp"
 #include "../include/CalendarCustomHeader.hpp"
+#include "../include/CustomCalendarForWeekView.hpp"
 
 #include "QHBoxLayout"
 #include "QVBoxLayout"
@@ -29,7 +30,8 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_layout -> setSpacing(0);
 
     //Calendar view
-    auto table = new QTableView(this);
+    auto table = new CustomCalendarForWeekView();
+    table -> setParent(this);
 
     m_model = new QStandardItemModel(24, 7, this);
     for(int hour = 0; hour < 24; hour++)
@@ -47,7 +49,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     table -> setModel(m_model);
     for(int hour = 0; hour < 24; hour++)
     {
-        table -> setRowHeight(hour, 60);
+        table -> setRowHeight(hour, 70);
     }
 
     table -> setCornerButtonEnabled(false);
@@ -68,34 +70,14 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
             }
     )";
 
-    const char* horizontal_header_style = R"(
-            QHeaderView::section
-            {
-                background-color: #ffffff;
-                border: none;
-                outline: none;
-            }
-    )";
-
     table -> verticalHeader() -> setStyleSheet(vertical_header_style);
     table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     table -> setProperty("class", "calendar-table");
 
-    table -> setStyleSheet(
-    R"(
-
-        QTableCornerButton::section
-        {
-            background: transparent;
-            border: none;
-        }
-
-    )"
-    );
-
     //calendar options bar
 
     auto calendar_options_bar = new QWidget(this);
+    calendar_options_bar -> setProperty("class", "calendar-options-bar");
     calendar_options_bar -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     auto calendar_options_bar_layout = new QHBoxLayout(calendar_options_bar);
@@ -110,7 +92,6 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     week_back_button -> setIcon(QIcon(":/icons/arrow_right.png"));
     week_back_button -> setIconSize(QSize(12,12));
-
 
     auto today_button = new QPushButton("Today", calendar_options_bar);
     today_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -131,11 +112,16 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     m_month_label = new QLabel(calendar_options_bar);
     m_month_label -> setProperty("class", "month-label");
-
     auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
     m_month_label -> setText(current_month_name);
 
+    m_year_label = new QLabel(calendar_options_bar);
+    m_year_label -> setProperty("class", "year-label");
+    auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
+    m_year_label -> setText(current_year);
+
     calendar_options_bar_layout -> addWidget(m_month_label);
+    calendar_options_bar_layout -> addWidget(m_year_label);
     calendar_options_bar_layout -> addStretch();
     calendar_options_bar_layout -> addWidget(week_back_button);
     calendar_options_bar_layout -> addWidget(today_button);
@@ -150,8 +136,6 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
 
     m_custom_header = new CalendarCustomHeader(7);
     table -> setHorizontalHeader(m_custom_header);
-    table -> horizontalHeader() -> setStyleSheet(horizontal_header_style);
-    table -> horizontalHeader() -> setSectionResizeMode(QHeaderView::Stretch);
 
     WeekViewUpdate();
 
@@ -180,12 +164,26 @@ void CalendarView::NextWeekInsert()
 {
     m_weeks_offset++;
     WeekViewUpdate(m_weeks_offset);
+    if(m_weeks_offset == 0)
+    {
+        m_isViewMoved = false;
+        return;
+    }
+
+    m_isViewMoved = true;
 }
 
 void CalendarView::PreviousWeekInsert()
 {
     m_weeks_offset--;
     WeekViewUpdate(m_weeks_offset);
+    if(m_weeks_offset == 0)
+    {
+        m_isViewMoved = false;
+        return;
+    }
+
+    m_isViewMoved = true;
 }
 
 void CalendarView::CurrentWeekInsert()
@@ -200,15 +198,19 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
     //GetWeekDayNumber() - 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
     if(weeks_offset_count == 0)
     {
-        m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName()).c_str());
+        auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
         m_month_label -> setText(current_month_name);
+        m_year_label -> setText(current_year);
+        m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
     }
     else
     {
-        m_custom_header -> setDayHighlight(-1);
         auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(weeks_offset_count * 7)).c_str());
+        auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(weeks_offset_count * 7))).c_str());
         m_month_label -> setText(current_month_name);
+        m_year_label -> setText(current_year);
+        m_custom_header -> setDayHighlight(-1);
     }
 
     for(int day = 0; day < 7; day++)

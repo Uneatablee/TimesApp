@@ -10,6 +10,19 @@ public:
     explicit CalendarCustomHeader(int current_weekday_number) : QHeaderView(Qt::Horizontal, nullptr)
     {
         m_current_weekday_logical_index = current_weekday_number;
+        this -> setStyleSheet
+        (
+            R"(
+                QHeaderView::section
+                {
+                    background-color: #ffffff;
+                    border: none;
+                    outline: none;
+                }
+            )"
+        );
+
+        this -> setSectionResizeMode(QHeaderView::Stretch);
     }
 
     void paintSection(QPainter* painter, const QRect& rect, int logicalIndex) const override
@@ -18,6 +31,7 @@ public:
         style_mods.initFrom(this);
 
         style_mods.rect = rect;
+        style_mods.rect.adjust(0,0,0,-10);
         style_mods.section = logicalIndex;
         style_mods.textAlignment = Qt::AlignCenter;
         style_mods.text = this -> model() -> headerData(logicalIndex, Qt::Horizontal, Qt::DisplayRole).toString();
@@ -37,6 +51,7 @@ public:
 
         }
 
+        painter->fillRect(rect, QColor("#ffffff"));
         painter -> setFont(font);
         this -> style()->drawControl(QStyle::CE_Header, &style_mods, painter, this);
     }
@@ -44,6 +59,13 @@ public:
     void setDayHighlight(int day_number)
     {
         m_current_weekday_logical_index = day_number;
+    }
+
+    QSize sizeHint() const override
+    {
+        QSize size = QHeaderView::sizeHint();
+        size.setHeight(50);
+        return size;
     }
 
 private:

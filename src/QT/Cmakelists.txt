@@ -17,6 +17,7 @@ set(PROJECT_SOURCES
     view/include/TasksGroupView.hpp
     view/include/MonthView.hpp
     view/include/CalendarCustomHeader.hpp
+    view/include/CustomCalendarForWeekView.hpp
 
     view/src/QtUserViewMain.cpp
     view/src/SlidingLeftMenu.cpp
@@ -26,9 +27,13 @@ set(PROJECT_SOURCES
     view/src/TasksEventsView.cpp
     view/src/TasksGroupView.cpp
     view/src/MonthView.cpp
+    view/src/CustomCalendarForWeekView.cpp
 
     controller/include/CalendarViewController.hpp
+    controller/include/TopUtilityBarController.hpp
+
     controller/src/CalendarViewController.cpp
+    controller/src/TopUtilityBarController.cpp
 
     ../../assets/res.qrc
 )

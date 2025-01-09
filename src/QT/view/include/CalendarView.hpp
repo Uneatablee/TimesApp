@@ -30,6 +30,7 @@ private:
     std::map<unsigned int, std::string> m_weekday_map;
     QStandardItemModel* m_model;
     QLabel* m_month_label;
+    QLabel* m_year_label;
     CalendarCustomHeader* m_custom_header;
     bool m_isViewMoved = false;
     int m_weeks_offset = 0;

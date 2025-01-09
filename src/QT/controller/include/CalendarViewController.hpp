@@ -24,6 +24,7 @@ public:
     uint8_t GetWeekDayNumber();
     uint8_t GetDay(int day_offset);
     std::string GetCurrentMonthName(int day_offset = 0);
+    unsigned int GetYear(int day_offset = 0);
     std::map<unsigned int, std::string> GenerateWeekMap(int weeks_offset_count);
 
 signals:

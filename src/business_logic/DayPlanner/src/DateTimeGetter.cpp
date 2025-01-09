@@ -98,5 +98,17 @@ namespace dp_business_logic::DayPlanner
             auto target_date = date::sys_days(curr_date) + date::days(days_offset);
             return static_cast<uint8_t>(static_cast<unsigned int>(static_cast<date::year_month_day>(target_date).month()));
         }
+
+        unsigned int DateTimeGetter::GetYearFromOffset(int days_offset)
+        {
+            if(days_offset == 0)
+            {
+                return std::get<0>(GetCurrentYearMonthDay());
+            }
+
+            auto curr_date = GetCurrentDate_YMDFormat();
+            auto target_date = date::sys_days(curr_date) + date::days(days_offset);
+            return static_cast<unsigned int>(static_cast<int>(static_cast<date::year_month_day>(target_date).year()));
+        }
 }
 
