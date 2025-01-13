@@ -1,6 +1,5 @@
 #pragma once
 #include "IGenericRepository.hpp"
-#include "Event.hpp"
 #include "BaseEntity.hpp"
 #include <vector>
 #include <type_traits>
