@@ -6,6 +6,10 @@
 #include <boost/di.hpp>
 #include "IDateTimeGetter.hpp"
 #include "DateTimeGetter.hpp"
+#include "IGenericRepository.hpp"
+#include "GenericRepository.hpp"
+#include "BaseEntity.hpp"
+
 #include "../view/include/QtUserViewMain.hpp"
 #include "../view/include/MainViewArea.hpp"
 #include "../view/include/SlidingLeftMenu.hpp"
@@ -16,6 +20,7 @@
 #include "../view/include/TopUtilityBar.hpp"
 
 using namespace dp_business_logic::DayPlanner;
+using namespace data_access_layer::dal::memory;
 
 int main(int argc, char *argv[])
 {
@@ -26,7 +31,8 @@ int main(int argc, char *argv[])
 
     //main window
     auto main_window_injector = boost::di::make_injector(
-        boost::di::bind<IDateTimeGetter>.to<DateTimeGetter>()
+        boost::di::bind<IDateTimeGetter>.to<DateTimeGetter>(),
+        boost::di::bind<IGenericRepository<Event>>.to<GenericRepository<Event>>()
     );
     auto main_window = main_window_injector.create<std::unique_ptr<MainWindow>>();
 

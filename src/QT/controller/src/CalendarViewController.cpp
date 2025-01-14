@@ -1,12 +1,17 @@
 #include "../include/CalendarViewController.hpp"
-#include "IDateTimeGetter.hpp"
 #include "../../view/include/CalendarView.hpp"
-#include <tuple>
 
+#include <tuple>
 #include <string>
 
-CalendarViewController::CalendarViewController(IDateTimeGetter* date_time_getter_api)
-    : m_date_time_getter_api(date_time_getter_api)
+#include "IDateTimeGetter.hpp"
+#include "IGenericRepository.hpp"
+
+
+CalendarViewController::CalendarViewController(
+    IDateTimeGetter* date_time_getter_api,
+    EventManager* manager)
+        : m_date_time_getter_api(date_time_getter_api), m_event_manager(manager)
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
 
@@ -108,4 +113,10 @@ unsigned int CalendarViewController::GetYear(int day_offset)
     }
 
     return m_date_time_getter_api -> GetYearFromOffset(day_offset);
+}
+
+bool CalendarViewController::addEvent()
+{
+
+    return true;
 }

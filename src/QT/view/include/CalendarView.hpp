@@ -2,6 +2,7 @@
 #include "QWidget"
 #include "QStandardItemModel"
 #include "QLabel"
+#include "QPushButton"
 
 #include "../../controller/include/CalendarViewController.hpp"
 #include "CalendarCustomHeader.hpp"
@@ -20,6 +21,8 @@ public:
     void WeekViewUpdate(int weeks_offset_count = 0);
     // void NextDayInsert();
     // void PreviousDayInsert();
+    void NewEventDialog();
+
 
 public slots:
     void OnDateChanged();
@@ -34,4 +37,7 @@ private:
     CalendarCustomHeader* m_custom_header;
     bool m_isViewMoved = false;
     int m_weeks_offset = 0;
+    QPushButton* m_week_view_button;
+    QPushButton* m_day_view_button;
+    QPushButton* m_month_view_button;
 };
