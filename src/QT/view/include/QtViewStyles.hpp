@@ -152,5 +152,18 @@ namespace QtViewStyles
             color: #808080;
             font-size: 32px;
         }
+
+        .calendar-options-bar
+        {
+            background-color: #ffffff;
+        }
+
+        .year-label
+        {
+            font: normal;
+            font-size: 32px;
+            color: #808080;
+            margin-left: 2px;
+        }
     )";
 }

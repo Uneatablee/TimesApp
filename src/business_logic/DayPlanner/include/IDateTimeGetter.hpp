@@ -23,6 +23,7 @@ namespace dp_business_logic::DayPlanner
 
         virtual time_t GetCurrentTimeDate() = 0;
         virtual long GetSecondsFromEpoch() = 0;
+        virtual long GetSecondsFromEpochFromString(std::string) = 0;
         virtual std::chrono::year_month_day GetCurrentDate_YMDFormat() = 0;
         virtual std::tuple<uint8_t, uint8_t> GetCurrentHourMinute() = 0;
         virtual uint8_t GetCurrentSecond() = 0;
@@ -35,6 +36,7 @@ namespace dp_business_logic::DayPlanner
 
         virtual unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) = 0;
         virtual uint8_t GetMonthFromOffset(int) = 0;
+        virtual unsigned int GetYearFromOffset(int) = 0;
     };
 
 }
