@@ -4,6 +4,8 @@
 #include <tuple>
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 namespace dp_business_logic::DayPlanner
 {
@@ -109,6 +111,16 @@ namespace dp_business_logic::DayPlanner
             auto curr_date = GetCurrentDate_YMDFormat();
             auto target_date = date::sys_days(curr_date) + date::days(days_offset);
             return static_cast<unsigned int>(static_cast<int>(static_cast<date::year_month_day>(target_date).year()));
+        }
+
+        long DateTimeGetter::GetSecondsFromEpochFromString(std::string date)
+        {
+            std::stringstream date_string(date);
+            std::tm tm{};
+            date_string >> std::get_time(&tm, "%d/%m/%Y %H:%M");
+
+            std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+            return tp.time_since_epoch().count();
         }
 }
 

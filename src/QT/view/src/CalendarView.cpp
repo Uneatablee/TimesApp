@@ -13,6 +13,7 @@
 #include "QPushButton"
 #include "QGraphicsDropShadowEffect"
 #include "QColor"
+#include "QDialog"
 
 #include <map>
 #include <string>
@@ -120,17 +121,53 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
     m_year_label -> setText(current_year);
 
+    m_week_view_button = new QPushButton("Week", calendar_options_bar);
+    m_week_view_button -> setProperty("class", "calendar-top-bar-buttons");
+    m_week_view_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_week_view_button -> setMaximumWidth(60);
+    m_week_view_button -> setMaximumHeight(30);
+    m_week_view_button -> setMinimumHeight(30);
+
+    m_day_view_button = new QPushButton("Day", calendar_options_bar);
+    m_day_view_button -> setProperty("class", "calendar-top-bar-buttons");
+    m_day_view_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_day_view_button -> setMaximumWidth(60);
+    m_day_view_button -> setMaximumHeight(30);
+    m_day_view_button -> setMinimumHeight(30);
+
+    m_month_view_button = new QPushButton("Month", calendar_options_bar);
+    m_month_view_button -> setProperty("class", "calendar-top-bar-buttons");
+    m_month_view_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_month_view_button -> setMaximumWidth(60);
+    m_month_view_button -> setMaximumHeight(30);
+    m_month_view_button -> setMinimumHeight(30);
+
+    auto add_event_button = new QPushButton(calendar_options_bar);
+    add_event_button -> setProperty("class", "calendar-top-bar-buttons");
+    add_event_button -> setIcon(QIcon(":/icons/plus_icon.png"));
+    add_event_button -> setIconSize(QSize(12,12));
+    add_event_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    add_event_button -> setMaximumWidth(30);
+    add_event_button -> setMaximumHeight(30);
+    add_event_button -> setMinimumHeight(30);
+
     calendar_options_bar_layout -> addWidget(m_month_label);
     calendar_options_bar_layout -> addWidget(m_year_label);
+    calendar_options_bar_layout -> addStretch();
+    calendar_options_bar_layout -> addWidget(m_month_view_button);
+    calendar_options_bar_layout -> addWidget(m_week_view_button);
+    calendar_options_bar_layout -> addWidget(m_day_view_button);
     calendar_options_bar_layout -> addStretch();
     calendar_options_bar_layout -> addWidget(week_back_button);
     calendar_options_bar_layout -> addWidget(today_button);
     calendar_options_bar_layout -> addWidget(next_week_button);
+    calendar_options_bar_layout -> addWidget(add_event_button);
 
     calendar_layout -> addWidget(calendar_options_bar);
     calendar_layout -> addWidget(table);
     calendar_layout -> setStretch(0,1);
     calendar_layout -> setStretch(1,15);
+
     general_layout -> addWidget(calendar_widget);
     this -> setLayout(general_layout);
 
@@ -144,7 +181,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     connect(today_button, &QPushButton::clicked, this, &CalendarView::CurrentWeekInsert);
     connect(next_week_button, &QPushButton::clicked, this, &CalendarView::NextWeekInsert);
     connect(week_back_button, &QPushButton::clicked, this, &CalendarView::PreviousWeekInsert);
-
+    connect(add_event_button, &QPushButton::clicked, this, &CalendarView::NewEventDialog);
 };
 
 void CalendarView::OnDateChanged()
@@ -217,6 +254,12 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
     {
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
+}
+
+void CalendarView::NewEventDialog()
+{
+    m_event_popup = new EventPopupDialog(this, m_calendar_view_controller);
+    m_event_popup -> show();
 }
 
 //Touchpad sliding:
