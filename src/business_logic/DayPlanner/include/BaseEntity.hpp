@@ -7,8 +7,10 @@ namespace dp_business_logic::DayPlanner
     {
 
     public:
+
         BaseEntity(unsigned int id)
             : m_id(id){};
+
         virtual ~BaseEntity() = default;
 
         virtual unsigned int GetId() const
