@@ -18,6 +18,7 @@ set(PROJECT_SOURCES
     view/include/MonthView.hpp
     view/include/CalendarCustomHeader.hpp
     view/include/CustomCalendarForWeekView.hpp
+    view/include/EventPopupDialog.hpp
 
     view/src/QtUserViewMain.cpp
     view/src/SlidingLeftMenu.cpp
@@ -28,6 +29,7 @@ set(PROJECT_SOURCES
     view/src/TasksGroupView.cpp
     view/src/MonthView.cpp
     view/src/CustomCalendarForWeekView.cpp
+    view/src/EventPopupDialog.cpp
 
     controller/include/CalendarViewController.hpp
     controller/include/TopUtilityBarController.hpp
@@ -55,6 +57,7 @@ qt_add_executable(qt_implementation ${PROJECT_SOURCES} ${RESOURCES})
 target_link_libraries(qt_implementation PRIVATE Qt6::Widgets)
 target_link_libraries(qt_implementation PUBLIC day_planner_functions)
 target_link_libraries(qt_implementation PUBLIC Boost.DI)
+target_link_libraries(qt_implementation PRIVATE data_access_layer_memory)
 
 
 set_target_properties(qt_implementation PROPERTIES
