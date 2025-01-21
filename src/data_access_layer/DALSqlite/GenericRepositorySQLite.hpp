@@ -78,14 +78,14 @@ namespace data_access_layer::dal::sqlite
     template<IsBase T>
     bool GenericRepository<T>::Delete(unsigned int id)
     {
-        std::string query_string = "DELETE FROM " + TypeTraits<T>::table_name + " WHERE id = " + std::to_string(id);
+        std::string query_string = "DELETE FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + std::to_string(id);
         return false;
     }
 
     template<IsBase T>
     bool GenericRepository<T>::Update(std::shared_ptr<const T> event)
     {
-        std::string query_string = "UPDATE " + TypeTraits<T>::table_name + " SET name = ?, start = ?, end = ? WHERE id = ?";
+        std::string query_string = "UPDATE " + static_cast<std::string>(TypeTraits<T>::table_name) + " SET name = ?, start = ?, end = ? WHERE id = ?";
 
         SQLite::Statement update(*database, query_string);
 
@@ -101,7 +101,7 @@ namespace data_access_layer::dal::sqlite
     template<IsBase T>
     std::shared_ptr<const T> GenericRepository<T>::GetById(unsigned int id) const
     {
-        std::string query_string = "SELECT * FROM " + TypeTraits<T>::table_name + " WHERE id = " + std::to_string(id);
+        std::string query_string = "SELECT * FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + std::to_string(id);
         SQLite::Statement query(*database, query_string);
 
         query.exec();
