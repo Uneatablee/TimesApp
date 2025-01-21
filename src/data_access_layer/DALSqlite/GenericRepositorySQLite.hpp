@@ -90,8 +90,8 @@ namespace data_access_layer::dal::sqlite
         SQLite::Statement update(*database, query_string);
 
         update.bind(1, event -> GetName());
-        update.bind(2, event -> GetStart());
-        update.bind(3, event -> GetEnd());
+        update.bind(2, event -> GetStartEpoch());
+        update.bind(3, event -> GetEndEpoch());
         update.bind(4, event -> GetId());
         update.exec();
 

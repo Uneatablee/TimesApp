@@ -11,18 +11,18 @@ namespace data_access_layer::dal::sqlite
     template<typename T>
     struct TypeTraits
     {
-        static constexpr const std::string table_name = "unknown";
+        static constexpr const char* table_name = "unknown";
     };
 
     template<>
     struct TypeTraits<dp_business_logic::DayPlanner::Event>
     {
-        static constexpr const std::string table_name = "events";
+        static constexpr const char* table_name = "events";
     };
 
     template<>
     struct TypeTraits<dp_business_logic::DayPlanner::Task>
     {
-        static constexpr const std::string table_name = "tasks";
+        static constexpr const char* table_name = "tasks";
     };
 }

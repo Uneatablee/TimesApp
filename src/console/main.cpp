@@ -39,6 +39,7 @@ int main()
     }
     //add path -> Application Support -> TimesApp Data for local temp DB
     //add Mac and Windows default folder (Win %Appdata%);
+
     std::shared_ptr<IGenericRepository<Event>> genericEventRepo = std::make_shared<GenericRepository<Event>>("");
     std::unique_ptr<EventManager> eventManager = std::make_unique<EventManager>(genericEventRepo);
 
