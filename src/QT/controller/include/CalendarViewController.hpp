@@ -16,14 +16,14 @@ class CalendarViewController : public QObject
     Q_OBJECT
 private:
     IDateTimeGetter* m_date_time_getter_api;
-    EventManager* m_event_manager;
     QTimer* m_date_changes_signal_timer;
     uint8_t m_current_day;
+    std::shared_ptr<IGenericRepository<Event>> m_event_generic_repository;
+    std::unique_ptr<EventManager> m_event_manager;
 
 public:
     CalendarViewController(
-        IDateTimeGetter* date_time_getter_api,
-        EventManager* manager);
+        IDateTimeGetter* date_time_getter_api);
 
     ~CalendarViewController();
     std::tuple<unsigned int, uint8_t, uint8_t> GetDate();
@@ -33,7 +33,15 @@ public:
     std::string GetCurrentMonthName(int day_offset = 0);
     unsigned int GetYear(int day_offset = 0);
     std::map<unsigned int, std::string> GenerateWeekMap(int weeks_offset_count);
-    bool addEvent();
+
+public slots:
+    bool addEvent(
+        QString start_date,
+        QString end_date,
+        QString start_hour,
+        QString end_hour,
+        std::string event_name,
+        std::string event_group);
 
 signals:
     void DateChanged(int date_value);

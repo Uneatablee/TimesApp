@@ -13,6 +13,7 @@
 #include "QPushButton"
 #include "QGraphicsDropShadowEffect"
 #include "QColor"
+#include "QDialog"
 
 #include <map>
 #include <string>
@@ -180,7 +181,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     connect(today_button, &QPushButton::clicked, this, &CalendarView::CurrentWeekInsert);
     connect(next_week_button, &QPushButton::clicked, this, &CalendarView::NextWeekInsert);
     connect(week_back_button, &QPushButton::clicked, this, &CalendarView::PreviousWeekInsert);
-    connect(add_event_button, &QPushButton::clicked, m_calendar_view_controller, &CalendarViewController::addEvent);
+    connect(add_event_button, &QPushButton::clicked, this, &CalendarView::NewEventDialog);
 };
 
 void CalendarView::OnDateChanged()
@@ -257,8 +258,10 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
 
 void CalendarView::NewEventDialog()
 {
-
+    m_event_popup = new EventPopupDialog(this, m_calendar_view_controller);
+    m_event_popup -> show();
 }
+
 //Touchpad sliding:
 // void CalendarView::NextDayInsert()
 // {

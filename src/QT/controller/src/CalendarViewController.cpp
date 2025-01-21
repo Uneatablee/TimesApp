@@ -3,21 +3,25 @@
 
 #include <tuple>
 #include <string>
+#include <iostream>
 
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
+#include "GenericRepository.hpp"
 
 
 CalendarViewController::CalendarViewController(
-    IDateTimeGetter* date_time_getter_api,
-    EventManager* manager)
-        : m_date_time_getter_api(date_time_getter_api), m_event_manager(manager)
+    IDateTimeGetter* date_time_getter_api)
+        : m_date_time_getter_api(date_time_getter_api)
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
     m_date_changes_signal_timer -> start(1000);
+
+    m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
+    m_event_manager = std::make_unique<EventManager>(m_event_generic_repository);
 }
 
 CalendarViewController::~CalendarViewController()
@@ -115,8 +119,24 @@ unsigned int CalendarViewController::GetYear(int day_offset)
     return m_date_time_getter_api -> GetYearFromOffset(day_offset);
 }
 
-bool CalendarViewController::addEvent()
+bool CalendarViewController::addEvent(
+    QString start_date,
+    QString end_date,
+    QString start_hour,
+    QString end_hour,
+    std::string event_name,
+    std::string event_group)
 {
+    std::string start = (start_date.toStdString() + " " + start_hour.toStdString());
+    std::string end = (end_date.toStdString() + " " + end_hour.toStdString());
+    auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
+    auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
+    //event add
+    m_event_manager -> Add(std::make_shared<Event>(1, event_name, sec_start, sec_end));
+    for(const auto &elem : m_event_manager -> GetAll())
+    {
+        std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
+    }
     return true;
 }

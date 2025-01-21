@@ -5,6 +5,7 @@
 #include "QPushButton"
 
 #include "../../controller/include/CalendarViewController.hpp"
+#include "EventPopupDialog.hpp"
 #include "CalendarCustomHeader.hpp"
 
 #include <map>
@@ -40,4 +41,5 @@ private:
     QPushButton* m_week_view_button;
     QPushButton* m_day_view_button;
     QPushButton* m_month_view_button;
+    EventPopupDialog* m_event_popup;
 };

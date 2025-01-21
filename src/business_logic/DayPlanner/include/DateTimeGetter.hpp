@@ -12,6 +12,7 @@ namespace dp_business_logic::DayPlanner
     public:
         time_t GetCurrentTimeDate() override;
         long GetSecondsFromEpoch() override;
+        long GetSecondsFromEpochFromString(std::string) override;
         std::chrono::year_month_day GetCurrentDate_YMDFormat() override;
 
         std::tuple<uint8_t, uint8_t> GetCurrentHourMinute() override;

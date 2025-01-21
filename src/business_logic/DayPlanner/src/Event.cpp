@@ -3,7 +3,8 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    Event::Event(unsigned int id, std::string name) : BaseEntity(id), m_name(name)
+    Event::Event(unsigned int id, std::string name, int start, int end)
+        : BaseEntity(id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
     {}
 
     std::string Event::GetName() const
@@ -15,5 +16,15 @@ namespace dp_business_logic::DayPlanner
     {
         m_name = name;
         return true;
+    }
+
+    int Event::GetStartEpoch() const
+    {
+        return m_event_start_epoch;
+    }
+
+    int Event::GetEndEpoch() const
+    {
+        return m_event_end_epoch;
     }
 };
