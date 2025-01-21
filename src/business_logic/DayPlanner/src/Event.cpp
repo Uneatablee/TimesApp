@@ -9,22 +9,22 @@ namespace dp_business_logic::DayPlanner
 
     int Event::GetStartEpoch() const
     {
-        return m_start_sec_from_epoch;
-    }
-
-    bool Event::SetStartEpoch(int start_sec_epoch)
-    {
-        m_start_sec_from_epoch = start_sec_epoch;
-        return true;
-    }
-
-    int Event::GetStartEpoch() const
-    {
         return m_event_start_epoch;
+    }
+
+    std::string Event::GetName() const
+    {
+        return m_name;
     }
 
     int Event::GetEndEpoch() const
     {
         return m_event_end_epoch;
+    }
+
+    bool Event::SetName(std::string name)
+    {
+        m_name = name;
+        return true;
     }
 };

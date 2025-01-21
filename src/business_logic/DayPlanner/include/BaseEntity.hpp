@@ -7,8 +7,8 @@ namespace dp_business_logic::DayPlanner
     {
 
     public:
-        BaseEntity(unsigned int id, int epoch_end, std::string name)
-            : m_id(id), m_end_sec_from_epoch(epoch_end), m_name(name){};
+        BaseEntity(unsigned int id)
+            : m_id(id){};
         virtual ~BaseEntity() = default;
 
         virtual unsigned int GetId() const
