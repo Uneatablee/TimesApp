@@ -69,8 +69,8 @@ namespace data_access_layer::dal::sqlite
         std::string query_string =
         "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) +
         " (name, start, end) VALUES ('" + event -> GetName() +
-        "', " + std::to_string(event -> GetStart()) +
-        ", " + std::to_string(event -> GetEnd()) + ")";
+        "', " + std::to_string(event -> GetStartEpoch()) +
+        ", " + std::to_string(event -> GetEndEpoch()) + ")";
 
         return true;
     }
