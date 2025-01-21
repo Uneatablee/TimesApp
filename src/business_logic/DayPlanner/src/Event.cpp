@@ -8,6 +8,11 @@ namespace dp_business_logic::DayPlanner
         : BaseEntity(id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
     {}
 
+    int Event::GetEndEpoch() const
+    {
+        return m_event_end_epoch;
+    }
+
     int Event::GetStartEpoch() const
     {
         return m_event_start_epoch;
@@ -18,9 +23,9 @@ namespace dp_business_logic::DayPlanner
         return m_name;
     }
 
-    bool Event::SetStartEpoch(int start_sec_epoch)
+    bool Event::SetName(std::string name)
     {
-        m_event_start_epoch = start_sec_epoch;
+        m_name = name;
         return true;
     }
 };
