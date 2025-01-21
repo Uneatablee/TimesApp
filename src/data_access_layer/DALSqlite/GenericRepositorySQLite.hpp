@@ -34,8 +34,8 @@ namespace data_access_layer::dal::sqlite
         try
         {
             database = new SQLite::Database(path, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-            database -> exec("CREATE TABLE IF NOT EXISTS " + TypeTraits<T>::table_name + " (id INTEGER PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
-            std::string query_string = "INSERT INTO " + TypeTraits<T>::table_name + " (name, start, end) VALUES ('Banana', 123, 123)";
+            database -> exec("CREATE TABLE IF NOT EXISTS " + static_cast<std::string>(TypeTraits<T>::table_name) + " (id INTEGER PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
+            std::string query_string = "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) + " (name, start, end) VALUES ('Banana', 123, 123)";
             SQLite::Statement query(*database, query_string);
         }
         catch (std::exception& e)
@@ -48,7 +48,7 @@ namespace data_access_layer::dal::sqlite
     std::vector<std::shared_ptr<const T>> GenericRepository<T>::GetAll() const
     {
         std::vector<std::shared_ptr<const T>> events{};
-        std::string query_string = "SELECT * FROM " + TypeTraits<T>::table_name;
+        std::string query_string = "SELECT * FROM " + static_cast<std::string>(TypeTraits<T>::table_name);
         SQLite::Statement query(*database, query_string);
 
         while (query.executeStep())
@@ -67,7 +67,7 @@ namespace data_access_layer::dal::sqlite
     bool GenericRepository<T>::Add(std::shared_ptr<const T> event)
     {
         std::string query_string =
-        "INSERT INTO " + TypeTraits<T>::table_name +
+        "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) +
         " (name, start, end) VALUES ('" + event -> GetName() +
         "', " + std::to_string(event -> GetStart()) +
         ", " + std::to_string(event -> GetEnd()) + ")";
