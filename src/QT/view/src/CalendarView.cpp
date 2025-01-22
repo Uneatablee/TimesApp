@@ -1,6 +1,5 @@
 #include "../include/CalendarView.hpp"
 #include "../include/CalendarCustomHeader.hpp"
-#include "../include/CustomCalendarForWeekView.hpp"
 
 #include "QHBoxLayout"
 #include "QVBoxLayout"
@@ -31,8 +30,9 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_layout -> setSpacing(0);
 
     //Calendar view
-    auto table = new CustomCalendarForWeekView();
-    table -> setParent(this);
+    m_table = new CustomCalendarForWeekView();
+    m_table -> setParent(this);
+    m_calendar_view_controller -> SetCustomWeekCalendar(m_table);
 
     m_model = new QStandardItemModel(24, 7, this);
     for(int hour = 0; hour < 24; hour++)
@@ -47,18 +47,18 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
         }
     }
 
-    table -> setModel(m_model);
+    m_table -> setModel(m_model);
     for(int hour = 0; hour < 24; hour++)
     {
-        table -> setRowHeight(hour, 70);
+        m_table -> setRowHeight(hour, 70);
     }
 
-    table -> setCornerButtonEnabled(false);
-    table -> horizontalHeader()-> setSectionResizeMode(QHeaderView::Stretch);
-    table -> verticalHeader()-> setSectionResizeMode(QHeaderView::Fixed);
-    table -> verticalHeader() -> setDefaultAlignment(Qt::AlignTop);
-    table -> horizontalHeader() -> setHighlightSections(false);
-    table -> verticalHeader() -> setHighlightSections(false);
+    m_table -> setCornerButtonEnabled(false);
+    m_table -> horizontalHeader()-> setSectionResizeMode(QHeaderView::Stretch);
+    m_table -> verticalHeader()-> setSectionResizeMode(QHeaderView::Fixed);
+    m_table -> verticalHeader() -> setDefaultAlignment(Qt::AlignTop);
+    m_table -> horizontalHeader() -> setHighlightSections(false);
+    m_table -> verticalHeader() -> setHighlightSections(false);
 
 
     const char* vertical_header_style = R"(
@@ -71,9 +71,9 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
             }
     )";
 
-    table -> verticalHeader() -> setStyleSheet(vertical_header_style);
-    table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    table -> setProperty("class", "calendar-table");
+    m_table -> verticalHeader() -> setStyleSheet(vertical_header_style);
+    m_table -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_table -> setProperty("class", "calendar-m_table");
 
     //calendar options bar
 
@@ -164,7 +164,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_options_bar_layout -> addWidget(add_event_button);
 
     calendar_layout -> addWidget(calendar_options_bar);
-    calendar_layout -> addWidget(table);
+    calendar_layout -> addWidget(m_table);
     calendar_layout -> setStretch(0,1);
     calendar_layout -> setStretch(1,15);
 
@@ -172,12 +172,14 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     this -> setLayout(general_layout);
 
     m_custom_header = new CalendarCustomHeader(7);
-    table -> setHorizontalHeader(m_custom_header);
+    m_table -> setHorizontalHeader(m_custom_header);
 
     WeekViewUpdate();
+    DrawTimeMarker();
 
     //controller and buttons connection
     connect(m_calendar_view_controller, &CalendarViewController::DateChanged, this, &CalendarView::OnDateChanged);
+    connect(m_calendar_view_controller, &CalendarViewController::TimeChanged, this, &CalendarView::OnTimeChanged);
     connect(today_button, &QPushButton::clicked, this, &CalendarView::CurrentWeekInsert);
     connect(next_week_button, &QPushButton::clicked, this, &CalendarView::NextWeekInsert);
     connect(week_back_button, &QPushButton::clicked, this, &CalendarView::PreviousWeekInsert);
@@ -195,6 +197,11 @@ void CalendarView::OnDateChanged()
     //forcing current day highlighting to immidiately change
     this -> resize(this -> width(), this -> height() + 1);
     this -> resize(this -> width(), this -> height() - 1);
+}
+
+void CalendarView::OnTimeChanged()
+{
+    DrawTimeMarker();
 }
 
 void CalendarView::NextWeekInsert()
@@ -231,6 +238,7 @@ void CalendarView::CurrentWeekInsert()
 
 void CalendarView::WeekViewUpdate(int weeks_offset_count)
 {
+    //Calendar drawing
     m_weekday_map = m_calendar_view_controller -> GenerateWeekMap(weeks_offset_count);
     //GetWeekDayNumber() - 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
     if(weeks_offset_count == 0)
@@ -254,12 +262,21 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
     {
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
+
+    //Current time marker drawing
+    DrawTimeMarker();
 }
 
 void CalendarView::NewEventDialog()
 {
     m_event_popup = new EventPopupDialog(this, m_calendar_view_controller);
     m_event_popup -> show();
+}
+
+void CalendarView::DrawTimeMarker()
+{
+    m_table -> setHourMark(m_calendar_view_controller -> GetHourMinute());
+    m_table -> repaint();
 }
 
 //Touchpad sliding:

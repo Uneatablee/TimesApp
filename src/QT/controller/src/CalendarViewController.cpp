@@ -15,6 +15,7 @@ CalendarViewController::CalendarViewController(
         : m_date_time_getter_api(date_time_getter_api)
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -36,10 +37,17 @@ CalendarViewController::~CalendarViewController()
 void CalendarViewController::CheckDate()
 {
     auto date_fetched = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    auto time_fetched = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
     if(m_current_day != date_fetched)
     {
         m_current_day = date_fetched;
         emit DateChanged(m_current_day);
+    }
+
+    if(m_current_minute != time_fetched)
+    {
+        m_current_minute = time_fetched;
+        emit TimeChanged(m_current_minute);
     }
 }
 
@@ -138,5 +146,21 @@ bool CalendarViewController::addEvent(
     {
         std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
     }
+    return true;
+}
+
+std::tuple<uint8_t, uint8_t> CalendarViewController::GetHourMinute()
+{
+    return m_date_time_getter_api -> GetCurrentHourMinute();
+}
+
+bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* calendar)
+{
+    m_custom_week_calendar = calendar;
+    return true;
+}
+
+bool CalendarViewController::RetrieveDrawableEventsQueue()
+{
     return true;
 }
