@@ -28,8 +28,22 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 
     for(auto &elem : m_events_print_queue)
     {
-        //drawEventTile(1,1,4, QColor("#d0d4f3"));
+        // drawEventTile(1,1,4, QColor("#d0d4f3"));
     }
+
+        drawEventTile(4,7,9, QColor("#d0d4f3"));
+        drawEventTile(5,7,9, QColor("#c5bdfe"));
+        drawEventTile(7,9,12, QColor("#c5bdfe"));
+        drawEventTile(6,12,14, QColor("#c5bdfe"));
+        drawEventTile(2,8,13, QColor("#c5bdfe"));
+        drawEventTile(2,14,16, QColor("#d0d4f3"));
+        drawEventTile(3,9,14, QColor("#c5bdfe"));
+        drawEventTile(0,7,15, QColor("#d0d4f3"));
+        drawEventTile(1,12,14, QColor("#d0d4f3"));
+        drawEventTile(4,12,13, QColor("#42378f"));
+        drawEventTile(4,14,17, QColor("#c5bdfe"));
+        drawEventTile(5,12,14, QColor("#d0d4f3"));
+        drawEventTile(1,6,8, QColor("#42378f"));
 
     drawHourMark();
 }
@@ -76,7 +90,7 @@ void CustomCalendarForWeekView::drawHourMark()
     painter.setRenderHint(QPainter::Antialiasing);
 
     QPen pen(QColor("#8474fb"));
-    pen.setWidth(1);
+    pen.setWidth(2);
     painter.setPen(pen);
 
     auto row_height = rowHeight(1);
@@ -94,17 +108,13 @@ void CustomCalendarForWeekView::drawHourMark()
 }
 
 bool CustomCalendarForWeekView::AddDrawableEvent(
-    std::string name, unsigned int year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute)
+    std::tuple<unsigned int, uint8_t, uint8_t> start_date,
+    std::tuple<unsigned int, uint8_t, uint8_t> end_date,
+    std::tuple<uint8_t, uint8_t> start_time,
+    std::tuple<uint8_t, uint8_t> end_time,
+    std::string event_name)
     {
-        DrawableEvent new_drawable_event = {
-            name,
-            year,
-            month,
-            day,
-            hour,
-            minute
-        };
-        m_events_print_queue.emplace_back(new_drawable_event);
-
+        DrawableEvent new_event{start_date, end_date, start_time, end_time, event_name};
+        m_events_print_queue.emplace_back(new_event);
         return true;
     }

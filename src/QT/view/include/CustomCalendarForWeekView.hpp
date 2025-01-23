@@ -12,12 +12,11 @@ private:
 
     struct DrawableEvent
     {
+        std::tuple<unsigned int, uint8_t, uint8_t> start_date;
+        std::tuple<unsigned int, uint8_t, uint8_t> end_date;
+        std::tuple<uint8_t, uint8_t> start_time;
+        std::tuple<uint8_t, uint8_t> end_time;
         std::string name;
-        unsigned int year;
-        uint8_t month;
-        uint8_t day;
-        uint8_t hour;
-        uint8_t minute;
     };
 
     std::tuple<uint8_t, uint8_t> m_hour_mark;
@@ -29,5 +28,9 @@ public:
     void drawEventTile(int col, int row_start, int row_end, QColor color);
     void drawHourMark();
     bool setHourMark(std::tuple<uint8_t, uint8_t> hour_mark);
-    bool AddDrawableEvent(std::string name, unsigned int year, uint8_t month, uint8_t day, uint8_t hour, uint8_t minute);
+    bool AddDrawableEvent(std::tuple<unsigned int, uint8_t, uint8_t> start_date,
+                        std::tuple<unsigned int, uint8_t, uint8_t> end_date,
+                        std::tuple<uint8_t, uint8_t> start_time,
+                        std::tuple<uint8_t, uint8_t> end_time,
+                        std::string event_name);
 };

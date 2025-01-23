@@ -162,5 +162,15 @@ bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* ca
 
 bool CalendarViewController::RetrieveDrawableEventsQueue()
 {
+    auto events = m_event_manager -> GetAll();
+    for(auto &elem : events)
+    {
+        auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
+        auto end_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetEndEpoch());
+        auto start_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetStartEpoch());
+        auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
+        m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
+    }
+
     return true;
 }
