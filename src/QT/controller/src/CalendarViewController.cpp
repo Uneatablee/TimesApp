@@ -4,6 +4,7 @@
 #include <tuple>
 #include <string>
 #include <iostream>
+#include <map>
 
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
@@ -15,6 +16,7 @@ CalendarViewController::CalendarViewController(
         : m_date_time_getter_api(date_time_getter_api)
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -36,10 +38,17 @@ CalendarViewController::~CalendarViewController()
 void CalendarViewController::CheckDate()
 {
     auto date_fetched = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+    auto time_fetched = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
     if(m_current_day != date_fetched)
     {
         m_current_day = date_fetched;
         emit DateChanged(m_current_day);
+    }
+
+    if(m_current_minute != time_fetched)
+    {
+        m_current_minute = time_fetched;
+        emit TimeChanged(m_current_minute);
     }
 }
 
@@ -48,9 +57,14 @@ uint8_t CalendarViewController::GetWeekDayNumber()
     return m_date_time_getter_api -> GetCurrentDayNumber();
 }
 
-uint8_t CalendarViewController::GetDay(int day_change_count)
+uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, int month = 0, int year = 0)
 {
     auto current_ymd = m_date_time_getter_api -> GetCurrentDate_YMDFormat();
+    if(year != 0)
+    {
+        return m_date_time_getter_api -> GetOffsetDayDate(m_date_time_getter_api -> GetYMD(day, month, year), day_change_count);
+    }
+
     if(day_change_count == 0)
     {
         return std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
@@ -132,11 +146,43 @@ bool CalendarViewController::addEvent(
     auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
+    qDebug() << "New Event Signal Emitted: " << start << end;
+    qDebug() << "Epoch Start: " << sec_start;
+    qDebug() << "Epoch end: " << sec_end;
+
     //event add
-    m_event_manager -> Add(std::make_shared<Event>(1, event_name, sec_start, sec_end));
+    m_event_manager -> Add(std::make_shared<Event>(0, event_name, sec_start, sec_end));
     for(const auto &elem : m_event_manager -> GetAll())
     {
         std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
     }
+    return true;
+}
+
+std::tuple<uint8_t, uint8_t> CalendarViewController::GetHourMinute()
+{
+    return m_date_time_getter_api -> GetCurrentHourMinute();
+}
+
+bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* calendar)
+{
+    m_custom_week_calendar = calendar;
+    return true;
+}
+
+bool CalendarViewController::RetrieveDrawableEventsQueue()
+{
+    auto events = m_event_manager -> GetAll();
+    m_custom_week_calendar -> ClearDrawableEventsQueue();
+    for(auto &elem : events)
+    {
+        auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
+        auto end_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetEndEpoch());
+        auto start_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetStartEpoch());
+        auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
+        m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
+    }
+        qDebug() << "Events Retrieved";
+
     return true;
 }

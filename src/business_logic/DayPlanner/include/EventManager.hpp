@@ -18,6 +18,7 @@ namespace dp_business_logic::DayPlanner
 
     private:
         std::shared_ptr<IGenericRepository<Event>> const m_events_repository;
+        static inline unsigned int m_event_auto_id = 0;
     };
 
 }

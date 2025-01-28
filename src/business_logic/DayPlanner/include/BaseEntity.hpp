@@ -18,7 +18,7 @@ namespace dp_business_logic::DayPlanner
             return m_id;
         }
 
-        virtual int GetEndSecEpoch() const
+        virtual long long GetEndSecEpoch() const
         {
             return m_end_sec_from_epoch;
         }
@@ -30,7 +30,7 @@ namespace dp_business_logic::DayPlanner
 
     private:
         unsigned int m_id;
-        int m_end_sec_from_epoch;
+        long long m_end_sec_from_epoch;
         std::string m_name;
     };
     //For common Task, Event and Reminder implementations + GenericRepo base

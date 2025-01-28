@@ -7,6 +7,7 @@
 #include "../../controller/include/CalendarViewController.hpp"
 #include "EventPopupDialog.hpp"
 #include "CalendarCustomHeader.hpp"
+#include "CustomCalendarForWeekView.hpp"
 
 #include <map>
 #include <string>
@@ -23,10 +24,13 @@ public:
     // void NextDayInsert();
     // void PreviousDayInsert();
     void NewEventDialog();
+    void DrawTimeMarker();
+
 
 
 public slots:
     void OnDateChanged();
+    void OnTimeChanged();
 
 private:
 
@@ -42,4 +46,6 @@ private:
     QPushButton* m_day_view_button;
     QPushButton* m_month_view_button;
     EventPopupDialog* m_event_popup;
+    CustomCalendarForWeekView* m_table;
+
 };

@@ -4,16 +4,16 @@
 namespace dp_business_logic::DayPlanner
 {
 
-    Event::Event(unsigned int id, std::string name, int start, int end)
-        : BaseEntity(id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
+    Event::Event(unsigned int id, std::string name, long long start, long long end)
+        : BaseEntity(id == 0 ? ++m_event_auto_id : id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
     {}
 
-    int Event::GetEndEpoch() const
+    long long Event::GetEndEpoch() const
     {
         return m_event_end_epoch;
     }
 
-    int Event::GetStartEpoch() const
+    long long Event::GetStartEpoch() const
     {
         return m_event_start_epoch;
     }
