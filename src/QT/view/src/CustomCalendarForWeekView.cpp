@@ -36,9 +36,9 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 
     for(auto &elem : m_events_print_queue)
     {
+
         for(int day_number = 0; day_number < 7; day_number++)
         {
-
             if(std::get<2>(elem.start_date) < week_day)
             {
                 curr_month++;
@@ -47,18 +47,17 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 
             if(std::get<0>(elem.start_date) == m_current_year.toInt()
             && std::get<1>(elem.start_date) == curr_month
-            && std::get<2>(elem.start_date) == m_calendar_view_controller -> GetDay(day_number, week_day, curr_month, m_current_year.toInt()))
+            && std::get<2>(elem.start_date) == m_calendar_view_controller -> GetDay(day_number, week_day, month_increased ? curr_month - 1 : curr_month, m_current_year.toInt()))
             {
                 if(!month_increased)
                 {
-                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time), QColor("#8474fb"));
+                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#8474fb"));
                 }
                 else
                 {
                     auto last_day = m_calendar_view_controller -> GetDay(6, week_day, curr_month - 1, m_current_year.toInt());
                     auto diff = last_day - std::get<2>(elem.start_date);
-                    qDebug() << "last: " << last_day << "elem: " << std::get<2>(elem.start_date);
-                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time), QColor("#d0d4f3"));
+                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#d0d4f3"));
                 }
             }
 
@@ -67,6 +66,8 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
                 curr_month--;
             }
         }
+
+        month_increased = false;
     }
 
     drawHourMark();
