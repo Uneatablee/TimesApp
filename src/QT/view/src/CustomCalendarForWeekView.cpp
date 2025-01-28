@@ -21,6 +21,11 @@ CustomCalendarForWeekView::CustomCalendarForWeekView(CalendarViewController* cal
                 background: transparent;
                 border: none;
             }
+
+            QTableView::item:selected
+            {
+                background-color: #ffffff;
+            }
         )"
     );
 }
@@ -45,19 +50,19 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
                 month_increased = true;
             }
 
-            if(std::get<0>(elem.start_date) == m_current_year.toInt()
+            if(std::get<0>(elem.start_date) == static_cast<unsigned int>(m_current_year.toInt())
             && std::get<1>(elem.start_date) == curr_month
             && std::get<2>(elem.start_date) == m_calendar_view_controller -> GetDay(day_number, week_day, month_increased ? curr_month - 1 : curr_month, m_current_year.toInt()))
             {
                 if(!month_increased)
                 {
-                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#8474fb"));
+                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#8474fb"), elem.name);
                 }
                 else
                 {
                     auto last_day = m_calendar_view_controller -> GetDay(6, week_day, curr_month - 1, m_current_year.toInt());
                     auto diff = last_day - std::get<2>(elem.start_date);
-                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#d0d4f3"));
+                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#d0d4f3"), elem.name);
                 }
             }
 
@@ -73,7 +78,7 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
     drawHourMark();
 }
 
-void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_start_index, int event_cell_end_index, QColor color)
+void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_start_index, int event_cell_end_index, QColor color, std::string name)
 {
     QPainter painter(this -> viewport());
 
@@ -99,7 +104,7 @@ void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_s
     painter.drawRoundedRect(rect, 10, 10);
     painter.setPen(QColor("#ffffff"));
     painter.setFont(font);
-    painter.drawText(rect.topLeft().x() + 7, rect.topLeft().y() + 17 ,"New Event");
+    painter.drawText(rect.topLeft().x() + 7, rect.topLeft().y() + 17 , name.c_str());
     painter.restore();
 }
 
