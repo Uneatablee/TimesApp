@@ -67,19 +67,35 @@ namespace dp_business_logic::DayPlanner
             return (std::chrono::weekday(current_ymd)).iso_encoding();
         }
 
-        unsigned int DateTimeGetter::GetYear()
+        std::tuple<unsigned int, uint8_t, uint8_t> DateTimeGetter::ConvertEpochYearMonthDay(long long epoch_time)
         {
-            return 0;
+            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::microseconds(epoch_time)};
+            auto zoned_date = date::make_zoned(date::current_zone(), tp);
+
+            auto local_time = zoned_date.get_local_time();
+            auto ymd = static_cast<date::year_month_day>(std::chrono::floor<std::chrono::days>(local_time));
+
+            auto year = static_cast<unsigned int>(static_cast<int>(ymd.year()));
+            auto month = static_cast<uint8_t>(static_cast<unsigned int>(ymd.month()));
+            auto day = static_cast<uint8_t>(static_cast<unsigned int>(ymd.day()));
+
+            return std::make_tuple(year, month, day);
         }
 
-        uint8_t DateTimeGetter::GetMonth()
+        std::tuple<uint8_t, uint8_t> DateTimeGetter::ConvertEpochHourMinute(long long epoch_time)
         {
-            return uint8_t();
-        }
+            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::microseconds(epoch_time)};
+            auto zoned_date = date::make_zoned(date::current_zone(), tp);
 
-        uint8_t DateTimeGetter::GetDay()
-        {
-            return uint8_t();
+            auto local_time = zoned_date.get_local_time();
+            auto current_local_time = date::floor<std::chrono::minutes>(local_time);
+            auto days_passed = date::floor<date::days>(local_time);
+            auto time = date::make_time(current_local_time - days_passed);
+
+            uint8_t hours = static_cast<uint8_t>(time.hours().count());
+            uint8_t minutes = static_cast<uint8_t>(time.minutes().count());
+
+            return std::make_tuple(hours, minutes);
         }
 
         unsigned int DateTimeGetter::GetOffsetDayDate(std::chrono::year_month_day ymd, unsigned int days_prev_count)
@@ -121,6 +137,15 @@ namespace dp_business_logic::DayPlanner
 
             std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(std::mktime(&tm));
             return tp.time_since_epoch().count();
+        }
+
+        std::chrono::year_month_day DateTimeGetter::GetYMD(int day, int month, int year)
+        {
+            return std::chrono::year_month_day{
+                std::chrono::year{year},
+                std::chrono::month{static_cast<unsigned>(month)},
+                std::chrono::day{static_cast<unsigned>(day)}
+                };
         }
 }
 

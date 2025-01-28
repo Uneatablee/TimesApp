@@ -25,4 +25,5 @@ namespace data_access_layer::dal::sqlite
     {
         static constexpr const char* table_name = "tasks";
     };
+
 }

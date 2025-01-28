@@ -119,5 +119,7 @@ EventPopupDialog::EventPopupDialog(QWidget* parent, CalendarViewController* cont
             "red");
     });
     connect(this, &EventPopupDialog::NewEventSignal, m_controller, &CalendarViewController::addEvent);
+    connect(add_event_button, &QPushButton::clicked, m_controller, &CalendarViewController::RetrieveDrawableEventsQueue);
+    connect(add_event_button, &QPushButton::clicked, this, &EventPopupDialog::close);
 
 }
