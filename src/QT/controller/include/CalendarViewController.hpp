@@ -20,6 +20,7 @@ private:
     QTimer* m_date_changes_signal_timer;
     uint8_t m_current_day;
     uint8_t m_current_minute;
+    uint8_t m_current_hour;
     std::shared_ptr<IGenericRepository<Event>> m_event_generic_repository;
     std::unique_ptr<EventManager> m_event_manager;
     CustomCalendarForWeekView* m_custom_week_calendar;

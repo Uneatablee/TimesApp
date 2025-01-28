@@ -17,6 +17,7 @@ CalendarViewController::CalendarViewController(
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
     m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    m_current_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -38,16 +39,19 @@ CalendarViewController::~CalendarViewController()
 void CalendarViewController::CheckDate()
 {
     auto date_fetched = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
-    auto time_fetched = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    auto time_fetched_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    auto time_fetched_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
+
     if(m_current_day != date_fetched)
     {
         m_current_day = date_fetched;
         emit DateChanged(m_current_day);
     }
 
-    if(m_current_minute != time_fetched)
+    if(m_current_minute != time_fetched_minute || m_current_hour != time_fetched_hour)
     {
-        m_current_minute = time_fetched;
+        m_current_minute = time_fetched_minute;
+        m_current_hour = time_fetched_hour;
         emit TimeChanged(m_current_minute);
     }
 }
@@ -146,16 +150,8 @@ bool CalendarViewController::addEvent(
     auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
-    qDebug() << "New Event Signal Emitted: " << start << end;
-    qDebug() << "Epoch Start: " << sec_start;
-    qDebug() << "Epoch end: " << sec_end;
-
     //event add
     m_event_manager -> Add(std::make_shared<Event>(0, event_name, sec_start, sec_end));
-    for(const auto &elem : m_event_manager -> GetAll())
-    {
-        std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
-    }
     return true;
 }
 

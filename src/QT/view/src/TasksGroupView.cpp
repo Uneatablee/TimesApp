@@ -11,5 +11,7 @@ TasksGroupView::TasksGroupView()
     tasks_group_panel -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     tasks_group_panel -> setProperty("class", "tasks-group-view");
 
+    //group buttons
+
     group_layout -> addWidget(tasks_group_panel);
 }
