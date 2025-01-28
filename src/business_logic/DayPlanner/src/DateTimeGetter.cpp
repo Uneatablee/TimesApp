@@ -67,9 +67,9 @@ namespace dp_business_logic::DayPlanner
             return (std::chrono::weekday(current_ymd)).iso_encoding();
         }
 
-        std::tuple<unsigned int, uint8_t, uint8_t> DateTimeGetter::ConvertEpochYearMonthDay(int epoch_time)
+        std::tuple<unsigned int, uint8_t, uint8_t> DateTimeGetter::ConvertEpochYearMonthDay(long long epoch_time)
         {
-            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::seconds(epoch_time)};
+            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::microseconds(epoch_time)};
             auto zoned_date = date::make_zoned(date::current_zone(), tp);
 
             auto local_time = zoned_date.get_local_time();
@@ -82,9 +82,9 @@ namespace dp_business_logic::DayPlanner
             return std::make_tuple(year, month, day);
         }
 
-        std::tuple<uint8_t, uint8_t> DateTimeGetter::ConvertEpochHourMinute(int epoch_time)
+        std::tuple<uint8_t, uint8_t> DateTimeGetter::ConvertEpochHourMinute(long long epoch_time)
         {
-            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::seconds(epoch_time)};
+            std::chrono::time_point<std::chrono::system_clock> tp{std::chrono::microseconds(epoch_time)};
             auto zoned_date = date::make_zoned(date::current_zone(), tp);
 
             auto local_time = zoned_date.get_local_time();
@@ -137,6 +137,15 @@ namespace dp_business_logic::DayPlanner
 
             std::chrono::system_clock::time_point tp = std::chrono::system_clock::from_time_t(std::mktime(&tm));
             return tp.time_since_epoch().count();
+        }
+
+        std::chrono::year_month_day DateTimeGetter::GetYMD(int day, int month, int year)
+        {
+            return std::chrono::year_month_day{
+                std::chrono::year{year},
+                std::chrono::month{static_cast<unsigned>(month)},
+                std::chrono::day{static_cast<unsigned>(day)}
+                };
         }
 }
 

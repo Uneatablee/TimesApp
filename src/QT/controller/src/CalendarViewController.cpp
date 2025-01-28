@@ -4,6 +4,7 @@
 #include <tuple>
 #include <string>
 #include <iostream>
+#include <map>
 
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
@@ -56,9 +57,14 @@ uint8_t CalendarViewController::GetWeekDayNumber()
     return m_date_time_getter_api -> GetCurrentDayNumber();
 }
 
-uint8_t CalendarViewController::GetDay(int day_change_count)
+uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, int month = 0, int year = 0)
 {
     auto current_ymd = m_date_time_getter_api -> GetCurrentDate_YMDFormat();
+    if(year != 0)
+    {
+        return m_date_time_getter_api -> GetOffsetDayDate(m_date_time_getter_api -> GetYMD(day, month, year), day_change_count);
+    }
+
     if(day_change_count == 0)
     {
         return std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
@@ -140,8 +146,12 @@ bool CalendarViewController::addEvent(
     auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
+    qDebug() << "New Event Signal Emitted: " << start << end;
+    qDebug() << "Epoch Start: " << sec_start;
+    qDebug() << "Epoch end: " << sec_end;
+
     //event add
-    m_event_manager -> Add(std::make_shared<Event>(1, event_name, sec_start, sec_end));
+    m_event_manager -> Add(std::make_shared<Event>(0, event_name, sec_start, sec_end));
     for(const auto &elem : m_event_manager -> GetAll())
     {
         std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
@@ -163,6 +173,7 @@ bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* ca
 bool CalendarViewController::RetrieveDrawableEventsQueue()
 {
     auto events = m_event_manager -> GetAll();
+    m_custom_week_calendar -> ClearDrawableEventsQueue();
     for(auto &elem : events)
     {
         auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
@@ -171,6 +182,7 @@ bool CalendarViewController::RetrieveDrawableEventsQueue()
         auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
         m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
     }
+        qDebug() << "Events Retrieved";
 
     return true;
 }

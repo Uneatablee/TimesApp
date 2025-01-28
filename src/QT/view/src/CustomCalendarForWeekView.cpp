@@ -1,8 +1,11 @@
 #include "../include/CustomCalendarForWeekView.hpp"
 #include "QPainter"
+#include "QHeaderView"
+#include <QString>
 
+#include "../../controller/include/CalendarViewController.hpp"
 
-CustomCalendarForWeekView::CustomCalendarForWeekView()
+CustomCalendarForWeekView::CustomCalendarForWeekView(CalendarViewController* calendar_view_controller) : m_calendar_view_controller(calendar_view_controller)
 {
     this -> setStyleSheet
     (
@@ -26,24 +29,45 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 {
     QTableView::paintEvent(event);
 
+    auto week_day = std::stoi(((horizontalHeader() -> model() -> headerData(0, Qt::Horizontal).toString()).section("\n", 1, 1)).toStdString());
+    auto start_day_for_drawing = week_day;
+    auto curr_month = GetMonthNumber(m_current_month.toStdString());
+    auto month_increased =  false;
+
     for(auto &elem : m_events_print_queue)
     {
-        // drawEventTile(1,1,4, QColor("#d0d4f3"));
-    }
+        for(int day_number = 0; day_number < 7; day_number++)
+        {
 
-        drawEventTile(4,7,9, QColor("#d0d4f3"));
-        drawEventTile(5,7,9, QColor("#c5bdfe"));
-        drawEventTile(7,9,12, QColor("#c5bdfe"));
-        drawEventTile(6,12,14, QColor("#c5bdfe"));
-        drawEventTile(2,8,13, QColor("#c5bdfe"));
-        drawEventTile(2,14,16, QColor("#d0d4f3"));
-        drawEventTile(3,9,14, QColor("#c5bdfe"));
-        drawEventTile(0,7,15, QColor("#d0d4f3"));
-        drawEventTile(1,12,14, QColor("#d0d4f3"));
-        drawEventTile(4,12,13, QColor("#42378f"));
-        drawEventTile(4,14,17, QColor("#c5bdfe"));
-        drawEventTile(5,12,14, QColor("#d0d4f3"));
-        drawEventTile(1,6,8, QColor("#42378f"));
+            if(std::get<2>(elem.start_date) < week_day)
+            {
+                curr_month++;
+                month_increased = true;
+            }
+
+            if(std::get<0>(elem.start_date) == m_current_year.toInt()
+            && std::get<1>(elem.start_date) == curr_month
+            && std::get<2>(elem.start_date) == m_calendar_view_controller -> GetDay(day_number, week_day, curr_month, m_current_year.toInt()))
+            {
+                if(!month_increased)
+                {
+                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time), QColor("#8474fb"));
+                }
+                else
+                {
+                    auto last_day = m_calendar_view_controller -> GetDay(6, week_day, curr_month - 1, m_current_year.toInt());
+                    auto diff = last_day - std::get<2>(elem.start_date);
+                    qDebug() << "last: " << last_day << "elem: " << std::get<2>(elem.start_date);
+                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time), QColor("#d0d4f3"));
+                }
+            }
+
+            if(month_increased)
+            {
+                curr_month--;
+            }
+        }
+    }
 
     drawHourMark();
 }
@@ -113,8 +137,51 @@ bool CustomCalendarForWeekView::AddDrawableEvent(
     std::tuple<uint8_t, uint8_t> start_time,
     std::tuple<uint8_t, uint8_t> end_time,
     std::string event_name)
-    {
-        DrawableEvent new_event{start_date, end_date, start_time, end_time, event_name};
-        m_events_print_queue.emplace_back(new_event);
-        return true;
-    }
+{
+    DrawableEvent new_event{start_date, end_date, start_time, end_time, event_name};
+    m_events_print_queue.emplace_back(new_event);
+    return true;
+}
+
+bool CustomCalendarForWeekView::setMonthYear(QString month, QString year)
+{
+    m_current_month = month;
+    m_current_year = year;
+    return true;
+}
+
+uint8_t CustomCalendarForWeekView::GetMonthNumber(std::string month_name)
+{
+    if (month_name == "January")
+        return 1;
+    else if (month_name == "February")
+        return 2;
+    else if (month_name == "March")
+        return 3;
+    else if (month_name == "April")
+        return 4;
+    else if (month_name == "May")
+        return 5;
+    else if (month_name == "June")
+        return 6;
+    else if (month_name == "July")
+        return 7;
+    else if (month_name == "August")
+        return 8;
+    else if (month_name == "September")
+        return 9;
+    else if (month_name == "October")
+        return 10;
+    else if (month_name == "November")
+        return 11;
+    else if (month_name == "December")
+        return 12;
+
+    return 0;
+}
+
+bool CustomCalendarForWeekView::ClearDrawableEventsQueue()
+{
+    m_events_print_queue.clear();
+    return true;
+}

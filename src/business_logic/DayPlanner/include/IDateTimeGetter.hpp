@@ -28,10 +28,11 @@ namespace dp_business_logic::DayPlanner
         virtual std::tuple<uint8_t, uint8_t> GetCurrentHourMinute() = 0;
         virtual uint8_t GetCurrentSecond() = 0;
 
+        virtual std::chrono::year_month_day GetYMD(int, int, int) = 0;
         virtual std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() = 0;
         virtual uint8_t GetCurrentDayNumber() = 0;
-        virtual std::tuple<unsigned int, uint8_t, uint8_t> ConvertEpochYearMonthDay(int) = 0;
-        virtual std::tuple<uint8_t, uint8_t> ConvertEpochHourMinute(int) = 0;
+        virtual std::tuple<unsigned int, uint8_t, uint8_t> ConvertEpochYearMonthDay(long long) = 0;
+        virtual std::tuple<uint8_t, uint8_t> ConvertEpochHourMinute(long long) = 0;
 
         virtual unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) = 0;
         virtual uint8_t GetMonthFromOffset(int) = 0;

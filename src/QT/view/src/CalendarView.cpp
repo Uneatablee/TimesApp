@@ -30,7 +30,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     calendar_layout -> setSpacing(0);
 
     //Calendar view
-    m_table = new CustomCalendarForWeekView();
+    m_table = new CustomCalendarForWeekView(m_calendar_view_controller);
     m_table -> setParent(this);
     m_calendar_view_controller -> SetCustomWeekCalendar(m_table);
 
@@ -247,6 +247,7 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
         auto current_year = QString(std::to_string(m_calendar_view_controller -> GetYear()).c_str());
         m_month_label -> setText(current_month_name);
         m_year_label -> setText(current_year);
+        m_table -> setMonthYear(current_month_name, current_year);
         m_custom_header -> setDayHighlight(m_calendar_view_controller -> GetWeekDayNumber() - 1);
     }
     else
@@ -255,6 +256,7 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
         auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(weeks_offset_count * 7))).c_str());
         m_month_label -> setText(current_month_name);
         m_year_label -> setText(current_year);
+        m_table -> setMonthYear(current_month_name, current_year);
         m_custom_header -> setDayHighlight(-1);
     }
 
@@ -263,6 +265,7 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
         m_model -> setHeaderData(day, Qt::Horizontal, m_weekday_map[day].c_str());
     }
 
+    m_calendar_view_controller -> RetrieveDrawableEventsQueue();
     //Current time marker drawing
     DrawTimeMarker();
 }

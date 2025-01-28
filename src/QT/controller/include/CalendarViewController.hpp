@@ -32,13 +32,14 @@ public:
     std::tuple<unsigned int, uint8_t, uint8_t> GetDate();
     void CheckDate();
     uint8_t GetWeekDayNumber();
-    uint8_t GetDay(int day_offset);
+    uint8_t GetDay(int day, int month, int year, int day_offset);
     std::string GetCurrentMonthName(int day_offset = 0);
     unsigned int GetYear(int day_offset = 0);
     std::map<unsigned int, std::string> GenerateWeekMap(int weeks_offset_count);
     std::tuple<uint8_t, uint8_t> GetHourMinute();
     bool SetCustomWeekCalendar(CustomCalendarForWeekView* calendar);
     bool RetrieveDrawableEventsQueue();
+
 
 public slots:
     bool addEvent(

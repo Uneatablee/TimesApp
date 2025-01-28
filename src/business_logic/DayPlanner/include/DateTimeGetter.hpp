@@ -20,9 +20,10 @@ namespace dp_business_logic::DayPlanner
 
         std::tuple<unsigned int, uint8_t, uint8_t> GetCurrentYearMonthDay() override;
 
+        std::chrono::year_month_day GetYMD(int day, int month, int year) override;
         uint8_t GetCurrentDayNumber() override;
-        virtual std::tuple<unsigned int, uint8_t, uint8_t> ConvertEpochYearMonthDay(int) override;
-        virtual std::tuple<uint8_t, uint8_t> ConvertEpochHourMinute(int) override;
+        std::tuple<unsigned int, uint8_t, uint8_t> ConvertEpochYearMonthDay(long long) override;
+        std::tuple<uint8_t, uint8_t> ConvertEpochHourMinute(long long) override;
 
         unsigned int GetOffsetDayDate(std::chrono::year_month_day, unsigned int) override;
         uint8_t GetMonthFromOffset(int days_offset = 0) override;
