@@ -122,7 +122,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     m_year_label -> setText(current_year);
 
     m_week_view_button = new QPushButton("Week", calendar_options_bar);
-    m_week_view_button -> setProperty("class", "calendar-top-bar-buttons");
+    m_week_view_button -> setProperty("class", "calendar-top-bar-selected");
     m_week_view_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_week_view_button -> setMaximumWidth(60);
     m_week_view_button -> setMaximumHeight(30);

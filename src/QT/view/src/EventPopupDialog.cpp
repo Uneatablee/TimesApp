@@ -110,12 +110,14 @@ EventPopupDialog::EventPopupDialog(QWidget* parent, CalendarViewController* cont
     connect(add_event_button, &QPushButton::clicked, m_controller,
     [this, date_start_input, date_end_input, hour_start_input, hour_end_input, dialog_label]()
     {
+        auto event_title = dialog_label -> text().toStdString() !=  "" ? dialog_label -> text().toStdString() : "New Event";
+
         emit NewEventSignal(
             QString(date_start_input -> text()),
             QString(date_end_input -> text()),
             QString(hour_start_input -> text()),
             QString(hour_end_input -> text()),
-            (dialog_label -> text()).toStdString(),
+            event_title,
             "red");
     });
     connect(this, &EventPopupDialog::NewEventSignal, m_controller, &CalendarViewController::addEvent);

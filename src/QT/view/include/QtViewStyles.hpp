@@ -165,5 +165,28 @@ namespace QtViewStyles
             color: #808080;
             margin-left: 2px;
         }
+
+        .group-button
+        {
+            border: none;
+            height: 25px;
+            text-align: left;
+            padding-left: 10px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+        .group-button:hover
+        {
+            background-color: #d0d4f3;
+        }
+
+        .calendar-top-bar-selected
+        {
+            font-weight: normal;
+            border-radius: 10px;
+            background-color: #ffffff;
+            color: #808080;
+        }
     )";
 }
