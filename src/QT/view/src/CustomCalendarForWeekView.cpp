@@ -41,7 +41,6 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
 
     for(auto &elem : m_events_print_queue)
     {
-
         for(int day_number = 0; day_number < 7; day_number++)
         {
             if(std::get<2>(elem.start_date) < week_day)
@@ -144,6 +143,7 @@ bool CustomCalendarForWeekView::AddDrawableEvent(
     std::tuple<uint8_t, uint8_t> end_time,
     std::string event_name)
 {
+
     DrawableEvent new_event{start_date, end_date, start_time, end_time, event_name};
     m_events_print_queue.emplace_back(new_event);
     return true;

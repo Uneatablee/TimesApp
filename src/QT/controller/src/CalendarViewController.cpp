@@ -5,10 +5,13 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <cstdlib>
+#include <filesystem>
 
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
-#include "GenericRepository.hpp"
+//#include "GenericRepository.hpp"
+#include "GenericRepositorySQLite.hpp"
 
 
 CalendarViewController::CalendarViewController(
@@ -23,7 +26,29 @@ CalendarViewController::CalendarViewController(
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
     m_date_changes_signal_timer -> start(1000);
 
-    m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
+    const char* home = std::getenv("HOME");
+
+    if (!home)
+    {
+        throw std::runtime_error("Failed accessing home directory!");
+    }
+
+    std::filesystem::path home_dir = home;
+    std::string app_path = (home_dir / "Library" / "Application Support" / "TimesApp").string();
+
+    try
+    {
+        std::filesystem::create_directories(app_path);
+        std::cout << "Folder created at: " << app_path << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create directory: " << e.what() << std::endl;
+    }
+
+
+    //m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
+    m_event_generic_repository = std::make_shared<data_access_layer::dal::sqlite::GenericRepository<Event>>(app_path);
     m_event_manager = std::make_unique<EventManager>(m_event_generic_repository);
 }
 
@@ -151,7 +176,9 @@ bool CalendarViewController::addEvent(
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
     //event add
-    m_event_manager -> Add(std::make_shared<Event>(0, event_name, sec_start, sec_end));
+    auto event = make_shared<Event>(0, event_name, sec_start, sec_end);
+    qDebug() << event -> GetId() << ", " << event -> GetName() << ", " << event -> GetStartEpoch() << ", " << event -> GetEndEpoch();
+    m_event_manager -> Add(event);
     return true;
 }
 
@@ -170,15 +197,16 @@ bool CalendarViewController::RetrieveDrawableEventsQueue()
 {
     auto events = m_event_manager -> GetAll();
     m_custom_week_calendar -> ClearDrawableEventsQueue();
+    qDebug() << "Events count: " << events.size();
     for(auto &elem : events)
     {
         auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
         auto end_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetEndEpoch());
         auto start_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetStartEpoch());
         auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
+
         m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
     }
-        qDebug() << "Events Retrieved";
 
     return true;
 }
