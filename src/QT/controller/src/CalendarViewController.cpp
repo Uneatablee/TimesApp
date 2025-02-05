@@ -5,10 +5,13 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <cstdlib>
+#include <filesystem>
 
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
-#include "GenericRepository.hpp"
+//#include "GenericRepository.hpp"
+#include "GenericRepositorySQLite.hpp"
 
 
 CalendarViewController::CalendarViewController(
@@ -17,12 +20,35 @@ CalendarViewController::CalendarViewController(
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
     m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    m_current_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
 
     m_date_changes_signal_timer = new QTimer();
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
     m_date_changes_signal_timer -> start(1000);
 
-    m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
+    const char* home = std::getenv("HOME");
+
+    if (!home)
+    {
+        throw std::runtime_error("Failed accessing home directory!");
+    }
+
+    std::filesystem::path home_dir = home;
+    std::string app_path = (home_dir / "Library" / "Application Support" / "TimesApp").string();
+
+    try
+    {
+        std::filesystem::create_directories(app_path);
+        std::cout << "Folder created at: " << app_path << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create directory: " << e.what() << std::endl;
+    }
+
+
+    //m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
+    m_event_generic_repository = std::make_shared<data_access_layer::dal::sqlite::GenericRepository<Event>>(app_path);
     m_event_manager = std::make_unique<EventManager>(m_event_generic_repository);
 }
 
@@ -38,16 +64,19 @@ CalendarViewController::~CalendarViewController()
 void CalendarViewController::CheckDate()
 {
     auto date_fetched = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
-    auto time_fetched = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    auto time_fetched_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
+    auto time_fetched_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
+
     if(m_current_day != date_fetched)
     {
         m_current_day = date_fetched;
         emit DateChanged(m_current_day);
     }
 
-    if(m_current_minute != time_fetched)
+    if(m_current_minute != time_fetched_minute || m_current_hour != time_fetched_hour)
     {
-        m_current_minute = time_fetched;
+        m_current_minute = time_fetched_minute;
+        m_current_hour = time_fetched_hour;
         emit TimeChanged(m_current_minute);
     }
 }
@@ -146,16 +175,10 @@ bool CalendarViewController::addEvent(
     auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
-    qDebug() << "New Event Signal Emitted: " << start << end;
-    qDebug() << "Epoch Start: " << sec_start;
-    qDebug() << "Epoch end: " << sec_end;
-
     //event add
-    m_event_manager -> Add(std::make_shared<Event>(0, event_name, sec_start, sec_end));
-    for(const auto &elem : m_event_manager -> GetAll())
-    {
-        std::cout << elem -> GetId() << "\t" << elem -> GetName() << "\n";
-    }
+    auto event = make_shared<Event>(0, event_name, sec_start, sec_end);
+    qDebug() << event -> GetId() << ", " << event -> GetName() << ", " << event -> GetStartEpoch() << ", " << event -> GetEndEpoch();
+    m_event_manager -> Add(event);
     return true;
 }
 
@@ -174,15 +197,16 @@ bool CalendarViewController::RetrieveDrawableEventsQueue()
 {
     auto events = m_event_manager -> GetAll();
     m_custom_week_calendar -> ClearDrawableEventsQueue();
+    qDebug() << "Events count: " << events.size();
     for(auto &elem : events)
     {
         auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
         auto end_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetEndEpoch());
         auto start_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetStartEpoch());
         auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
+
         m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
     }
-        qDebug() << "Events Retrieved";
 
     return true;
 }

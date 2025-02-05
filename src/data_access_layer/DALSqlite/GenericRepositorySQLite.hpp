@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <sys/stat.h>
+#include <filesystem>
 
 namespace data_access_layer::dal::sqlite
 {
@@ -24,7 +26,7 @@ namespace data_access_layer::dal::sqlite
         std::shared_ptr<const T> GetById(unsigned int) const override;
 
     private:
-        SQLite::Database* database;   ///< Database connection
+        std::unique_ptr<SQLite::Database> database;   ///< Database connection
     };
 
     //Definitions ------>
@@ -33,10 +35,25 @@ namespace data_access_layer::dal::sqlite
     {
         try
         {
-            database = new SQLite::Database(path, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-            database -> exec("CREATE TABLE IF NOT EXISTS " + static_cast<std::string>(TypeTraits<T>::table_name) + " (id INTEGER PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
-            std::string query_string = "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) + " (name, start, end) VALUES ('Banana', 123, 123)";
-            SQLite::Statement query(*database, query_string);
+            std::string table_name = static_cast<std::string>(TypeTraits<T>::table_name);
+            std::string database_path = path + "/" + table_name + ".db";
+            std::cout << database_path;
+
+            try
+            {
+                std::filesystem::permissions(path,
+                std::filesystem::perms::owner_all | std::filesystem::perms::group_read | std::filesystem::perms::others_read);
+
+                std::cout << "Permissions updated successfully for folder: " << path << std::endl;
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Error changing permissions: " << e.what() << std::endl;
+            }
+
+            database = std::make_unique<SQLite::Database>(database_path, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
+            database -> exec("CREATE TABLE IF NOT EXISTS " + table_name + " (id INTEGER PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
+
         }
         catch (std::exception& e)
         {
@@ -53,10 +70,10 @@ namespace data_access_layer::dal::sqlite
 
         while (query.executeStep())
         {
-            auto id = query.getColumn(0).getInt();
-            auto name = query.getColumn(1).getText();
-            auto start = query.getColumn(2).getInt();
-            auto end = query.getColumn(3).getInt();
+            auto id = query.getColumn(0);
+            auto name = query.getColumn(1);
+            auto start = query.getColumn(2);
+            auto end = query.getColumn(3);
             events.emplace_back(std::make_shared<T>(id, name, start, end));
         }
 
@@ -67,11 +84,16 @@ namespace data_access_layer::dal::sqlite
     bool GenericRepository<T>::Add(std::shared_ptr<const T> event)
     {
         std::string query_string =
-        "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) +
-        " (name, start, end) VALUES ('" + event -> GetName() +
-        "', " + std::to_string(event -> GetStartEpoch()) +
-        ", " + std::to_string(event -> GetEndEpoch()) + ")";
+        "INSERT INTO " + static_cast<std::string>(TypeTraits<T>::table_name) + " (id, name, start, end) VALUES (?, ?, ?, ?)";
 
+        SQLite::Statement db_query(*database, query_string);
+
+        db_query.bind(1, event -> GetId());
+        db_query.bind(2, event -> GetName());
+        db_query.bind(3, event -> GetStartEpoch());
+        db_query.bind(4, event -> GetEndEpoch());
+
+        db_query.exec();
         return true;
     }
 

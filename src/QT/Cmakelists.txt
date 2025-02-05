@@ -57,7 +57,7 @@ qt_add_executable(qt_implementation ${PROJECT_SOURCES} ${RESOURCES})
 target_link_libraries(qt_implementation PRIVATE Qt6::Widgets)
 target_link_libraries(qt_implementation PUBLIC day_planner_functions)
 target_link_libraries(qt_implementation PUBLIC Boost.DI)
-target_link_libraries(qt_implementation PRIVATE data_access_layer_memory)
+target_link_libraries(qt_implementation PRIVATE data_access_layer_sqlite)
 
 
 set_target_properties(qt_implementation PROPERTIES
