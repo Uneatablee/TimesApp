@@ -31,7 +31,7 @@ public:
     CustomCalendarForWeekView(CalendarViewController* calendar_view_controller);
     void paintEvent(QPaintEvent* event) override;
     void addEvent();
-    void drawEventTile(int col, int row_start, int row_end, QColor color, std::string name);
+    void drawEventTile(int col, int row_start, int row_end, int minutes_start, int minutes_end, QColor color, std::string name);
     void drawHourMark();
     bool setHourMark(std::tuple<uint8_t, uint8_t> hour_mark);
     bool setMonthYear(QString month, QString year);

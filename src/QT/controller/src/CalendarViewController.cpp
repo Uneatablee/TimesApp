@@ -197,7 +197,6 @@ bool CalendarViewController::RetrieveDrawableEventsQueue()
 {
     auto events = m_event_manager -> GetAll();
     m_custom_week_calendar -> ClearDrawableEventsQueue();
-    qDebug() << "Events count: " << events.size();
     for(auto &elem : events)
     {
         auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
