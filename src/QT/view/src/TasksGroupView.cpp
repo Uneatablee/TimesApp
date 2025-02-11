@@ -19,10 +19,15 @@ TasksGroupView::TasksGroupView()
     pixmap -> fill(Qt::transparent);
     QPainter painter(pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(pixmap -> rect(), QColor("#84d567"));
+    painter.fillRect(pixmap -> rect(), QColor("#d0d0d0"));
     auto icon1 = QIcon(*pixmap);
 
     //group buttons
+    //#d0d4f3
+    //#c5bdfe
+    //#8474fb
+    //#42378f
+
     auto group_buttons_layout = new QVBoxLayout(tasks_group_panel);
 
     auto groups_label = new QLabel("Groups", tasks_group_panel);
@@ -34,25 +39,25 @@ TasksGroupView::TasksGroupView()
 
     auto group2 = new QPushButton("Home");
     group2 -> setProperty("class", "group-button");
-    painter.fillRect(pixmap -> rect(), QColor("#bd1287"));
+    painter.fillRect(pixmap -> rect(), QColor("#d0d4f3"));
     auto icon2 = QIcon(*pixmap);
     group2 -> setIcon(icon2);
 
     auto group3 = new QPushButton("Studies");
     group3 -> setProperty("class", "group-button");
-    painter.fillRect(pixmap -> rect(), QColor("#126798"));
+    painter.fillRect(pixmap -> rect(), QColor("#c5bdfe"));
     auto icon3 = QIcon(*pixmap);
     group3 -> setIcon(icon3);
 
     auto group4 = new QPushButton("Home Activities");
     group4 -> setProperty("class", "group-button");
-    painter.fillRect(pixmap -> rect(), QColor("#ffbd87"));
+    painter.fillRect(pixmap -> rect(), QColor("#8474fb"));
     auto icon4 = QIcon(*pixmap);
     group4 -> setIcon(icon4);
 
     auto group5 = new QPushButton("Work");
     group5 -> setProperty("class", "group-button");
-    painter.fillRect(pixmap -> rect(), QColor("#558012"));
+    painter.fillRect(pixmap -> rect(), QColor("#42378f"));
     auto icon5 = QIcon(*pixmap);
     group5 -> setIcon(icon5);
 

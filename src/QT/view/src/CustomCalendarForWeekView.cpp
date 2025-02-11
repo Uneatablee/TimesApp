@@ -55,13 +55,26 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
             {
                 if(!month_increased)
                 {
-                    drawEventTile(std::get<2>(elem.start_date) - start_day_for_drawing, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#8474fb"), elem.name);
+                    drawEventTile(
+                        std::get<2>(elem.start_date) - start_day_for_drawing,
+                        std::get<0>(elem.start_time),
+                        std::get<0>(elem.end_time),
+                        std::get<1>(elem.start_time),
+                        std::get<1>(elem.end_time),
+                        QColor("#42378f"),
+                        elem.name);
                 }
                 else
                 {
                     auto last_day = m_calendar_view_controller -> GetDay(6, week_day, curr_month - 1, m_current_year.toInt());
                     auto diff = last_day - std::get<2>(elem.start_date);
-                    drawEventTile(6 - diff, std::get<0>(elem.start_time), std::get<0>(elem.end_time) - 1, QColor("#d0d4f3"), elem.name);
+                    drawEventTile(
+                        6 - diff,
+                        std::get<0>(elem.start_time),
+                        std::get<0>(elem.end_time),
+                        std::get<1>(elem.start_time),
+                        std::get<1>(elem.end_time),
+                        QColor("#42378f"), elem.name);
                 }
             }
 
@@ -77,10 +90,10 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
     drawHourMark();
 }
 
-void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_start_index, int event_cell_end_index, QColor color, std::string name)
+void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_start_index,
+    int event_cell_end_index, int min_start, int min_end, QColor color, std::string name)
 {
     QPainter painter(this -> viewport());
-
     painter.setRenderHint(QPainter::Antialiasing);
 
     QRect rect{};
@@ -90,6 +103,11 @@ void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_s
         rect = rect.united(cell_rect);
     }
 
+    double start_height_pixels = min_start * 1.0 * (rowHeight(1) / 60.0);
+    double end_height_pixels = min_end * 1.0 * (rowHeight(1) / 60.0);
+    double end_adjust = rowHeight(1) - end_height_pixels;
+    rect.adjust(0, start_height_pixels, 0, -end_adjust);
+
     QFont font{};
     font.setBold(1);
     font.setWeight(QFont::DemiBold);
@@ -97,14 +115,35 @@ void CustomCalendarForWeekView::drawEventTile(int column_index, int event_cell_s
 
     rect.adjust(2,2,-2,-2);
 
+    if(rect.height() < 19) rect.setHeight(19);
+
     painter.save();
     painter.setPen(QColor(color));
     painter.setBrush(QColor(color));
     painter.drawRoundedRect(rect, 10, 10);
     painter.setPen(QColor("#ffffff"));
     painter.setFont(font);
-    painter.drawText(rect.topLeft().x() + 7, rect.topLeft().y() + 17 , name.c_str());
+    painter.drawText(rect.topLeft().x() + 7, rect.topLeft().y() + 13 , name.c_str());
+
+    auto event_height = ((event_cell_end_index - event_cell_start_index) * 60.0 + (end_height_pixels - start_height_pixels));
+    if(event_height > 28)
+    {
+        painter.setPen(QColor("#b2b2b2"));
+
+        auto start_zero_hour = event_cell_start_index < 10 ? "0" : "";
+        auto end_zero_hour = event_cell_end_index < 10 ? "0" : "";
+        auto start_zero_minute = min_start < 10 ? "0" : "";
+        auto end_zero_minute = min_end < 10 ? "0" : "";
+
+        std::string event_hour = start_zero_hour + std::to_string(event_cell_start_index) + ":" +
+            start_zero_minute + std::to_string(min_start) +
+            " - " + end_zero_hour + std::to_string(event_cell_end_index)
+            + ":" + end_zero_minute + std::to_string(min_end);
+
+        painter.drawText(rect.topLeft().x() + 7, rect.topLeft().y() + 26 , event_hour.c_str());
+    }
     painter.restore();
+
 }
 
 bool CustomCalendarForWeekView::setHourMark(std::tuple<uint8_t, uint8_t> hour_mark)
