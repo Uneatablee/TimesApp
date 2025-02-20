@@ -176,8 +176,7 @@ bool CalendarViewController::addEvent(
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
     //event add
-    auto event = make_shared<Event>(0, event_name, sec_start, sec_end);
-    qDebug() << event -> GetId() << ", " << event -> GetName() << ", " << event -> GetStartEpoch() << ", " << event -> GetEndEpoch();
+    auto event = std::make_shared<Event>("", event_name, sec_start, sec_end);
     m_event_manager -> Add(event);
     return true;
 }
