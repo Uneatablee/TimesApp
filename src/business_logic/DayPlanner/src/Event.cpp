@@ -2,12 +2,13 @@
 #include "../include/Event.hpp"
 #include <limits>
 #include <random>
+#include "uuid.h"
 
 namespace dp_business_logic::DayPlanner
 {
 
-    Event::Event(unsigned int id, std::string name, long long start, long long end)
-        : BaseEntity(id == 0 ? IdGen() : id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
+    Event::Event(std::string id, std::string name, long long start, long long end)
+        : BaseEntity(id == "" ? IdGen() : id), m_name(name), m_event_start_epoch(start), m_event_end_epoch(end)
     {}
 
     long long Event::GetEndEpoch() const
@@ -31,15 +32,16 @@ namespace dp_business_logic::DayPlanner
         return true;
     }
 
-    int Event::IdGen()
+    std::string Event::IdGen()
     {
-        int max = std::numeric_limits<int>::max();
-        int min = std::numeric_limits<int>::min();
-
         std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dis(min, max);  // Losowanie z zakresu [min, max]
+        auto seed_data = std::array<int, std::mt19937::state_size> {};
+        std::generate(std::begin(seed_data), std::end(seed_data), std::ref(rd));
+        std::seed_seq seq(std::begin(seed_data), std::end(seed_data));
+        std::mt19937 generator(seq);
+        uuids::uuid_random_generator gen{generator};
 
-        return dis(gen);  // Zwracamy losową liczbę
+        uuids::uuid const id = gen();
+        return uuids::to_string(id);
     }
 };
