@@ -33,29 +33,29 @@ TasksGroupView::TasksGroupView()
     auto groups_label = new QLabel("Groups", tasks_group_panel);
     groups_label -> setStyleSheet("text-align: left; color: #808080;");
 
-    auto group1 = new QPushButton("Gym");
+    auto group1 = new QPushButton("Gym", this);
     group1 -> setProperty("class", "group-button");
     group1 -> setIcon(icon1);
 
-    auto group2 = new QPushButton("Home");
+    auto group2 = new QPushButton("Home", this);
     group2 -> setProperty("class", "group-button");
     painter.fillRect(pixmap -> rect(), QColor("#d0d4f3"));
     auto icon2 = QIcon(*pixmap);
     group2 -> setIcon(icon2);
 
-    auto group3 = new QPushButton("Studies");
+    auto group3 = new QPushButton("Studies", this);
     group3 -> setProperty("class", "group-button");
     painter.fillRect(pixmap -> rect(), QColor("#c5bdfe"));
     auto icon3 = QIcon(*pixmap);
     group3 -> setIcon(icon3);
 
-    auto group4 = new QPushButton("Home Activities");
+    auto group4 = new QPushButton("Home Activities", this);
     group4 -> setProperty("class", "group-button");
     painter.fillRect(pixmap -> rect(), QColor("#8474fb"));
     auto icon4 = QIcon(*pixmap);
     group4 -> setIcon(icon4);
 
-    auto group5 = new QPushButton("Work");
+    auto group5 = new QPushButton("Work", this);
     group5 -> setProperty("class", "group-button");
     painter.fillRect(pixmap -> rect(), QColor("#42378f"));
     auto icon5 = QIcon(*pixmap);
