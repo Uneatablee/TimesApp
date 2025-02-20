@@ -26,6 +26,23 @@ using namespace data_access_layer::dal::sqlite;
 
 int main(int argc, char *argv[])
 {
+    const char* home = std::getenv("HOME");
+    if (!home)
+    {
+        throw std::runtime_error("Failed accessing home directory!");
+    }
+    std::filesystem::path home_dir = home;
+    const std::string app_path = (home_dir / "Library" / "Application Support" / "TimesApp").string();
+    try
+    {
+        std::filesystem::create_directories(app_path);
+        std::cout << "Folder created at: " << app_path << std::endl;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed to create directory: " << e.what() << std::endl;
+    }
+
     try{
         //app setup
         QApplication application(argc, argv);
@@ -33,11 +50,12 @@ int main(int argc, char *argv[])
         QFontDatabase::addApplicationFont(":/fonts/montserrat_regular.ttf");
 
         //main window
-        auto main_window_injector = boost::di::make_injector(
+        auto application_di_container = boost::di::make_injector(
             boost::di::bind<IDateTimeGetter>.to<DateTimeGetter>(),
-            boost::di::bind<IGenericRepository<Event>>.to<GenericRepository<Event>>()
+            boost::di::bind<IGenericRepository<Event>>.to<GenericRepository<Event>>(),
+            boost::di::bind<GenericRepository<Event>>().to<std::string>(app_path)
         );
-        auto main_window = main_window_injector.create<std::unique_ptr<MainWindow>>();
+        auto main_window = application_di_container.create<std::unique_ptr<MainWindow>>();
 
         main_window -> show();
         return application.exec();

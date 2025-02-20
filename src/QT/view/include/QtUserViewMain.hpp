@@ -16,9 +16,6 @@ class QtUserViewMain : public QWidget
     Q_OBJECT
 
 public:
-
     QtUserViewMain(MainViewArea*, SlidingLeftMenu*);
 
-private:
-    QWidget* m_main_window;
 };

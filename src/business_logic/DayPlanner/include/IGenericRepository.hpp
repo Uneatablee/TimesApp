@@ -16,8 +16,8 @@ namespace dp_business_logic::DayPlanner
         virtual ~IGenericRepository() = default; //constants restriction
         virtual bool Add(std::shared_ptr<const T>) = 0;
         virtual std::vector<std::shared_ptr<const T>> GetAll() const = 0;
-        virtual std::shared_ptr<const T> GetById(unsigned int) const = 0;
+        virtual std::shared_ptr<const T> GetById(std::string id) const = 0;
         virtual bool Update(std::shared_ptr<const T>) = 0;
-        virtual bool Delete(unsigned int) = 0;
+        virtual bool Delete(std::string id) = 0;
     };
 }

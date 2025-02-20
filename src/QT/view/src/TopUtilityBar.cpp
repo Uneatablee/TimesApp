@@ -16,7 +16,7 @@ TopUtilityBar::TopUtilityBar()
     bar_tiles_layout -> setContentsMargins(0, 0, 0, 0);
 
     //widget 1
-    auto widget_1 = new QWidget();
+    auto widget_1 = new QWidget(this);
     bar_tiles_layout -> addWidget(widget_1);
     widget_1 -> setProperty("class", "top-bar-widget1");
 
@@ -26,17 +26,17 @@ TopUtilityBar::TopUtilityBar()
     lab_1 -> setProperty("class", "year-label");
 
     //widget 2
-    auto widget_2 = new QWidget();
+    auto widget_2 = new QWidget(this);
     bar_tiles_layout -> addWidget(widget_2);
     widget_2 -> setProperty("class", "top-bar-widget2");
 
     //widget 3
-    auto widget_3 = new QWidget();
+    auto widget_3 = new QWidget(this);
     bar_tiles_layout -> addWidget(widget_3);
     widget_3 -> setProperty("class", "top-bar-widget3");
 
     //widget 4
-    auto widget_4 = new QWidget();
+    auto widget_4 = new QWidget(this);
     bar_tiles_layout -> addWidget(widget_4);
     widget_4 -> setProperty("class", "top-bar-widget4");
 

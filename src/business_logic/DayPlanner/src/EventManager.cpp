@@ -4,7 +4,7 @@
 
 namespace dp_business_logic::DayPlanner
 {
-    std::shared_ptr<const Event> EventManager::Get(unsigned int id)
+    std::shared_ptr<const Event> EventManager::Get(std::string id)
     {
         auto event = m_events_repository -> GetById(id);
         return event;
@@ -40,11 +40,9 @@ namespace dp_business_logic::DayPlanner
         for(const auto &elem : m_events_repository -> GetAll())
         {
             auto searched_id = elem -> GetId();
+            if(searched_id == id)
             {
-                if(searched_id == id)
-                {
-                    found = true;
-                }
+                found = true;
             }
         }
 
@@ -56,17 +54,15 @@ namespace dp_business_logic::DayPlanner
         return true;
     }
 
-    bool EventManager::Delete(unsigned int id) const
+    bool EventManager::Delete(std::string id) const
     {
         bool found = false;
         for(const auto &elem : m_events_repository -> GetAll())
         {
             auto searched_id = elem -> GetId();
+            if(searched_id == id)
             {
-                if(searched_id == id)
-                {
-                    found = true;
-                }
+                found = true;
             }
         }
 
