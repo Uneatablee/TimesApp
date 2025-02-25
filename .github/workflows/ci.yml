@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/6.5.*/clang_64" -DQt6_DIR="${QT_INSTALL_DIR}/6.5.0/clang_64"
+          # cmake .. -DCMAKE_PREFIX_PATH="${QT_INSTALL_DIR}/6.5.*/clang_64" -DQt6_DIR="${QT_INSTALL_DIR}/6.5.0/clang_64"
           cmake --build .
 
       - name: test
