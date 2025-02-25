@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
     }
 
     try{
-        //app setup
+
         QApplication application(argc, argv);
         application.setStyleSheet(QtViewStyles::Styles);
         QFontDatabase::addApplicationFont(":/fonts/montserrat_regular.ttf");
 
-        //main window
+        //main qt implementation / main view dependency injection container
         auto application_di_container = boost::di::make_injector(
             boost::di::bind<IDateTimeGetter>.to<DateTimeGetter>(),
             boost::di::bind<IGenericRepository<Event>>.to<GenericRepository<Event>>(),
