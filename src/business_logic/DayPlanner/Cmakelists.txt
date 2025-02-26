@@ -8,5 +8,13 @@ if(date_ADDED)
     target_link_libraries(day_planner_functions PRIVATE date::date date::date-tz)
 endif()
 
+CPMAddPackage(
+    NAME uuid
+    GIT_REPOSITORY https://github.com/mariusbancila/stduuid.git
+    GIT_TAG v1.2.3
+)
+
+target_link_libraries(day_planner_functions PRIVATE stduuid)
+
 
 

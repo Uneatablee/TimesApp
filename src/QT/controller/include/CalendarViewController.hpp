@@ -27,7 +27,9 @@ private:
 
 public:
     CalendarViewController(
-        IDateTimeGetter* date_time_getter_api);
+        IDateTimeGetter*,
+        IGenericRepository<Event>*,
+        EventManager*);
 
     ~CalendarViewController();
     std::tuple<unsigned int, uint8_t, uint8_t> GetDate();

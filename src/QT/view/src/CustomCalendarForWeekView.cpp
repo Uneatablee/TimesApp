@@ -2,6 +2,7 @@
 #include "QPainter"
 #include "QHeaderView"
 #include <QString>
+#include <unordered_map>
 
 #include "../../controller/include/CalendarViewController.hpp"
 
@@ -35,7 +36,6 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
     QTableView::paintEvent(event);
 
     auto week_day = std::stoi(((horizontalHeader() -> model() -> headerData(0, Qt::Horizontal).toString()).section("\n", 1, 1)).toStdString());
-    auto start_day_for_drawing = week_day;
     auto curr_month = GetMonthNumber(m_current_month.toStdString());
     auto month_increased =  false;
 
@@ -56,7 +56,7 @@ void CustomCalendarForWeekView::paintEvent(QPaintEvent* event)
                 if(!month_increased)
                 {
                     drawEventTile(
-                        std::get<2>(elem.start_date) - start_day_for_drawing,
+                        std::get<2>(elem.start_date) - week_day,
                         std::get<0>(elem.start_time),
                         std::get<0>(elem.end_time),
                         std::get<1>(elem.start_time),
@@ -197,30 +197,26 @@ bool CustomCalendarForWeekView::setMonthYear(QString month, QString year)
 
 uint8_t CustomCalendarForWeekView::GetMonthNumber(std::string month_name)
 {
-    if (month_name == "January")
-        return 1;
-    else if (month_name == "February")
-        return 2;
-    else if (month_name == "March")
-        return 3;
-    else if (month_name == "April")
-        return 4;
-    else if (month_name == "May")
-        return 5;
-    else if (month_name == "June")
-        return 6;
-    else if (month_name == "July")
-        return 7;
-    else if (month_name == "August")
-        return 8;
-    else if (month_name == "September")
-        return 9;
-    else if (month_name == "October")
-        return 10;
-    else if (month_name == "November")
-        return 11;
-    else if (month_name == "December")
-        return 12;
+    static const std::unordered_map<std::string, uint8_t> month_map = {
+        {"January", 1},
+        {"February", 2},
+        {"March", 3},
+        {"April", 4},
+        {"May", 5},
+        {"June", 6},
+        {"July", 7},
+        {"August", 8},
+        {"September", 9},
+        {"October", 10},
+        {"November", 11},
+        {"December", 12}
+    };
+
+    auto month_number_it = month_map.find(month_name);
+    if(month_number_it != month_map.end())
+    {
+        return month_number_it -> second;
+    }
 
     return 0;
 }

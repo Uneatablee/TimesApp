@@ -22,7 +22,6 @@ public:
 private:
 
     QWidget* m_main_window;
-
     QVBoxLayout* m_menu_layout;
     QPropertyAnimation* m_animation;
     QPushButton* m_button_slider_toggle;

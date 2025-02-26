@@ -67,7 +67,7 @@ namespace data_access_layer::dal::memory
     }
 
     template<IsBase T>
-    std::shared_ptr<const T> GenericRepository<T>::GetById(unsigned int id) const
+    std::shared_ptr<const T> GenericRepository<T>::GetById(std::string id) const
     {
         auto iter = std::find_if(m_events_data.begin(), m_events_data.end(), [id](std::shared_ptr<const T> event)
         {return event -> GetId() == id;});

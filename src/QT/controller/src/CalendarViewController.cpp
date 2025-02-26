@@ -15,41 +15,20 @@
 
 
 CalendarViewController::CalendarViewController(
-    IDateTimeGetter* date_time_getter_api)
-        : m_date_time_getter_api(date_time_getter_api)
+    IDateTimeGetter* date_time_getter_api,
+    IGenericRepository<Event>* event_generic_repository,
+    EventManager* event_manager)
+        : m_date_time_getter_api(date_time_getter_api),
+        m_event_generic_repository(event_generic_repository),
+        m_event_manager(event_manager)
 {
     m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
     m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
     m_current_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
 
-    m_date_changes_signal_timer = new QTimer();
+    m_date_changes_signal_timer = new QTimer(this);
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
     m_date_changes_signal_timer -> start(1000);
-
-    const char* home = std::getenv("HOME");
-
-    if (!home)
-    {
-        throw std::runtime_error("Failed accessing home directory!");
-    }
-
-    std::filesystem::path home_dir = home;
-    std::string app_path = (home_dir / "Library" / "Application Support" / "TimesApp").string();
-
-    try
-    {
-        std::filesystem::create_directories(app_path);
-        std::cout << "Folder created at: " << app_path << std::endl;
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Failed to create directory: " << e.what() << std::endl;
-    }
-
-
-    //m_event_generic_repository = std::make_shared<data_access_layer::dal::memory::GenericRepository<Event>>();
-    m_event_generic_repository = std::make_shared<data_access_layer::dal::sqlite::GenericRepository<Event>>(app_path);
-    m_event_manager = std::make_unique<EventManager>(m_event_generic_repository);
 }
 
 CalendarViewController::~CalendarViewController()
@@ -176,8 +155,7 @@ bool CalendarViewController::addEvent(
     auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
 
     //event add
-    auto event = make_shared<Event>(0, event_name, sec_start, sec_end);
-    qDebug() << event -> GetId() << ", " << event -> GetName() << ", " << event -> GetStartEpoch() << ", " << event -> GetEndEpoch();
+    auto event = std::make_shared<Event>("", event_name, sec_start, sec_end);
     m_event_manager -> Add(event);
     return true;
 }

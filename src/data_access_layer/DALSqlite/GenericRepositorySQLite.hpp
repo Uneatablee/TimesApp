@@ -21,9 +21,9 @@ namespace data_access_layer::dal::sqlite
         GenericRepository(std::string path);
         std::vector<std::shared_ptr<const T>> GetAll() const override;
         bool Add(std::shared_ptr<const T>) override;
-        bool Delete(unsigned int) override;
+        bool Delete(std::string id) override;
         bool Update(std::shared_ptr<const T>) override;
-        std::shared_ptr<const T> GetById(unsigned int) const override;
+        std::shared_ptr<const T> GetById(std::string id) const override;
 
     private:
         std::unique_ptr<SQLite::Database> database;   ///< Database connection
@@ -52,8 +52,7 @@ namespace data_access_layer::dal::sqlite
             }
 
             database = std::make_unique<SQLite::Database>(database_path, SQLite::OPEN_READWRITE|SQLite::OPEN_CREATE);
-            database -> exec("CREATE TABLE IF NOT EXISTS " + table_name + " (id INTEGER PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
-
+            database -> exec("CREATE TABLE IF NOT EXISTS " + table_name + " (id TEXT PRIMARY KEY, name TEXT, start INTEGER, end INTEGER)");
         }
         catch (std::exception& e)
         {
@@ -98,9 +97,9 @@ namespace data_access_layer::dal::sqlite
     }
 
     template<IsBase T>
-    bool GenericRepository<T>::Delete(unsigned int id)
+    bool GenericRepository<T>::Delete(std::string id)
     {
-        std::string query_string = "DELETE FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + std::to_string(id);
+        std::string query_string = "DELETE FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + id;
         return false;
     }
 
@@ -121,9 +120,9 @@ namespace data_access_layer::dal::sqlite
     }
 
     template<IsBase T>
-    std::shared_ptr<const T> GenericRepository<T>::GetById(unsigned int id) const
+    std::shared_ptr<const T> GenericRepository<T>::GetById(std::string id) const
     {
-        std::string query_string = "SELECT * FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + std::to_string(id);
+        std::string query_string = "SELECT * FROM " + static_cast<std::string>(TypeTraits<T>::table_name) + " WHERE id = " + id;
         SQLite::Statement query(*database, query_string);
 
         query.exec();

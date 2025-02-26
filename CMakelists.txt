@@ -29,10 +29,10 @@ CPMAddPackage(
 enable_testing()
 
 add_subdirectory(src/business_logic/DayPlanner)
-add_subdirectory(src/data_access_layer/DALMemory)
+# add_subdirectory(src/data_access_layer/DALMemory)
 add_subdirectory(src/data_access_layer/DALSqlite)
-add_subdirectory(src/console)
+# add_subdirectory(src/console)
 add_subdirectory(tests)
 add_subdirectory(src/QT)
 
-#Adding Cmake compilation and linking options for Windows OS
+#Adding Cmake config for Windows OS

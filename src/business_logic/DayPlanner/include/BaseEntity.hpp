@@ -8,14 +8,20 @@ namespace dp_business_logic::DayPlanner
 
     public:
 
-        BaseEntity(unsigned int id)
+        BaseEntity(std::string id)
             : m_id(id){};
 
         virtual ~BaseEntity() = default;
 
-        virtual unsigned int GetId() const
+        virtual std::string const GetId() const
         {
             return m_id;
+        }
+
+        virtual bool SetId(std::string id)
+        {
+            m_id = id;
+            return true;
         }
 
         virtual long long GetEndSecEpoch() const
@@ -29,7 +35,7 @@ namespace dp_business_logic::DayPlanner
         }
 
     private:
-        unsigned int m_id;
+        std::string m_id;
         long long m_end_sec_from_epoch;
         std::string m_name;
     };

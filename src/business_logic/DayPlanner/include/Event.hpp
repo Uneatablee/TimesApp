@@ -8,13 +8,13 @@ namespace dp_business_logic::DayPlanner
     {
     public:
 
-        Event(unsigned int id, std::string name, long long start, long long end);
-        Event(unsigned int);
+        Event(std::string id, std::string name, long long start, long long end);
+        Event();
         std::string GetName() const;
         long long GetStartEpoch() const;
         long long GetEndEpoch() const;
         bool SetName(std::string);
-        int IdGen();
+        std::string IdGen();
     private:
         std::string m_name;
         long long m_event_start_epoch;
