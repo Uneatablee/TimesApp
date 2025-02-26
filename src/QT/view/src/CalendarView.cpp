@@ -122,7 +122,7 @@ CalendarView::CalendarView(CalendarViewController* calendar_view_controller) : m
     m_year_label -> setText(current_year);
 
     m_week_view_button = new QPushButton("Week", calendar_options_bar);
-    m_week_view_button -> setProperty("class", "calendar-top-bar-selected");
+    m_week_view_button -> setProperty("class", "calendar-top-bar-buttons");
     m_week_view_button -> setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_week_view_button -> setMaximumWidth(60);
     m_week_view_button -> setMaximumHeight(30);
@@ -238,6 +238,7 @@ void CalendarView::CurrentWeekInsert()
 
 void CalendarView::WeekViewUpdate(int weeks_offset_count)
 {
+    auto days_offset_count = weeks_offset_count * 7;
     //Calendar drawing
     m_weekday_map = m_calendar_view_controller -> GenerateWeekMap(weeks_offset_count);
     //GetWeekDayNumber() - 1 because of weekday iso_encoding, no highlighting: setDayHighlight(-1);
@@ -252,8 +253,8 @@ void CalendarView::WeekViewUpdate(int weeks_offset_count)
     }
     else
     {
-        auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(weeks_offset_count * 7)).c_str());
-        auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(weeks_offset_count * 7))).c_str());
+        auto current_month_name = QString((m_calendar_view_controller -> GetCurrentMonthName(days_offset_count)).c_str());
+        auto current_year = QString((std::to_string(m_calendar_view_controller -> GetYear(days_offset_count))).c_str());
         m_month_label -> setText(current_month_name);
         m_year_label -> setText(current_year);
         m_table -> setMonthYear(current_month_name, current_year);
