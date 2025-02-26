@@ -1,43 +1,28 @@
 #pragma once
 #include <string>
+#include "IHappening.hpp"
 
 namespace dp_business_logic::DayPlanner
 {
-    class BaseEntity
+    class BaseEntity : virtual public IHappening
     {
 
     public:
 
-        BaseEntity(std::string id)
-            : m_id(id){};
-
+        BaseEntity(std::string id, std::string name, long long end_epoch);
         virtual ~BaseEntity() = default;
+        bool SetId(std::string id) override;
+        std::string GetId() const override;
+        std::string IdGen() override;
 
-        virtual std::string const GetId() const
-        {
-            return m_id;
-        }
-
-        virtual bool SetId(std::string id)
-        {
-            m_id = id;
-            return true;
-        }
-
-        virtual long long GetEndSecEpoch() const
-        {
-            return m_end_sec_from_epoch;
-        }
-
-        virtual std::string GetName() const
-        {
-            return m_name;
-        }
+        long long GetEndEpoch() const;
+        std::string GetName() const;
+        bool SetName(std::string name);
 
     private:
         std::string m_id;
-        long long m_end_sec_from_epoch;
         std::string m_name;
+        long long m_end_epoch;
     };
     //For common Task, Event and Reminder implementations + GenericRepo base
 }
