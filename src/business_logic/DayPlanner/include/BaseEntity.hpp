@@ -7,9 +7,11 @@ namespace dp_business_logic::DayPlanner
     class BaseEntity : virtual public IHappening
     {
 
+    protected:
+        BaseEntity(std::string id, std::string name, long long end_epoch);
+
     public:
 
-        BaseEntity(std::string id, std::string name, long long end_epoch);
         virtual ~BaseEntity() = default;
         bool SetId(std::string id) override;
         std::string GetId() const override;
