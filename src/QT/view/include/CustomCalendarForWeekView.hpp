@@ -30,7 +30,12 @@ private:
 public:
     CustomCalendarForWeekView(CalendarViewController* calendar_view_controller);
     void paintEvent(QPaintEvent* event) override;
-    void addEvent();
+
+    //paint logic split into different sections -> drawing function refactor
+    void paintEvents();
+    void paintTasks();
+    void paintReminders();
+
     void drawEventTile(int col, int row_start, int row_end, int minutes_start, int minutes_end, QColor color, std::string name);
     void drawHourMark();
     bool setHourMark(std::tuple<uint8_t, uint8_t> hour_mark);

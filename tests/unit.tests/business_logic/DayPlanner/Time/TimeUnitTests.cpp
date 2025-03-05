@@ -7,11 +7,12 @@
 
 using namespace dp_business_logic::DayPlanner;
 
-TEST_CASE("Time can return current Hour")
+TEST_CASE("Cant add event with end time set earlier than start time")
 {
     //Arrange
 
     //Act
 
     //Assert
+
 }
