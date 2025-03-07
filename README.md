@@ -23,13 +23,13 @@ With synchronized database across all platforms, users can seamlessly
 switch between devices while staying up-to-date with their schedules, tasks, finances, and routines.
 
 **Currently working on:**
-- centralized calendar for events appointments, and reminders.
-- task prioritization system, allowing users to create a work plan based on deadlines or importance.
+- centralized calendar for events appointments, and reminders
+- task prioritization system, allowing users to create a work plan based on deadlines or importance
 - database system, switching SQLite3 -> PostgreSQL
 
 **Plans:**
-- integration with other calendars for easy syncing (e.g.,Google Calendar, Apple Calendar).
-- shareable calendars for team coordination and collaboration.
+- integration with other calendars for easy syncing (e.g.,Google Calendar, Apple Calendar)
+- shareable calendars for team coordination and collaboration
 - Web API development
 - financial tracking module
 - routines and habit tracking module
@@ -39,7 +39,7 @@ switch between devices while staying up-to-date with their schedules, tasks, fin
 ## System Requirements
 **MacOS**
 
-Currently working on MacOS implementation which is the only one currently working.<br>
+Currently working on MacOS implementation.<br>
 
 In the near future there will be Windows version available.<br>
 With Web Api developed there will be also web and mobile version to play with.
@@ -70,8 +70,8 @@ If you dont have CMake installed:
 brew install cmake
 ```
 
-Run:<br>
-Standard cmake build and run:
+Build:<br>
+Standard cmake build:
 ```
 mkdir build
 cd build
