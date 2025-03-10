@@ -1,10 +1,9 @@
 #pragma once
 #include <string>
-#include "IHappening.hpp"
 
 namespace dp_business_logic::DayPlanner
 {
-    class BaseEntity : virtual public IHappening
+    class BaseEntity
     {
 
     protected:
@@ -13,9 +12,9 @@ namespace dp_business_logic::DayPlanner
     public:
 
         virtual ~BaseEntity() = default;
-        bool SetId(std::string id) override;
-        std::string GetId() const override;
-        std::string IdGen() override;
+        bool SetId(std::string id);
+        std::string GetId() const;
+        std::string IdGen();
 
         long long GetEndEpoch() const;
         std::string GetName() const;
