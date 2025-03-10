@@ -14,7 +14,6 @@ namespace dp_business_logic::DayPlanner
         virtual ~BaseEntity() = default;
         bool SetId(std::string id);
         std::string GetId() const;
-        std::string IdGen();
 
         long long GetEndEpoch() const;
         std::string GetName() const;
