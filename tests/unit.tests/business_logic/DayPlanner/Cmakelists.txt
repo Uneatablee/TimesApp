@@ -2,6 +2,7 @@ project(DayPlanner_business_logic_unit_tests)
 
 add_executable(DayPlanner_business_logic_unit_tests
         Event/EventUnitTests.cpp
+        EventManager/EventManagerUnitTests.cpp
         )
 
 if(FakeIt_ADDED)
