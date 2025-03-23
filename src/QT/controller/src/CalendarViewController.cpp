@@ -11,7 +11,7 @@
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
 //#include "GenericRepository.hpp"
-#include "GenericRepositorySQLite.hpp"
+#include "DateTime.hpp"
 
 
 CalendarViewController::CalendarViewController(
@@ -22,9 +22,10 @@ CalendarViewController::CalendarViewController(
         m_event_generic_repository(event_generic_repository),
         m_event_manager(event_manager)
 {
-    m_current_day = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
-    m_current_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
-    m_current_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
+    m_date_time = m_date_time_getter_api -> GetCurrentLocalDateTime();
+    m_current_day = std::get<2>(m_date_time.GetYearMonthDay());
+    m_current_minute = std::get<1>(m_date_time.GetHourMinute());
+    m_current_hour = std::get<0>(m_date_time.GetHourMinute());
 
     m_date_changes_signal_timer = new QTimer(this);
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -42,9 +43,10 @@ CalendarViewController::~CalendarViewController()
 
 void CalendarViewController::CheckDate()
 {
-    auto date_fetched = std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
-    auto time_fetched_minute = std::get<1>(m_date_time_getter_api -> GetCurrentHourMinute());
-    auto time_fetched_hour = std::get<0>(m_date_time_getter_api -> GetCurrentHourMinute());
+    auto date_time = m_date_time_getter_api -> GetCurrentLocalDateTime();
+    auto date_fetched = std::get<2>(date_time.GetYearMonthDay());
+    auto time_fetched_minute = std::get<1>(date_time.GetHourMinute());
+    auto time_fetched_hour = std::get<0>(date_time.GetHourMinute());
 
     if(m_current_day != date_fetched)
     {
@@ -62,29 +64,30 @@ void CalendarViewController::CheckDate()
 
 uint8_t CalendarViewController::GetWeekDayNumber()
 {
-    return m_date_time_getter_api -> GetCurrentDayNumber();
+    return m_date_time.GetDayNumber();
 }
 
 uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, int month = 0, int year = 0)
 {
-    auto current_ymd = m_date_time_getter_api -> GetCurrentDate_YMDFormat();
+    DateTime date(day, month, year);
+
+    auto current_date = m_date_time_getter_api -> GetCurrentLocalDateTime();
     if(year != 0)
     {
-        return m_date_time_getter_api -> GetOffsetDayDate(m_date_time_getter_api -> GetYMD(day, month, year), day_change_count);
+        return date.GetOffsetDayDate(day_change_count);
     }
 
     if(day_change_count == 0)
     {
-        return std::get<2>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+        return std::get<2>(current_date.GetYearMonthDay());
     }
 
-    return m_date_time_getter_api -> GetOffsetDayDate(current_ymd, day_change_count);
+    return current_date.GetOffsetDayDate(day_change_count);
 }
 
 std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap(int weeks_offset_count = 0)
 {
-
-    auto day_number = m_date_time_getter_api -> GetCurrentDayNumber();
+    auto day_number = m_date_time.GetDayNumber();
     std::string week_day_names[] = {"Mon\n", "Tue\n", "Wed\n", "Thu\n", "Fri\n", "Sat\n", "Sun\n"};
     std::map<unsigned int, std::string> week;
     unsigned int day_key = 0;
@@ -99,7 +102,7 @@ std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap(int 
 
 std::string CalendarViewController::GetCurrentMonthName(int day_offset)
 {
-    auto month_number = m_date_time_getter_api -> GetMonthFromOffset(day_offset);
+    auto month_number = m_date_time.GetMonthFromOffset(day_offset);
 
     switch(month_number)
     {
@@ -119,10 +122,10 @@ std::string CalendarViewController::GetCurrentMonthName(int day_offset)
             return "July";
         case 8:
             return "August";
-        case 9:
-            return "October";
         case 10:
             return "September";
+        case 9:
+            return "October";
         case 11:
             return "November";
         case 12:
@@ -135,10 +138,10 @@ unsigned int CalendarViewController::GetYear(int day_offset)
 {
     if(day_offset == 0)
     {
-        return std::get<0>(m_date_time_getter_api -> GetCurrentYearMonthDay());
+        return std::get<0>(m_date_time.GetYearMonthDay());
     }
 
-    return m_date_time_getter_api -> GetYearFromOffset(day_offset);
+    return m_date_time.GetYearFromOffset(day_offset);
 }
 
 bool CalendarViewController::addEvent(
@@ -151,8 +154,8 @@ bool CalendarViewController::addEvent(
 {
     std::string start = (start_date.toStdString() + " " + start_hour.toStdString());
     std::string end = (end_date.toStdString() + " " + end_hour.toStdString());
-    auto sec_start = m_date_time_getter_api -> GetSecondsFromEpochFromString(start);
-    auto sec_end = m_date_time_getter_api -> GetSecondsFromEpochFromString(end);
+    auto sec_start = m_date_time.GetSecondsFromEpochFromString(start);
+    auto sec_end = m_date_time.GetSecondsFromEpochFromString(end);
 
     //event add
     auto event = std::make_shared<Event>("", event_name, sec_start, sec_end);
@@ -162,7 +165,7 @@ bool CalendarViewController::addEvent(
 
 std::tuple<uint8_t, uint8_t> CalendarViewController::GetHourMinute()
 {
-    return m_date_time_getter_api -> GetCurrentHourMinute();
+    return m_date_time.GetHourMinute();
 }
 
 bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* calendar)
@@ -177,10 +180,10 @@ bool CalendarViewController::RetrieveDrawableEventsQueue()
     m_custom_week_calendar -> ClearDrawableEventsQueue();
     for(auto &elem : events)
     {
-        auto start_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetStartEpoch());
-        auto end_date = m_date_time_getter_api -> ConvertEpochYearMonthDay(elem -> GetEndEpoch());
-        auto start_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetStartEpoch());
-        auto end_time = m_date_time_getter_api -> ConvertEpochHourMinute(elem -> GetEndEpoch());
+        auto start_date = m_date_time.ConvertEpochYearMonthDay(elem -> GetStartEpoch());
+        auto end_date = m_date_time.ConvertEpochYearMonthDay(elem -> GetEndEpoch());
+        auto start_time = m_date_time.ConvertEpochHourMinute(elem -> GetStartEpoch());
+        auto end_time = m_date_time.ConvertEpochHourMinute(elem -> GetEndEpoch());
 
         m_custom_week_calendar -> AddDrawableEvent(start_date, end_date, start_time, end_time, elem -> GetName());
     }

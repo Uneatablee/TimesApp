@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 #include "../../view/include/CustomCalendarForWeekView.hpp"
+#include "DateTime.hpp"
 
 using namespace dp_business_logic::DayPlanner;
 
@@ -24,6 +25,7 @@ private:
     std::shared_ptr<IGenericRepository<Event>> m_event_generic_repository;
     std::unique_ptr<EventManager> m_event_manager;
     CustomCalendarForWeekView* m_custom_week_calendar;
+    DateTime m_date_time;
 
 public:
     CalendarViewController(
