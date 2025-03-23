@@ -23,10 +23,10 @@ CalendarViewController::CalendarViewController(
         m_event_generic_repository(event_generic_repository),
         m_event_manager(event_manager)
 {
-    m_date_time = m_date_time_getter_api -> GetDateTime();
-    m_current_day = std::get<2>(m_date_time.GetCurrentYearMonthDay());
-    m_current_minute = std::get<1>(m_date_time.GetCurrentHourMinute());
-    m_current_hour = std::get<0>(m_date_time.GetCurrentHourMinute());
+    m_date_time = m_date_time_getter_api -> GetCurrentLocalDateTime();
+    m_current_day = std::get<2>(m_date_time.GetYearMonthDay());
+    m_current_minute = std::get<1>(m_date_time.GetHourMinute());
+    m_current_hour = std::get<0>(m_date_time.GetHourMinute());
 
     m_date_changes_signal_timer = new QTimer(this);
     connect(m_date_changes_signal_timer, &QTimer::timeout, this, &CalendarViewController::CheckDate);
@@ -44,9 +44,10 @@ CalendarViewController::~CalendarViewController()
 
 void CalendarViewController::CheckDate()
 {
-    auto date_fetched = std::get<2>(m_date_time.GetCurrentYearMonthDay());
-    auto time_fetched_minute = std::get<1>(m_date_time.GetCurrentHourMinute());
-    auto time_fetched_hour = std::get<0>(m_date_time.GetCurrentHourMinute());
+    auto date_time = m_date_time_getter_api -> GetCurrentLocalDateTime();
+    auto date_fetched = std::get<2>(date_time.GetCurrentYearMonthDay());
+    auto time_fetched_minute = std::get<1>(date_time.GetCurrentHourMinute());
+    auto time_fetched_hour = std::get<0>(date_time.GetCurrentHourMinute());
 
     if(m_current_day != date_fetched)
     {
@@ -64,13 +65,13 @@ void CalendarViewController::CheckDate()
 
 uint8_t CalendarViewController::GetWeekDayNumber()
 {
-    return m_date_time.GetCurrentDayNumber();
+    return m_date_time.GetDayNumber();
 }
 
 uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, int month = 0, int year = 0)
 {
-    auto date = m_date_time_getter_api -> GetDateTime(day, month, year);
-    auto current_date = m_date_time_getter_api -> GetDateTime();
+    auto date = DateTime(day, month, year);
+    auto current_date = m_date_time_getter_api -> GetCurrentLocalDateTime();
     if(year != 0)
     {
         return date.GetOffsetDayDate(day_change_count);
@@ -78,7 +79,7 @@ uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, in
 
     if(day_change_count == 0)
     {
-        return std::get<2>(current_date.GetCurrentYearMonthDay());
+        return std::get<2>(current_date.GetYearMonthDay());
     }
 
     return current_date.GetOffsetDayDate(day_change_count);
@@ -86,7 +87,7 @@ uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, in
 
 std::map<unsigned int, std::string> CalendarViewController::GenerateWeekMap(int weeks_offset_count = 0)
 {
-    auto day_number = m_date_time.GetCurrentDayNumber();
+    auto day_number = m_date_time.GetDayNumber();
     std::string week_day_names[] = {"Mon\n", "Tue\n", "Wed\n", "Thu\n", "Fri\n", "Sat\n", "Sun\n"};
     std::map<unsigned int, std::string> week;
     unsigned int day_key = 0;
@@ -164,7 +165,7 @@ bool CalendarViewController::addEvent(
 
 std::tuple<uint8_t, uint8_t> CalendarViewController::GetHourMinute()
 {
-    return m_date_time.GetCurrentHourMinute();
+    return m_date_time.GetHourMinute();
 }
 
 bool CalendarViewController::SetCustomWeekCalendar(CustomCalendarForWeekView* calendar)

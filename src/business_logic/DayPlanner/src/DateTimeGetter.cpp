@@ -10,23 +10,17 @@
 namespace dp_business_logic::DayPlanner
 {
 
-    DateTime DateTimeGetter::GetDateTime()
+    DateTime DateTimeGetter::GetCurrentUTCDateTime()
     {
-        return DateTime();
+        std::chrono::system_clock::time_point current_time = std::chrono::system_clock::now();
+        auto current_time_t = std::chrono::system_clock::to_time_t(current_time);
+        return DateTime(current_time_t);
     }
 
-    DateTime DateTimeGetter::GetDateTime(unsigned int day, unsigned int month, unsigned int year)
+    DateTime DateTimeGetter::GetCurrentLocalDateTime()
     {
-        return DateTime(day, month, year);
-    }
-
-    DateTime DateTimeGetter::GetDateTime(std::string date)
-    {
-        return DateTime(date);
-    }
-
-    DateTime DateTimeGetter::GetDateTime(std::chrono::year_month_day ymd)
-    {
-        return DateTime(ymd);
+        std::chrono::system_clock::time_point current_time = std::chrono::system_clock::now();
+        auto current_time_t = std::chrono::system_clock::to_time_t(current_time);
+        return DateTime(current_time_t, date::current_zone());
     }
 }

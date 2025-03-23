@@ -21,10 +21,8 @@ namespace dp_business_logic::DayPlanner
         IDateTimeGetter(IDateTimeGetter&& object) = default;
         IDateTimeGetter& operator=(IDateTimeGetter && object) = default;
 
-        virtual DateTime GetDateTime() = 0;
-        virtual DateTime GetDateTime(unsigned int, unsigned int, unsigned int) = 0;
-        virtual DateTime GetDateTime(std::string) = 0;
-        virtual DateTime GetDateTime(std::chrono::year_month_day) = 0;
+        virtual DateTime GetCurrentUTCDateTime() = 0;
+        virtual DateTime GetCurrentLocalDateTime() = 0;
     };
 
 }

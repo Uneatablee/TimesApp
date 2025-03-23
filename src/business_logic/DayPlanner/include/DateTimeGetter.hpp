@@ -12,10 +12,7 @@ namespace dp_business_logic::DayPlanner
 
     public:
 
-        DateTime GetDateTime();
-        DateTime GetDateTime(unsigned int, unsigned int, unsigned int);
-        DateTime GetDateTime(std::string);
-        DateTime GetDateTime(std::chrono::year_month_day);
-
+        DateTime GetCurrentUTCDateTime();
+        DateTime GetCurrentLocalDateTime();
     };
 }
