@@ -11,7 +11,6 @@
 #include "IDateTimeGetter.hpp"
 #include "IGenericRepository.hpp"
 //#include "GenericRepository.hpp"
-#include "GenericRepositorySQLite.hpp"
 #include "DateTime.hpp"
 
 
@@ -45,9 +44,9 @@ CalendarViewController::~CalendarViewController()
 void CalendarViewController::CheckDate()
 {
     auto date_time = m_date_time_getter_api -> GetCurrentLocalDateTime();
-    auto date_fetched = std::get<2>(date_time.GetCurrentYearMonthDay());
-    auto time_fetched_minute = std::get<1>(date_time.GetCurrentHourMinute());
-    auto time_fetched_hour = std::get<0>(date_time.GetCurrentHourMinute());
+    auto date_fetched = std::get<2>(date_time.GetYearMonthDay());
+    auto time_fetched_minute = std::get<1>(date_time.GetHourMinute());
+    auto time_fetched_hour = std::get<0>(date_time.GetHourMinute());
 
     if(m_current_day != date_fetched)
     {
@@ -138,7 +137,7 @@ unsigned int CalendarViewController::GetYear(int day_offset)
 {
     if(day_offset == 0)
     {
-        return std::get<0>(m_date_time.GetCurrentYearMonthDay());
+        return std::get<0>(m_date_time.GetYearMonthDay());
     }
 
     return m_date_time.GetYearFromOffset(day_offset);

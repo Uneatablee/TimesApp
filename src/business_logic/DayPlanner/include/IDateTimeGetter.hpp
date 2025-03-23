@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include <string>
 #include <tuple>
-#include "DateTime.hpp"
+
 
 namespace dp_business_logic::DayPlanner
 {
+    class DateTime;
     class IDateTimeGetter
     {
 
