@@ -1,8 +1,8 @@
 project(DayPlanner_business_logic_unit_tests)
 
 add_executable(DayPlanner_business_logic_unit_tests
-        Calendar/CalendarUnitTests.cpp
-        Time/TimeUnitTests.cpp)
+        EventManager/EventManagerUnitTests.cpp
+        )
 
 if(FakeIt_ADDED)
         target_link_libraries(DayPlanner_business_logic_unit_tests PRIVATE FakeIt::FakeIt-catch)

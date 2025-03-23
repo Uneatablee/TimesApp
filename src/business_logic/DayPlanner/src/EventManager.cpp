@@ -1,6 +1,7 @@
 #include "../include/EventManager.hpp"
 #include "../include/IEventRepository.hpp"
 #include <vector>
+#include <algorithm>
 
 namespace dp_business_logic::DayPlanner
 {
@@ -19,58 +20,46 @@ namespace dp_business_logic::DayPlanner
     bool EventManager::Add(std::shared_ptr<const Event> event) const
     {
         auto id = event -> GetId();
-        for(const auto &elem : m_events_repository->GetAll())
-        {
-            auto existing_id = elem -> GetId();
-            if(id == existing_id)
-            {
-                return false;
-            }
-        }
+        auto events_collection = m_events_repository -> GetAll();
+        auto iter = std::find_if(events_collection.begin(), events_collection.end(), [id](std::shared_ptr<const Event> event_lambda)
+        {return event_lambda -> GetId() == id;});
 
-        m_events_repository->Add(event);
-        return true;
+        if(iter == events_collection.end())
+        {
+            m_events_repository->Add(event);
+            return true;
+        }
+        return false;
     }
 
     bool EventManager::Update(std::shared_ptr<const Event> event) const
     {
         auto id = event -> GetId();
+        auto events_collection = m_events_repository -> GetAll();
+        auto iter = std::find_if(events_collection.begin(), events_collection.end(), [id](std::shared_ptr<const Event> event_lambda)
+        {return event_lambda -> GetId() == id;});
 
-        bool found = false;
-        for(const auto &elem : m_events_repository -> GetAll())
-        {
-            auto searched_id = elem -> GetId();
-            if(searched_id == id)
-            {
-                found = true;
-            }
-        }
-
-        if(found)
+        if(iter != events_collection.end())
         {
             m_events_repository -> Update(event);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     bool EventManager::Delete(std::string id) const
     {
-        bool found = false;
-        for(const auto &elem : m_events_repository -> GetAll())
-        {
-            auto searched_id = elem -> GetId();
-            if(searched_id == id)
-            {
-                found = true;
-            }
-        }
+        auto events_collection = m_events_repository -> GetAll();
+        auto iter = std::find_if(events_collection.begin(), events_collection.end(), [id](std::shared_ptr<const Event> event_lambda)
+        {return event_lambda -> GetId() == id;});
 
-        if(found)
+        if(iter != events_collection.end())
         {
             m_events_repository -> Delete(id);
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
