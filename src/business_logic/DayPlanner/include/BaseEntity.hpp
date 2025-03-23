@@ -23,6 +23,8 @@ namespace dp_business_logic::DayPlanner
         std::string m_id;
         std::string m_name;
         long long m_end_epoch;
-    };
+
+        void ValidateId(std::string);
+};
     //For common Task, Event and Reminder implementations + GenericRepo base
 }

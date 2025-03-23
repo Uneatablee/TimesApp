@@ -1,6 +1,8 @@
 #include "../include/BaseEntity.hpp"
 #include <string>
 #include "../include/HelperFunctions.hpp"
+#include <regex>
+#include "../include/IdFormatErrorException.hpp"
 
 
 namespace dp_business_logic::DayPlanner
@@ -9,6 +11,7 @@ namespace dp_business_logic::DayPlanner
         : m_name(name), m_end_epoch(end_epoch)
     {
         m_id = id == "" ? IdGen() : id;
+        ValidateId(m_id);
     }
 
     std::string BaseEntity::GetId() const
@@ -18,6 +21,7 @@ namespace dp_business_logic::DayPlanner
 
     bool BaseEntity::SetId(std::string id)
     {
+        ValidateId(id);
         m_id = id;
         return true;
     }
@@ -36,5 +40,14 @@ namespace dp_business_logic::DayPlanner
     {
         m_name = name;
         return true;
+    }
+
+    void BaseEntity::ValidateId(std::string id)
+    {
+        const std::regex uuid_template("^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$");
+        if(!std::regex_match(id, uuid_template))
+        {
+            throw IdFormatErrorException();
+        }
     }
 }
