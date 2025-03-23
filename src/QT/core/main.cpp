@@ -9,7 +9,6 @@
 #include "IGenericRepository.hpp"
 //#include "GenericRepository.hpp"
 #include "GenericRepositorySQLite.hpp"
-#include "BaseEntity.hpp"
 
 #include "../view/include/QtUserViewMain.hpp"
 #include "../view/include/MainViewArea.hpp"

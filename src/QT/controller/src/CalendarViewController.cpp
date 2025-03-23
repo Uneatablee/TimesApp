@@ -69,7 +69,8 @@ uint8_t CalendarViewController::GetWeekDayNumber()
 
 uint8_t CalendarViewController::GetDay(int day_change_count = 0, int day = 0, int month = 0, int year = 0)
 {
-    auto date = DateTime(day, month, year);
+    DateTime date(day, month, year);
+
     auto current_date = m_date_time_getter_api -> GetCurrentLocalDateTime();
     if(year != 0)
     {
@@ -121,10 +122,10 @@ std::string CalendarViewController::GetCurrentMonthName(int day_offset)
             return "July";
         case 8:
             return "August";
-        case 9:
-            return "October";
         case 10:
             return "September";
+        case 9:
+            return "October";
         case 11:
             return "November";
         case 12:

@@ -25,7 +25,13 @@ namespace dp_business_logic::DayPlanner
         DateTime(unsigned int day, unsigned int month, unsigned int year);
         DateTime(std::string date);
         DateTime(std::chrono::year_month_day ymd);
-        DateTime();
+        DateTime() = default;
+
+        DateTime& operator=(const DateTime&) = default;
+        DateTime(const DateTime&) = default;
+
+        DateTime& operator=(DateTime&&) = default;
+        DateTime(DateTime&&) = default;
 
         // bool SetTimePoint(time_t time_point);
 
