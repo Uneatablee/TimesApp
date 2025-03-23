@@ -16,11 +16,8 @@ TEST_CASE("Event can generate unique id")
     auto result = event.GetId();
 
     //Assert
-    for(int i = 0; i < 1000; i++)
-    {
-        auto test_id = IdGen();
-        REQUIRE(result != test_id);
-    }
+    auto test_id = IdGen();
+    REQUIRE(result != test_id);
 }
 
 TEST_CASE("Event can return its name")

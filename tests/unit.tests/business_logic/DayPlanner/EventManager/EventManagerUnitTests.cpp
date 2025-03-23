@@ -12,7 +12,7 @@ using namespace dp_business_logic::DayPlanner;
 TEST_CASE("EventManager::Get can return event by id")
 {
     //Arrange
-    auto event = std::make_shared<const Event>("3", "third", 1, 2);
+    auto event = std::make_shared<const Event>("00000000-0000-0000-0000-000000000003", "third", 1, 2);
 
     fakeit::Mock<IGenericRepository<Event>> mock;
     fakeit::When(Method(mock, GetById)).Return(event);
@@ -21,7 +21,7 @@ TEST_CASE("EventManager::Get can return event by id")
 
     //Act
     auto expected_result = event;
-    auto result = manager.Get("3");
+    auto result = manager.Get("00000000-0000-0000-0000-000000000003");
 
     //Assert
     REQUIRE(result == expected_result);
@@ -32,9 +32,9 @@ TEST_CASE("EventManager::Add can manage event adding behaviour for existing repo
     //Arrange
     std::vector<std::shared_ptr<const Event>> events_list
     {
-        std::make_shared<const Event>("1", "first", 1, 2),
-        std::make_shared<const Event>("2", "second", 1, 2),
-        std::make_shared<const Event>("3", "third", 1, 2)
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000001", "first", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000002", "second", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000003", "third", 1, 2)
     };
 
     fakeit::Mock<IGenericRepository<Event>> mock;
@@ -46,7 +46,7 @@ TEST_CASE("EventManager::Add can manage event adding behaviour for existing repo
     SECTION("EventManager is adding when id is not duplicated")
     {
         //Arrange
-        auto event = std::make_shared<const Event>("4", "fourth", 1, 2);
+        auto event = std::make_shared<const Event>("00000000-0000-0000-0000-000000000004", "fourth", 1, 2);
 
         //Act
         bool result = manager.Add(event);
@@ -59,7 +59,7 @@ TEST_CASE("EventManager::Add can manage event adding behaviour for existing repo
     SECTION("EventManager is not adding when id is duplicated")
     {
         //Arrange
-        auto event = std::make_shared<const Event>("3", "third_again", 4, 7);
+        auto event = std::make_shared<const Event>("00000000-0000-0000-0000-000000000002", "third_again", 4, 7);
 
         //Act
         bool result = manager.Add(event);
@@ -74,9 +74,9 @@ TEST_CASE("EventManager::GetAll can return event_lists from existing repository"
     //Arrange
     std::vector<std::shared_ptr<const Event>> events_list
     {
-        std::make_shared<const Event>("1", "first", 1, 2),
-        std::make_shared<const Event>("2", "second", 1, 2),
-        std::make_shared<const Event>("3", "third", 1, 2)
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000001", "first", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000002", "second", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000003", "third", 1, 2)
     };
 
     fakeit::Mock<IGenericRepository<Event>> mock;
@@ -95,14 +95,11 @@ TEST_CASE("EventManager::GetAll can return event_lists from existing repository"
 TEST_CASE("EventManager::Update can update event in existing events repository")
 {
     //Arrange
-    auto event_1 = std::make_shared<const Event>("4", "fourth", 1, 2);
-    auto event_2 = std::make_shared<const Event>("3", "third_again", 4, 7);
-
     std::vector<std::shared_ptr<const Event>> events_list
     {
-        std::make_shared<const Event>("1", "first", 1, 2),
-        std::make_shared<const Event>("2", "second", 1, 2),
-        std::make_shared<const Event>("3", "third", 1, 2)
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000001", "first", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000002", "second", 1, 2),
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000003", "third", 1, 2)
     };
 
     fakeit::Mock<IGenericRepository<Event>> mock;
@@ -113,8 +110,11 @@ TEST_CASE("EventManager::Update can update event in existing events repository")
 
     SECTION("EventManager is updating when id exists in repository")
     {
+        //Arrange
+        auto event = std::make_shared<const Event>("00000000-0000-0000-0000-000000000002", "third_again", 4, 7);
+
         //Act
-        bool result = manager.Update(event_2);
+        bool result = manager.Update(event);
 
         //Assert
         REQUIRE(result == true);
@@ -123,8 +123,11 @@ TEST_CASE("EventManager::Update can update event in existing events repository")
 
     SECTION("EventManager is not updating when id does not exists in repository")
     {
+        //Arrange
+        auto event = std::make_shared<const Event>("00000000-0000-0000-0000-000000000004", "fourth", 1, 2);
+
         //Act
-        bool result = manager.Update(event_1);
+        bool result = manager.Update(event);
 
         //Assert
         REQUIRE(result == false);
@@ -136,9 +139,9 @@ TEST_CASE("EventManager::Delete can delete event existing in repository")
     //Arrange
     std::vector<std::shared_ptr<const Event>> events_list
     {
-        std::make_shared<const Event>("1", "first", 1, 2),
-        std::make_shared<const Event>("2", "second", 1, 2),
-        std::make_shared<const Event>("3", "third", 1, 2)
+        std::make_shared<const Event>("00000000-0000-0000-0000-000000000001", "first", 1, 2),
+        std::make_shared<const Event>("", "second", 1, 2),
+        std::make_shared<const Event>("", "third", 1, 2)
     };
 
     fakeit::Mock<IGenericRepository<Event>> mock;
@@ -150,7 +153,7 @@ TEST_CASE("EventManager::Delete can delete event existing in repository")
     SECTION("Manager is deleting if event with given id exists in repository")
     {
         //Act
-        bool result = manager.Delete("1");
+        bool result = manager.Delete("00000000-0000-0000-0000-000000000001");
 
         //Assert
         REQUIRE(result == true);
@@ -159,7 +162,7 @@ TEST_CASE("EventManager::Delete can delete event existing in repository")
     SECTION("Manager is not deleting if event with given id does not exist in repository")
     {
         //Act
-        bool result = manager.Delete("4");
+        bool result = manager.Delete("00000000-0000-0000-0000-000000000002");
 
         //Assert
         REQUIRE(result == false);
