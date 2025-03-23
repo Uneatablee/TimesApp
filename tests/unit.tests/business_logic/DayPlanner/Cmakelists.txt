@@ -14,4 +14,3 @@ if (Catch2_ADDED)
 endif()
 
 target_link_libraries(DayPlanner_business_logic_unit_tests PUBLIC day_planner_functions)
-target_link_libraries(DayPlanner_business_logic_unit_tests PUBLIC data_access_layer_sqlite)

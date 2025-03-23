@@ -1,7 +1,6 @@
 #include "catch2/catch_test_macros.hpp"
 #include "fakeit.hpp"
 #include "IGenericRepository.hpp"
-#include "GenericRepositorySQLite.hpp"
 
 #include <Event.hpp>
 #include <memory>
@@ -9,7 +8,6 @@
 #include <EventManager.hpp>
 
 using namespace dp_business_logic::DayPlanner;
-using namespace data_access_layer::dal::sqlite;
 
 TEST_CASE("EventManager::Get can return event by id")
 {
@@ -22,20 +20,16 @@ TEST_CASE("EventManager::Get can return event by id")
     EventManager manager(std::shared_ptr<IGenericRepository<Event>>(repo_mock, [](IGenericRepository<Event>*) {}));
 
     //Act
-    auto expected_result = "third";
-    auto result = manager.Get("3") -> GetName();
+    auto expected_result = event;
+    auto result = manager.Get("3");
 
     //Assert
-    REQUIRE(result != "");
     REQUIRE(result == expected_result);
 }
 
 TEST_CASE("EventManager::Add can manage event adding behaviour for existing repository")
 {
     //Arrange
-    auto event_1 = std::make_shared<const Event>("4", "fourth", 1, 2);
-    auto event_2 = std::make_shared<const Event>("3", "third_again", 4, 7);
-
     std::vector<std::shared_ptr<const Event>> events_list
     {
         std::make_shared<const Event>("1", "first", 1, 2),
@@ -51,8 +45,11 @@ TEST_CASE("EventManager::Add can manage event adding behaviour for existing repo
 
     SECTION("EventManager is adding when id is not duplicated")
     {
+        //Arrange
+        auto event = std::make_shared<const Event>("4", "fourth", 1, 2);
+
         //Act
-        bool result = manager.Add(event_1);
+        bool result = manager.Add(event);
 
         //Assert
         REQUIRE(result == true);
@@ -61,8 +58,11 @@ TEST_CASE("EventManager::Add can manage event adding behaviour for existing repo
 
     SECTION("EventManager is not adding when id is duplicated")
     {
+        //Arrange
+        auto event = std::make_shared<const Event>("3", "third_again", 4, 7);
+
         //Act
-        bool result = manager.Add(event_2);
+        bool result = manager.Add(event);
 
         //Assert
         REQUIRE(result == false);
