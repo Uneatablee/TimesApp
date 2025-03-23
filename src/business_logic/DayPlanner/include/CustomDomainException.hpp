@@ -7,7 +7,14 @@ namespace dp_business_logic::DayPlanner
     {
     public:
         CustomDomainException() = default;
+        CustomDomainException(const char* message) : m_message(message){};
         virtual ~CustomDomainException() = default;
-        virtual const char* what() const noexcept = 0;
+        const char* what() const noexcept override
+        {
+            return m_message;
+        }
+
+    private:
+        const char* m_message;
     };
 }
